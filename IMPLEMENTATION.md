@@ -13,16 +13,16 @@
 - [x] Verify the app runs.
 
 ## Phase 2: Data Layer & Offline Library (SQLite)
-- [ ] Create `assets/images` directory and add placeholder images.
-- [ ] Update `pubspec.yaml` to include `assets/`.
-- [ ] Implement `DatabaseHelper` class:
+- [x] Create `assets/images` directory and add placeholder images.
+- [x] Update `pubspec.yaml` to include `assets/`.
+- [x] Implement `DatabaseHelper` class:
     - Initialize `sqflite`.
     - Create `behaviors` table.
     - Seed with Feline behavior data.
-- [ ] Create `Behavior` model class.
-- [ ] Implement `LibraryProvider` for fetching/filtering.
-- [ ] **Unit Test:** Verify database seeding.
-- [ ] Commit changes.
+- [x] Create `Behavior` model class.
+- [x] Implement `LibraryProvider` for fetching/filtering.
+- [x] **Unit Test:** Verify database seeding.
+- [x] Commit changes.
 
 ## Phase 3: UI Implementation - Offline Features
 - [ ] Implement `HomeScreen`:
@@ -70,4 +70,4 @@
 - [ ] Present to user.
 
 ## Journal
-- **Nov 30, 2025**: Project started. Phase 1 completed (Initialization, dependencies, git setup).
+- **Nov 30, 2025**: Project started. Phase 1 completed (Initialization). Phase 2 completed (Data Layer & Tests).
