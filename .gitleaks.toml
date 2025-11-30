@@ -1,0 +1,94 @@
+# Gitleaks Configuration for PawSight
+# https://github.com/gitleaks/gitleaks
+
+title = "PawSight Secret Detection"
+
+# Extend default gitleaks rules
+[extend]
+useDefault = true
+
+# Global allowlist - files/patterns to ignore
+[[allowlists]]
+description = "Ignore common non-sensitive files"
+paths = [
+  '''\.github/workflows/.*\.yml$''',
+  '''pubspec\.lock$''',
+  '''\.metadata$''',
+  '''.*\.g\.dart$''',
+  '''.*\.freezed\.dart$''',
+  '''.*\.mocks\.dart$''',
+]
+
+[[allowlists]]
+description = "Ignore test fixtures and mock data"
+paths = [
+  '''test/.*''',
+  '''.*_test\.dart$''',
+  '''testdata/.*''',
+  '''fixtures/.*''',
+]
+
+[[allowlists]]
+description = "Ignore documentation and assets"
+paths = [
+  '''.*\.md$''',
+  '''.*\.pdf$''',
+  '''assets/.*''',
+  '''.*\.(png|jpg|jpeg|gif|ico|svg)$''',
+]
+
+# Custom rules for Flutter/Dart projects
+[[rules]]
+id = "flutter-env-config"
+description = "Environment configuration with secrets"
+regex = '''(?i)(api[_-]?key|api[_-]?secret|auth[_-]?token|access[_-]?token|secret[_-]?key)\s*[:=]\s*['"]([a-zA-Z0-9_\-]{16,})['"]'''
+secretGroup = 2
+keywords = ["api_key", "api_secret", "auth_token", "access_token", "secret_key"]
+tags = ["flutter", "config"]
+
+[[rules]]
+id = "firebase-config"
+description = "Firebase configuration secrets"
+regex = '''(?i)(firebase[_-]?api[_-]?key|firebase[_-]?auth[_-]?domain|messaging[_-]?sender[_-]?id)\s*[:=]\s*['"]([a-zA-Z0-9_\-:.]+)['"]'''
+secretGroup = 2
+keywords = ["firebase", "messaging_sender"]
+tags = ["firebase", "config"]
+
+[[rules]]
+id = "webhook-url"
+description = "Webhook URLs that may contain tokens"
+regex = '''(?i)(webhook[_-]?url|n8n[_-]?url|callback[_-]?url)\s*[:=]\s*['"]?(https?://[^\s'"]+)['"]?'''
+secretGroup = 2
+keywords = ["webhook", "n8n", "callback"]
+tags = ["webhook", "url"]
+
+  # Allowlist for webhook rule - ignore example URLs
+  [[rules.allowlists]]
+  description = "Ignore placeholder webhook URLs"
+  regexTarget = "match"
+  regexes = [
+    '''(?i)example\.com''',
+    '''(?i)localhost''',
+    '''(?i)your[_-]?webhook''',
+    '''(?i)placeholder''',
+  ]
+
+[[rules]]
+id = "dart-const-secret"
+description = "Dart const declarations with potential secrets"
+regex = '''const\s+String\s+\w*(key|secret|token|password|api)\w*\s*=\s*['"]([a-zA-Z0-9_\-]{20,})['"]'''
+secretGroup = 2
+keywords = ["const String"]
+tags = ["dart", "const"]
+
+  # Allowlist for dart const rule
+  [[rules.allowlists]]
+  description = "Ignore example/placeholder values"
+  regexTarget = "match"
+  regexes = [
+    '''(?i)your[_-]?(api[_-]?)?key''',
+    '''(?i)example''',
+    '''(?i)placeholder''',
+    '''(?i)changeme''',
+    '''(?i)xxx+''',
+  ]
