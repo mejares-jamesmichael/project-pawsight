@@ -1,16 +1,16 @@
 # PawSight: Implementation Plan
 
 ## Phase 1: Project Initialization & Basic Offline Structure
-- [ ] Create a Flutter package named `pawsight` in the current directory.
+- [x] Create a Flutter package named `pawsight` in the current directory.
     - Use `flutter create . --project-name pawsight` (simulated via create_project tool).
-- [ ] Remove default boilerplate (counter app code) and test files.
-- [ ] Update `pubspec.yaml`:
+- [x] Remove default boilerplate (counter app code) and test files.
+- [x] Update `pubspec.yaml`:
     - Set version to `0.1.0`.
     - Add dependencies: `sqflite`, `path`, `provider`, `http`, `url_launcher`, `font_awesome_flutter`, `image_picker` (for AI vision), `flutter_markdown` (for rendering AI text).
-- [ ] Update `README.md` with a short project description.
-- [ ] Create `CHANGELOG.md` initialized at `0.1.0`.
-- [ ] Commit initial setup to git branch `feat/initial-setup`.
-- [ ] Verify the app runs.
+- [x] Update `README.md` with a short project description.
+- [x] Create `CHANGELOG.md` initialized at `0.1.0`.
+- [x] Commit initial setup to git branch `feat/initial-setup`.
+- [x] Verify the app runs.
 
 ## Phase 2: Data Layer & Offline Library (SQLite)
 - [ ] Create `assets/images` directory and add placeholder images.
@@ -70,4 +70,4 @@
 - [ ] Present to user.
 
 ## Journal
-- **[Date]**: Project started.
+- **Nov 30, 2025**: Project started. Phase 1 completed (Initialization, dependencies, git setup).
