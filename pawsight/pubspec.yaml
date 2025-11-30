@@ -1,7 +1,7 @@
 name: pawsight
 description: "A companion app for pet owners to interpret body language with offline library and AI chat."
 publish_to: 'none'
-version: 0.1.0
+version: 0.2.0
 
 environment:
   sdk: ^3.9.2
