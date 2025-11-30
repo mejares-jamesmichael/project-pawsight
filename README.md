@@ -55,3 +55,12 @@ The project follows a Model-View-ViewModel (MVVM) architecture:
         ```bash
         flutter build ios
         ```
+
+## Project Documentation
+
+For more detailed information about the project, please refer to the following documentation files:
+
+- [**DESIGN.md**](DESIGN.md): Technical specifications, database schema, and API contracts.
+- [**IMPLEMENTATION.md**](IMPLEMENTATION.md): Phased checklist for building the application.
+- [**PawSight.md**](PawSight.md): Original concept and high-level objectives.
+- [**AGENTS.md**](AGENTS.md): Development guidelines and commands.
