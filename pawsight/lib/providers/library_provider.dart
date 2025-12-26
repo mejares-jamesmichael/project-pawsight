@@ -15,6 +15,10 @@ class LibraryProvider with ChangeNotifier {
   String? _selectedMood;
   String? _selectedCategory;
 
+  // Expose selected filters for UI
+  String? get selectedMood => _selectedMood;
+  String? get selectedCategory => _selectedCategory;
+
   LibraryProvider() {
     loadBehaviors();
   }
