@@ -180,7 +180,7 @@ class BehaviorDetailScreen extends StatelessWidget {
                       Row(
                         children: [
                           Icon(
-                            FIcons.checkCircle,
+                            FIcons.check,
                             size: 16,
                             color: Colors.green,
                           ),
@@ -198,7 +198,6 @@ class BehaviorDetailScreen extends StatelessWidget {
                       const SizedBox(height: 12),
                       FButton(
                         onPress: () => _launchUrl(behavior.sourceUrl!),
-                        style: FButtonStyle.outline,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

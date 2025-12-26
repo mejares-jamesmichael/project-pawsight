@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:provider/provider.dart';
 import '../providers/library_provider.dart';
-import '../models/behavior.dart';
-import 'behavior_detail_screen.dart';
 import '../widgets/library_widgets.dart';
 
 /// Library screen - displays searchable cat behavior library with filters
@@ -95,7 +93,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        FIcons.alertTriangle,
+                        FIcons.x,
                         size: 48,
                         color: Colors.red,
                       ),

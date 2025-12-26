@@ -41,7 +41,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      FIcons.alertTriangle,
+                      FIcons.x,
                       size: 48,
                       color: Colors.red,
                     ),
