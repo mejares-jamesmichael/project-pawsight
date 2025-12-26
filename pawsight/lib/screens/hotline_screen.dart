@@ -33,10 +33,43 @@ class _HotlineScreenState extends State<HotlineScreen> {
         title: const Text('Vet Hotline'),
         backgroundColor: theme.colors.background,
       ),
-      body: provider.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : provider.contacts.isEmpty
-              ? _EmptyState(theme: theme)
+      body: provider.error != null
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      FIcons.alertTriangle,
+                      size: 48,
+                      color: Colors.red,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      provider.error!,
+                      style: theme.typography.base.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.red,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    FButton(
+                      onPress: () {
+                        provider.clearError();
+                        provider.loadContacts();
+                      },
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : provider.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : provider.contacts.isEmpty
+                  ? _EmptyState(theme: theme)
               : SingleChildScrollView(
                   padding: const EdgeInsets.all(16),
                   child: Column(

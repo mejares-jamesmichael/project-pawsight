@@ -6,9 +6,11 @@ import '../services/database_helper.dart';
 class HotlineProvider extends ChangeNotifier {
   List<VetContact> _contacts = [];
   bool _isLoading = false;
+  String? _error;
 
   List<VetContact> get contacts => _contacts;
   bool get isLoading => _isLoading;
+  String? get error => _error;
 
   /// Get emergency contacts (24/7 services)
   List<VetContact> get emergencyContacts =>
@@ -21,17 +23,24 @@ class HotlineProvider extends ChangeNotifier {
   /// Load all vet contacts from database
   Future<void> loadContacts() async {
     _isLoading = true;
+    _error = null;
     notifyListeners();
 
     try {
       _contacts = await DatabaseHelper.instance.getVetContacts();
     } catch (e) {
+      _error = 'Failed to load vet contacts. Please try again.';
       debugPrint('Error loading vet contacts: $e');
       _contacts = [];
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  void clearError() {
+    _error = null;
+    notifyListeners();
   }
 
   // Future methods for add/edit/delete functionality
