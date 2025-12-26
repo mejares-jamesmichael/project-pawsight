@@ -265,6 +265,12 @@ class CategoryFilters extends StatelessWidget {
               isSelected: provider.selectedCategories.contains('Vocal'),
               onTap: () => provider.toggleCategoryFilter('Vocal'),
             ),
+            CategoryFilterChip(
+              label: 'Whiskers',
+              icon: FIcons.zap,
+              isSelected: provider.selectedCategories.contains('Whiskers'),
+              onTap: () => provider.toggleCategoryFilter('Whiskers'),
+            ),
           ],
         ),
       ],
@@ -365,6 +371,8 @@ class BehaviorCard extends StatelessWidget {
         return FIcons.accessibility;
       case 'Vocal':
         return FIcons.volume2;
+      case 'Whiskers':
+        return FIcons.zap;
       default:
         return FIcons.info;
     }
@@ -509,8 +517,8 @@ class BehaviorCard extends StatelessWidget {
           ],
          ),
         ),
-       );
-     );
+      ),
+    );
   }
 }
 
