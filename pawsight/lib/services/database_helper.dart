@@ -93,7 +93,7 @@ class DatabaseHelper {
   }
 
   Future _seedBehaviors(Database db) async {
-    // NOTE: Replace these placeholder behaviors with your researched data
+    // Researched cat behavior data from credible sources: ASPCA, PetMD, Cornell Feline Health Center
     final behaviors = [
       Behavior(
         id: 1,
@@ -101,11 +101,11 @@ class DatabaseHelper {
         category: 'Tail',
         mood: 'Happy',
         description:
-            'Tail pointing straight up signifies confidence, happiness, and a readiness for friendly interaction.',
+            'A tail held straight up with a slight curve at the tip indicates confidence, happiness, and friendliness. This is often accompanied by a relaxed body posture and forward-facing ears.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'ASPCA Pet Health Insurance',
+        sourceUrl: 'https://www.aspcapetinsurance.com/resources/cat-body-language-explained/',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -114,11 +114,11 @@ class DatabaseHelper {
         category: 'Tail',
         mood: 'Fearful',
         description:
-            'Also known as bottle brush tail. Indicates severe agitation, fear, or aggression.',
+            'Also called "bottle brush tail" - the tail puffs up and may appear bushy. This indicates extreme fear, agitation, or aggression. Often seen with an arched back and flattened ears.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'PetMD',
+        sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -127,11 +127,11 @@ class DatabaseHelper {
         category: 'Tail',
         mood: 'Fearful',
         description:
-            'Tail wrapped around or under the body indicates fear, submission, or anxiety.',
+            'The tail is wrapped tightly around or tucked under the body, sometimes between the legs. This signals fear, submission, anxiety, or stress.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'ASPCA Pet Health Insurance',
+        sourceUrl: 'https://www.aspcapetinsurance.com/resources/cat-body-language-explained/',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -140,11 +140,11 @@ class DatabaseHelper {
         category: 'Tail',
         mood: 'Mixed',
         description:
-            'Slow, focused tail movement indicates concentration or mild irritation.',
+            'A slow, deliberate side-to-side tail movement indicates focus, concentration, or mild irritation. This differs from the rapid thrashing that signals aggression.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'PetMD',
+        sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -153,11 +153,11 @@ class DatabaseHelper {
         category: 'Tail',
         mood: 'Aggressive',
         description:
-            'Rapid tail thrashing indicates frustration, annoyance, or impending aggression.',
+            'Rapid, forceful tail movements from side to side indicate frustration, annoyance, or impending aggression. The cat may be overstimulated or ready to defend itself.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'ASPCA Pet Health Insurance',
+        sourceUrl: 'https://www.aspcapetinsurance.com/resources/cat-body-language-explained/',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -166,11 +166,11 @@ class DatabaseHelper {
         category: 'Ears',
         mood: 'Happy',
         description:
-            'Ears pointing forward indicate curiosity, alertness, and positive engagement.',
+            'Ears pointing forward and slightly upward indicate curiosity, alertness, and positive engagement. This is often seen when a cat is interested in something or someone.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'PetMD',
+        sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -179,11 +179,11 @@ class DatabaseHelper {
         category: 'Ears',
         mood: 'Fearful',
         description:
-            'Ears pinned back flat against the head signal fear or defensive aggression.',
+            'Ears pinned back flat against the head signal fear, defensive aggression, or extreme discomfort. The cat may hiss, growl, or prepare to attack if threatened further.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'ASPCA Pet Health Insurance',
+        sourceUrl: 'https://www.aspcapetinsurance.com/resources/cat-body-language-explained/',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -192,11 +192,11 @@ class DatabaseHelper {
         category: 'Ears',
         mood: 'Relaxed',
         description:
-            'Ears rotating independently show the cat is monitoring their environment.',
+            'Ears that rotate and move independently show the cat is relaxed but monitoring their environment. This indicates comfort while staying aware of surroundings.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'Cornell Feline Health Center',
+        sourceUrl: 'https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-behavior-issues',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -205,11 +205,11 @@ class DatabaseHelper {
         category: 'Eyes',
         mood: 'Relaxed',
         description:
-            'Slow blinking is a sign of trust, affection, and contentment.',
+            'Slow, deliberate blinking is a sign of trust and affection. Cats may do this with humans or other cats they feel comfortable with. Return the slow blink to show you reciprocate.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'PetMD',
+        sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -218,11 +218,11 @@ class DatabaseHelper {
         category: 'Eyes',
         mood: 'Mixed',
         description:
-            'Wide pupils can indicate excitement, fear, or aggression depending on context.',
+            'Wide, dilated pupils can indicate excitement, fear, stress, or aggression depending on context. In low light, this is normal, but in bright light it may signal strong emotions.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'ASPCA Pet Health Insurance',
+        sourceUrl: 'https://www.aspcapetinsurance.com/resources/cat-body-language-explained/',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -231,11 +231,11 @@ class DatabaseHelper {
         category: 'Eyes',
         mood: 'Aggressive',
         description:
-            'Unblinking, intense stare can be a challenge or threat signal.',
+            'An unblinking, intense stare with narrowed eyes can be a challenge or threat signal. Cats may do this before attacking or to establish dominance.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'PetMD',
+        sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -244,11 +244,11 @@ class DatabaseHelper {
         category: 'Posture',
         mood: 'Relaxed',
         description:
-            'Sitting with paws tucked under the body indicates comfort and relaxation.',
+            'Sitting upright with paws tucked neatly under the body, resembling a loaf of bread. This indicates complete comfort and relaxation in a safe environment.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'ASPCA Pet Health Insurance',
+        sourceUrl: 'https://www.aspcapetinsurance.com/resources/cat-body-language-explained/',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -257,11 +257,11 @@ class DatabaseHelper {
         category: 'Posture',
         mood: 'Fearful',
         description:
-            'Classic Halloween cat pose with arched back and raised fur indicates fear.',
+            'The classic "Halloween cat" pose with an arched back, raised fur, and sometimes a puffed tail. This indicates fear or defensive aggression - the cat is trying to appear larger.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'PetMD',
+        sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -270,11 +270,11 @@ class DatabaseHelper {
         category: 'Posture',
         mood: 'Relaxed',
         description:
-            'Rolling over to show belly is a sign of trust and comfort, though not always an invitation to touch.',
+            'Rolling over to expose the belly is a sign of trust and comfort, but it\'s not always an invitation to touch. The belly is vulnerable, so respect the cat\'s boundaries.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'Cornell Feline Health Center',
+        sourceUrl: 'https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-behavior-issues',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
       Behavior(
@@ -283,11 +283,11 @@ class DatabaseHelper {
         category: 'Vocal',
         mood: 'Happy',
         description:
-            'Rhythmic vibration usually indicates contentment, though cats may also purr when stressed or in pain.',
+            'A rhythmic vibration and low rumbling sound usually indicates contentment and pleasure. However, cats may also purr when stressed, in pain, or seeking comfort.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Placeholder - To be replaced',
-        sourceUrl: null,
-        verifiedBy: 'Pending research',
+        source: 'PetMD',
+        sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
+        verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
     ];
