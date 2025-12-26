@@ -5,6 +5,12 @@ class Behavior {
   final String mood; // Happy, Fearful, Aggressive, Relaxed, Mixed
   final String description;
   final String imagePath;
+  
+  // Source attribution fields
+  final String? source; // e.g., "ASPCA", "Cornell Feline Health Center"
+  final String? sourceUrl; // Link to original source
+  final String? verifiedBy; // e.g., "Veterinarian-reviewed", "Community-sourced"
+  final DateTime? lastUpdated; // When data was added/updated
 
   Behavior({
     required this.id,
@@ -13,6 +19,10 @@ class Behavior {
     required this.mood,
     required this.description,
     required this.imagePath,
+    this.source,
+    this.sourceUrl,
+    this.verifiedBy,
+    this.lastUpdated,
   });
 
   // Convert a Behavior into a Map. The keys must correspond to the names of the
@@ -25,6 +35,10 @@ class Behavior {
       'mood': mood,
       'description': description,
       'image_path': imagePath,
+      'source': source,
+      'source_url': sourceUrl,
+      'verified_by': verifiedBy,
+      'last_updated': lastUpdated?.toIso8601String(),
     };
   }
 
@@ -36,6 +50,12 @@ class Behavior {
       mood: map['mood'],
       description: map['description'],
       imagePath: map['image_path'],
+      source: map['source'],
+      sourceUrl: map['source_url'],
+      verifiedBy: map['verified_by'],
+      lastUpdated: map['last_updated'] != null
+          ? DateTime.parse(map['last_updated'])
+          : null,
     );
   }
 }
