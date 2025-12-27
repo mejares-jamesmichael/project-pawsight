@@ -314,23 +314,26 @@ class BehaviorDetailScreen extends StatelessWidget {
         buttons.add(
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: FButton(
-              onPress: () => _launchUrl(url),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    FIcons.externalLink,
-                    size: 16,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'View Source: $sourceName',
-                      overflow: TextOverflow.ellipsis,
+            child: SizedBox(
+              width: double.infinity,
+              child: FButton(
+                onPress: () => _launchUrl(url),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      FIcons.externalLink,
+                      size: 16,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        'View Source: $sourceName',
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
