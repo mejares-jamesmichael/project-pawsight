@@ -22,20 +22,28 @@ class BehaviorDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final horizontalPadding = screenWidth < 360 ? 12.0 : 16.0;
+    final cardPadding = screenWidth < 360 ? 12.0 : 16.0;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(behavior.name),
+        title: Text(
+          behavior.name,
+          style: TextStyle(
+            fontSize: screenWidth < 360 ? 18 : 20,
+          ),
+        ),
         backgroundColor: theme.colors.background,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(horizontalPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header Card with Category and Mood
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(cardPadding),
               decoration: BoxDecoration(
                 color: theme.colors.secondary,
                 borderRadius: BorderRadius.circular(12),
@@ -46,30 +54,38 @@ class BehaviorDetailScreen extends StatelessWidget {
                 children: [
                   // Name and Category
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Text(
                           behavior.name,
                           style: theme.typography.xl.copyWith(
                             fontWeight: FontWeight.w600,
+                            fontSize: screenWidth < 360 ? 18 : null,
                           ),
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: theme.colors.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: theme.colors.primary),
-                        ),
-                        child: Text(
-                          behavior.category,
-                          style: theme.typography.sm.copyWith(
-                            color: theme.colors.primary,
-                            fontWeight: FontWeight.w600,
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth < 360 ? 8 : 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.colors.primary.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: theme.colors.primary),
+                          ),
+                          child: Text(
+                            behavior.category,
+                            style: theme.typography.sm.copyWith(
+                              color: theme.colors.primary,
+                              fontWeight: FontWeight.w600,
+                              fontSize: screenWidth < 360 ? 11 : null,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
@@ -79,8 +95,8 @@ class BehaviorDetailScreen extends StatelessWidget {
 
                   // Mood Badge
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth < 360 ? 8 : 12,
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
@@ -105,6 +121,7 @@ class BehaviorDetailScreen extends StatelessWidget {
                           style: theme.typography.sm.copyWith(
                             color: _getMoodColor(behavior.mood),
                             fontWeight: FontWeight.w600,
+                            fontSize: screenWidth < 360 ? 11 : null,
                           ),
                         ),
                       ],
@@ -120,11 +137,13 @@ class BehaviorDetailScreen extends StatelessWidget {
               'Description',
               style: theme.typography.lg.copyWith(
                 fontWeight: FontWeight.w600,
+                fontSize: screenWidth < 360 ? 16 : null,
               ),
             ),
             const SizedBox(height: 8),
             Container(
-              padding: const EdgeInsets.all(16),
+              width: double.infinity,
+              padding: EdgeInsets.all(cardPadding),
               decoration: BoxDecoration(
                 color: theme.colors.secondary,
                 borderRadius: BorderRadius.circular(12),
@@ -135,6 +154,7 @@ class BehaviorDetailScreen extends StatelessWidget {
                 style: theme.typography.base.copyWith(
                   height: 1.6,
                   color: theme.colors.foreground,
+                  fontSize: screenWidth < 360 ? 13 : null,
                 ),
               ),
             ),
@@ -146,11 +166,13 @@ class BehaviorDetailScreen extends StatelessWidget {
                 'Source Information',
                 style: theme.typography.lg.copyWith(
                   fontWeight: FontWeight.w600,
+                  fontSize: screenWidth < 360 ? 16 : null,
                 ),
               ),
               const SizedBox(height: 8),
               Container(
-                padding: const EdgeInsets.all(16),
+                width: double.infinity,
+                padding: EdgeInsets.all(cardPadding),
                 decoration: BoxDecoration(
                   color: theme.colors.secondary,
                   borderRadius: BorderRadius.circular(12),
@@ -160,6 +182,7 @@ class BehaviorDetailScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(
                           FIcons.info,
@@ -167,10 +190,13 @@ class BehaviorDetailScreen extends StatelessWidget {
                           color: theme.colors.mutedForeground,
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          'Source: ${behavior.source}',
-                          style: theme.typography.sm.copyWith(
-                            fontWeight: FontWeight.w500,
+                        Expanded(
+                          child: Text(
+                            'Source: ${behavior.source}',
+                            style: theme.typography.sm.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: screenWidth < 360 ? 12 : null,
+                            ),
                           ),
                         ),
                       ],
@@ -178,6 +204,7 @@ class BehaviorDetailScreen extends StatelessWidget {
                     if (behavior.verifiedBy != null) ...[
                       const SizedBox(height: 8),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Icon(
                             FIcons.check,
@@ -185,10 +212,13 @@ class BehaviorDetailScreen extends StatelessWidget {
                             color: Colors.green,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            'Verified by: ${behavior.verifiedBy}',
-                            style: theme.typography.sm.copyWith(
-                              color: theme.colors.mutedForeground,
+                          Expanded(
+                            child: Text(
+                              'Verified by: ${behavior.verifiedBy}',
+                              style: theme.typography.sm.copyWith(
+                                color: theme.colors.mutedForeground,
+                                fontSize: screenWidth < 360 ? 12 : null,
+                              ),
                             ),
                           ),
                         ],
@@ -208,10 +238,12 @@ class BehaviorDetailScreen extends StatelessWidget {
                             color: theme.colors.mutedForeground,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            'Last updated: ${_formatDate(behavior.lastUpdated!)}',
-                            style: theme.typography.xs.copyWith(
-                              color: theme.colors.mutedForeground,
+                          Expanded(
+                            child: Text(
+                              'Last updated: ${_formatDate(behavior.lastUpdated!)}',
+                              style: theme.typography.xs.copyWith(
+                                color: theme.colors.mutedForeground,
+                              ),
                             ),
                           ),
                         ],
@@ -229,11 +261,13 @@ class BehaviorDetailScreen extends StatelessWidget {
               'Understanding This Behavior',
               style: theme.typography.lg.copyWith(
                 fontWeight: FontWeight.w600,
+                fontSize: screenWidth < 360 ? 16 : null,
               ),
             ),
             const SizedBox(height: 8),
             Container(
-              padding: const EdgeInsets.all(16),
+              width: double.infinity,
+              padding: EdgeInsets.all(cardPadding),
               decoration: BoxDecoration(
                 color: Colors.blue.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
@@ -255,6 +289,7 @@ class BehaviorDetailScreen extends StatelessWidget {
                         style: theme.typography.base.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Colors.blue,
+                          fontSize: screenWidth < 360 ? 14 : null,
                         ),
                       ),
                     ],
@@ -265,6 +300,7 @@ class BehaviorDetailScreen extends StatelessWidget {
                     style: theme.typography.sm.copyWith(
                       height: 1.5,
                       color: theme.colors.foreground,
+                      fontSize: screenWidth < 360 ? 12 : null,
                     ),
                   ),
                 ],
@@ -314,26 +350,44 @@ class BehaviorDetailScreen extends StatelessWidget {
         buttons.add(
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: SizedBox(
-              width: double.infinity,
-              child: FButton(
-                onPress: () => _launchUrl(url),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      FIcons.externalLink,
-                      size: 16,
+            child: InkWell(
+              onTap: () => _launchUrl(url),
+              borderRadius: BorderRadius.circular(8),
+              child: Builder(
+                builder: (context) {
+                  final theme = context.theme;
+                  return Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: theme.colors.primary,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: theme.colors.primary),
                     ),
-                    const SizedBox(width: 8),
-                    Flexible(
-                      child: Text(
-                        'View Source: $sourceName',
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          FIcons.externalLink,
+                          size: 16,
+                          color: theme.colors.primaryForeground,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'View Source: $sourceName',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: theme.typography.base.copyWith(
+                              color: theme.colors.primaryForeground,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
           ),
