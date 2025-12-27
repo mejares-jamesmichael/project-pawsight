@@ -21,7 +21,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 4, // Incremented version for vet_contacts table
+      version: 4, // Updated for 44 researched behaviors integration
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
