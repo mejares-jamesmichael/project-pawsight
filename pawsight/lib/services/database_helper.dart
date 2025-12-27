@@ -21,7 +21,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 4, // Updated for 44 researched behaviors integration
+      version: 5, // Updated descriptions and multiple sources for behaviors
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -105,8 +105,8 @@ class DatabaseHelper {
         description:
             'When a cat holds their tail straight up like a flagpole, often with a slight curve at the tip, they are expressing confidence, contentment, and friendliness. This is a greeting behavior cats use with trusted companions and indicates they feel safe and want to interact positively.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'International Cat Care',
-        sourceUrl: 'https://icatcare.org/articles/cat-communication',
+        source: 'International Cat Care, Hill\'s Pet Nutrition, PetMD',
+        sourceUrl: 'https://icatcare.org/articles/cat-communication,https://www.hillspet.com/cat-care/behavior-appearance/cat-tail-language,https://www.petmd.com/cat/behavior/cat-body-language',
         verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
@@ -118,8 +118,8 @@ class DatabaseHelper {
         description:
             'The tail stands upright but curves at the tip like a question mark or shepherd\'s crook. This position signals a playful, friendly mood and often serves as an invitation for interaction or play. It indicates curiosity combined with positive emotions.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'Hill\'s Pet Nutrition',
-        sourceUrl: 'https://www.hillspet.com/cat-care/behavior-appearance/cat-tail-language',
+        source: 'Hill\'s Pet Nutrition, Lady N Pet',
+        sourceUrl: 'https://www.hillspet.com/cat-care/behavior-appearance/cat-tail-language,https://ladynpet.com/us/blog/cat-tail-meaning/',
         verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
@@ -289,10 +289,10 @@ class DatabaseHelper {
         category: 'Eyes',
         mood: 'Relaxed',
         description:
-            'A slow, deliberate closing and opening of the eyes is often called the "cat kiss" and represents trust, affection, and contentment. By closing their eyes in your presence, cats demonstrate they feel safe and comfortable.',
+            'A slow, deliberate closing and opening of the eyes is often called the "cat kiss" and represents trust, affection, and contentment. By closing their eyes in your presence, cats demonstrate they feel safe and comfortable. Research from University of Sussex confirmed cats are more likely to slow blink at humans who slow blink at them, supporting this as genuine positive communication.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'International Cat Care',
-        sourceUrl: 'https://icatcare.org/articles/handling-and-interactions',
+        source: 'Kinship, Tractive, VHA Vets, International Cat Care',
+        sourceUrl: 'https://www.kinship.com/cat-behavior/cat-slow-blinking,https://tractive.com/blog/en/good-to-know/cat-slow-blink,https://vhavets.com/blog/cat-slow-blinking/,https://icatcare.org/articles/handling-and-interactions',
         verifiedBy: 'Research-backed, Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
@@ -369,10 +369,10 @@ class DatabaseHelper {
         category: 'Posture',
         mood: 'Relaxed',
         description:
-            'When a cat rolls onto their back exposing their vulnerable belly, it\'s a significant display of trust and relaxation. However, this is NOT necessarily an invitation for belly rubs—many cats will react defensively if you touch their stomach.',
+            'When a cat rolls onto their back exposing their vulnerable belly, it\'s a significant display of trust and relaxation. However, this is NOT necessarily an invitation for belly rubs—many cats will react defensively if you touch their stomach. The exposure itself is the trust signal.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'International Cat Care',
-        sourceUrl: 'https://icatcare.org/articles/handling-and-interactions',
+        source: 'PetsCare, Agria Pet, Catit, International Cat Care',
+        sourceUrl: 'https://www.petscare.com/news/faq/what-does-it-mean-if-a-cat-lets-you-rub-its-belly,https://www.agriapet.co.uk/guides-and-advice/cat-rolling-on-its-back/,https://www.catit.com/spotlight/why-do-cats-show-their-belly/,https://icatcare.org/articles/handling-and-interactions',
         verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),
@@ -488,10 +488,10 @@ class DatabaseHelper {
         category: 'Vocal',
         mood: 'Mixed',
         description:
-            'While purring most commonly indicates contentment, happiness, and relaxation, cats also purr when stressed, anxious, in pain, or ill as a self-soothing mechanism. Context and body language are essential to interpret meaning.',
+            'While purring most commonly indicates contentment, happiness, and relaxation, cats also purr when stressed, anxious, in pain, or ill as a self-soothing mechanism. The vibrations (25-150 Hz) may have healing properties that promote tissue repair and pain relief. Context and body language are essential to interpret meaning.',
         imagePath: 'assets/images/placeholder.png',
-        source: 'PetMD',
-        sourceUrl: 'https://www.petmd.com/cat/behavior/why-do-cats-purr',
+        source: 'Companion Animals NZ, PetsCare, AAHA, PetMD',
+        sourceUrl: 'https://www.companionanimals.nz/articles/is-purring-always-a-sign-of-happiness-in-cats,https://www.petscare.com/news/post/do-cats-purr-when-stressed,https://www.aaha.org/resources/the-secret-feline-language-5-reasons-why-your-cat-purrs/,https://www.petmd.com/cat/behavior/why-do-cats-purr',
         verifiedBy: 'Veterinarian-reviewed',
         lastUpdated: DateTime.now(),
       ),

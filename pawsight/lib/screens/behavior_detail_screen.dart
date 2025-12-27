@@ -194,22 +194,9 @@ class BehaviorDetailScreen extends StatelessWidget {
                         ],
                       ),
                     ],
-                    if (behavior.sourceUrl != null) ...[
+                    if (behavior.sourceUrl != null && behavior.sourceUrl!.isNotEmpty) ...[
                       const SizedBox(height: 12),
-                      FButton(
-                        onPress: () => _launchUrl(behavior.sourceUrl!),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              FIcons.externalLink,
-                              size: 16,
-                            ),
-                            const SizedBox(width: 8),
-                            Text('View Source'),
-                          ],
-                        ),
-                      ),
+                      ..._buildSourceButtons(behavior),
                     ],
                     if (behavior.lastUpdated != null) ...[
                       const SizedBox(height: 12),
@@ -308,5 +295,49 @@ class BehaviorDetailScreen extends StatelessWidget {
 
   String _formatDate(DateTime date) {
     return '${date.month}/${date.day}/${date.year}';
+  }
+
+  List<Widget> _buildSourceButtons(Behavior behavior) {
+    final sources = behavior.source?.split(',') ?? [];
+    final sourceUrls = behavior.sourceUrl?.split(',') ?? [];
+
+    if (sources.isEmpty || sourceUrls.isEmpty) return [];
+
+    final buttons = <Widget>[];
+    final minLength = sources.length < sourceUrls.length ? sources.length : sourceUrls.length;
+
+    for (int i = 0; i < minLength; i++) {
+      final sourceName = sources[i].trim();
+      final url = sourceUrls[i].trim();
+
+      if (url.isNotEmpty) {
+        buttons.add(
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: FButton(
+              onPress: () => _launchUrl(url),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    FIcons.externalLink,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'View Source: $sourceName',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+    }
+
+    return buttons;
   }
 }

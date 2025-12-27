@@ -8,7 +8,7 @@ class Behavior {
   
   // Source attribution fields
   final String? source; // e.g., "ASPCA", "Cornell Feline Health Center"
-  final String? sourceUrl; // Link to original source
+  final String? sourceUrl; // Link to original source (can be comma-separated for multiple)
   final String? verifiedBy; // e.g., "Veterinarian-reviewed", "Community-sourced"
   final DateTime? lastUpdated; // When data was added/updated
 
