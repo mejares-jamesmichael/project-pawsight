@@ -156,7 +156,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
 
                       const SizedBox(height: 16),
 
-                      // Placeholder Notice
+                      // Info Notice
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
@@ -174,7 +174,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                             const SizedBox(width: 12),
                             Expanded(
                               child: Text(
-                                'These are placeholder contacts. Replace with your local veterinary clinics.',
+                                'Metro Manila area veterinary clinics. Always call ahead to confirm availability and fees.',
                                 style: theme.typography.sm.copyWith(
                                   color: theme.colors.mutedForeground,
                                   fontStyle: FontStyle.italic,
@@ -183,7 +183,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                             ),
                           ],
                         ),
-            ),
+                      ),
           ],
         ),
       ),
@@ -241,6 +241,24 @@ class _VetContactCard extends StatelessWidget {
     final uri = Uri(scheme: 'tel', path: phoneNumber);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
+    }
+  }
+
+  Future<void> _sendEmail(String email) async {
+    final uri = Uri(
+      scheme: 'mailto',
+      path: email,
+      query: 'subject=Pet Care Inquiry',
+    );
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
+  }
+
+  Future<void> _openSocialMedia(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 
@@ -336,6 +354,17 @@ class _VetContactCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
 
+                    // Email (if available)
+                    if (contact.email != null &&
+                        contact.email!.isNotEmpty) ...[
+                      _InfoRow(
+                        icon: FIcons.mail,
+                        text: contact.email!,
+                        theme: theme,
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+
                     // Address
                     _InfoRow(
                       icon: FIcons.mapPin,
@@ -358,25 +387,43 @@ class _VetContactCard extends StatelessWidget {
                     const SizedBox(height: 16),
 
                     // Action Buttons
-                    Row(
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
                       children: [
-                        Expanded(
-                          child: _ActionButton(
-                            label: 'Call',
-                            icon: FIcons.phone,
-                            color: accentColor,
-                            onTap: () => _makePhoneCall(contact.phoneNumber),
-                          ),
+                        _ActionButton(
+                          label: 'Call',
+                          icon: FIcons.phone,
+                          color: accentColor,
+                          onTap: () => _makePhoneCall(contact.phoneNumber),
                         ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: _ActionButton(
-                            label: 'Location',
-                            icon: FIcons.mapPin,
-                            color: Colors.green,
-                            onTap: () => _openMaps(contact.address),
+                        if (contact.email != null && contact.email!.isNotEmpty)
+                          _ActionButton(
+                            label: 'Email',
+                            icon: FIcons.mail,
+                            color: Colors.orange,
+                            onTap: () => _sendEmail(contact.email!),
                           ),
+                        _ActionButton(
+                          label: 'Location',
+                          icon: FIcons.mapPin,
+                          color: Colors.green,
+                          onTap: () => _openMaps(contact.address),
                         ),
+                        if (contact.facebookUrl != null && contact.facebookUrl!.isNotEmpty)
+                          _ActionButton(
+                            label: 'Facebook',
+                            icon: FIcons.facebook,
+                            color: const Color(0xFF1877F2), // Facebook blue
+                            onTap: () => _openSocialMedia(contact.facebookUrl!),
+                          ),
+                        if (contact.instagramUrl != null && contact.instagramUrl!.isNotEmpty)
+                          _ActionButton(
+                            label: 'Instagram',
+                            icon: FIcons.instagram,
+                            color: const Color(0xFFE4405F), // Instagram pink
+                            onTap: () => _openSocialMedia(contact.instagramUrl!),
+                          ),
                       ],
                     ),
                   ],
@@ -452,13 +499,14 @@ class _ActionButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         decoration: BoxDecoration(
           color: color.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 16, color: color),
