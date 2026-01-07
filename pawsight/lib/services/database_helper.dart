@@ -21,7 +21,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 5, // Updated descriptions and multiple sources for behaviors
+      version: 8, // Added social media URLs (Facebook, Instagram)
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -50,6 +50,9 @@ class DatabaseHelper {
       phone_number TEXT NOT NULL,
       address TEXT NOT NULL,
       is_emergency INTEGER NOT NULL,
+      email TEXT,
+      facebook_url TEXT,
+      instagram_url TEXT,
       notes TEXT
     )
     ''');
@@ -80,6 +83,31 @@ class DatabaseHelper {
       ''');
       
       // Seed vet contacts for existing databases
+      await _seedVetContacts(db);
+    }
+    
+    if (oldVersion < 6) {
+      // Update vet contacts with real Philippine data
+      await db.delete('vet_contacts'); // Clear placeholder data
+      await _seedVetContacts(db); // Insert real Philippine vet contacts
+    }
+    
+    if (oldVersion < 7) {
+      // Add email column to vet_contacts
+      await db.execute('ALTER TABLE vet_contacts ADD COLUMN email TEXT');
+      
+      // Update existing contacts with email addresses
+      await db.delete('vet_contacts');
+      await _seedVetContacts(db);
+    }
+    
+    if (oldVersion < 8) {
+      // Add social media columns to vet_contacts
+      await db.execute('ALTER TABLE vet_contacts ADD COLUMN facebook_url TEXT');
+      await db.execute('ALTER TABLE vet_contacts ADD COLUMN instagram_url TEXT');
+      
+      // Update existing contacts with social media URLs
+      await db.delete('vet_contacts');
       await _seedVetContacts(db);
     }
   }
@@ -689,39 +717,87 @@ class DatabaseHelper {
   }
 
   Future _seedVetContacts(Database db) async {
-    // NOTE: Replace these placeholder contacts with your actual vet clinics
+    // Real Philippine veterinary clinics with verified contact information
     final vetContacts = [
+      // 24/7 EMERGENCY SERVICES
       VetContact(
         id: 1,
-        clinicName: 'City Veterinary Hospital (24/7)',
-        phoneNumber: '+1-555-0100',
-        address: '123 Main Street, Downtown',
+        clinicName: 'Pet Hub Veterinary Clinic (24/7)',
+        phoneNumber: '0917-558-9595',
+        address: 'Unit C & D, Morgana Building, Multinational Village, Moonwalk, Parañaque City',
         isEmergency: true,
-        notes: 'Open 24/7. Emergency services available. Specializes in critical care.',
+        email: 'pethubvetclinic@gmail.com',
+        facebookUrl: 'https://www.facebook.com/pethubmainparanaque',
+        instagramUrl: 'https://www.instagram.com/ThePetHub',
+        notes: 'Open 24 hours for pet emergencies. Regular hours: Mon-Sat 9AM-6PM, Sun 10AM-6PM.',
       ),
       VetContact(
         id: 2,
-        clinicName: 'Paws & Claws Animal Clinic',
-        phoneNumber: '+1-555-0200',
-        address: '456 Oak Avenue, West Side',
-        isEmergency: false,
-        notes: 'Mon-Fri: 8AM-6PM, Sat: 9AM-3PM. General practice and surgery.',
+        clinicName: 'VIP Mandaluyong (After-Hours Emergency)',
+        phoneNumber: '(02) 8531-1581',
+        address: 'Maysilo Circle, Mandaluyong City, Metro Manila',
+        isEmergency: true,
+        email: 'hospital@vetsinpractice.ph',
+        facebookUrl: 'https://www.facebook.com/VetsInPracticeAnimalHospital',
+        instagramUrl: 'https://www.instagram.com/vetsinpracticeanimalhospital',
+        notes: 'After-hours emergency: 7:01PM-8:59AM. Regular hours: 9AM-7PM daily.',
       ),
+      
+      // GENERAL CLINICS (Vets in Practice branches)
       VetContact(
         id: 3,
-        clinicName: 'Emergency Pet Care Center',
-        phoneNumber: '+1-555-0300',
-        address: '789 Elm Road, East District',
-        isEmergency: true,
-        notes: 'After-hours emergency clinic. Open nights, weekends, and holidays.',
+        clinicName: 'VIP Fort Bonifacio',
+        phoneNumber: '(02) 8817-2706',
+        address: 'McKinley West, Taguig City, Metro Manila',
+        isEmergency: false,
+        email: 'fort@vetsinpractice.ph',
+        facebookUrl: 'https://www.facebook.com/VetsInPracticeAnimalHospital',
+        instagramUrl: 'https://www.instagram.com/vetsinpracticeanimalhospital',
+        notes: '9AM-7PM Mon-Sun. Mobile: 0919-062-2418.',
       ),
       VetContact(
         id: 4,
-        clinicName: 'Sunny Valley Veterinary Practice',
-        phoneNumber: '+1-555-0400',
-        address: '321 Pine Street, Suburban Area',
+        clinicName: 'VIP Alabang-Zapote',
+        phoneNumber: '(02) 8842-8379',
+        address: 'Las Piñas City, Metro Manila',
         isEmergency: false,
-        notes: 'Mon-Sat: 9AM-5PM. Wellness exams, vaccinations, dental care.',
+        email: 'alabang@vetsinpractice.ph',
+        facebookUrl: 'https://www.facebook.com/VetsInPracticeAnimalHospital',
+        instagramUrl: 'https://www.instagram.com/vetsinpracticeanimalhospital',
+        notes: '9AM-7PM Mon-Sun. Mobile: 0917-560-5859.',
+      ),
+      VetContact(
+        id: 5,
+        clinicName: 'VIP Katipunan',
+        phoneNumber: '(02) 8962-1551',
+        address: 'Katipunan, Quezon City, Metro Manila',
+        isEmergency: false,
+        email: 'qc@vetsinpractice.ph',
+        facebookUrl: 'https://www.facebook.com/VetsInPracticeAnimalHospital',
+        instagramUrl: 'https://www.instagram.com/vetsinpracticeanimalhospital',
+        notes: '9AM-7PM Mon-Sun. Mobile: 0917-891-1320.',
+      ),
+      VetContact(
+        id: 6,
+        clinicName: 'VIP Cartimar',
+        phoneNumber: '(02) 8556-2885',
+        address: 'Cartimar, Pasay City, Metro Manila',
+        isEmergency: false,
+        email: 'carveldon@vetsinpractice.ph',
+        facebookUrl: 'https://www.facebook.com/VetsInPracticeAnimalHospital',
+        instagramUrl: 'https://www.instagram.com/vetsinpracticeanimalhospital',
+        notes: '9AM-7PM Mon-Sun. Mobile: 0917-824-8214.',
+      ),
+      VetContact(
+        id: 7,
+        clinicName: 'VIP Tiendesitas (Animal Care Specialists)',
+        phoneNumber: '(02) 8633-3786',
+        address: 'Tiendesitas, Pasig City, Metro Manila',
+        isEmergency: false,
+        email: 'acs@vetsinpractice.ph',
+        facebookUrl: 'https://www.facebook.com/VetsInPracticeAnimalHospital',
+        instagramUrl: 'https://www.instagram.com/vetsinpracticeanimalhospital',
+        notes: '10AM-7PM Mon-Sun. Mobile: 0917-544-1617.',
       ),
     ];
 
