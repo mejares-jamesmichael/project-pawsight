@@ -75,23 +75,25 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showAboutDialog(BuildContext context) {
     showFDialog(
       context: context,
-      builder: (context, style, animation) => FDialog(
-        style: style,
-        animation: animation,
-        direction: Axis.vertical,
-        title: const Text('About PawSight'),
-        body: const Text(
-          'PawSight helps you understand your cat\'s body language.\n\n'
-          'Version 0.1.0-alpha\n\n'
-          '🐱 Built with Flutter & Forui',
-        ),
-        actions: [
-          FButton(
-            child: const Text('OK'),
-            onPress: () => Navigator.pop(context),
+      builder: (context, style, animation) {
+        return FDialog(
+          style: style,
+          animation: animation,
+          direction: Axis.vertical,
+          title: const Text('About PawSight'),
+          body: const Text(
+            'PawSight helps you understand your cat\'s body language.\n\n'
+            'Version 0.1.0-alpha\n\n'
+            '🐱 Built with Flutter & Forui',
           ),
-        ],
-      ),
+          actions: [
+            FButton(
+              child: const Text('OK'),
+              onPress: () => Navigator.pop(context),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -99,25 +101,27 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: Navigate to AI Chat screen
     showFDialog(
       context: context,
-      builder: (context, style, animation) => FDialog(
-        style: style,
-        animation: animation,
-        direction: Axis.vertical,
-        title: const Text('AI Chat'),
-        body: const Text(
-          'AI Chat feature coming soon!\n\n'
-          'You\'ll be able to:\n'
-          '• Ask questions about your cat\n'
-          '• Upload photos for analysis\n'
-          '• Get personalized advice',
-        ),
-        actions: [
-          FButton(
-            child: const Text('Got it'),
-            onPress: () => Navigator.pop(context),
+      builder: (context, style, animation) {
+        return FDialog(
+          style: style,
+          animation: animation,
+          direction: Axis.vertical,
+          title: const Text('AI Chat'),
+          body: const Text(
+            'AI Chat feature coming soon!\n\n'
+            'You\'ll be able to:\n'
+            '• Ask questions about your cat\n'
+            '• Upload photos for analysis\n'
+            '• Get personalized advice',
           ),
-        ],
-      ),
+          actions: [
+            FButton(
+              child: const Text('Got it'),
+              onPress: () => Navigator.pop(context),
+            ),
+          ],
+        );
+      },
     );
   }
 }
