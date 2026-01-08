@@ -37,6 +37,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
     return Scaffold(
       backgroundColor: theme.colors.background,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('Behavior Library'),
         backgroundColor: theme.colors.background,
@@ -58,7 +59,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
             ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,6 +143,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
               ),
           ],
         ),
+      ),
       ),
     );
   }

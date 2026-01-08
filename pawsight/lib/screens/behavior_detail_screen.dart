@@ -27,6 +27,7 @@ class BehaviorDetailScreen extends StatelessWidget {
     final cardPadding = screenWidth < 360 ? 12.0 : 16.0;
 
     return Scaffold(
+      backgroundColor: theme.colors.background,
       appBar: AppBar(
         title: Text(
           behavior.name,
@@ -35,6 +36,9 @@ class BehaviorDetailScreen extends StatelessWidget {
           ),
         ),
         backgroundColor: theme.colors.background,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(horizontalPadding),
