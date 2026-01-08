@@ -36,9 +36,13 @@ class _LibraryScreenState extends State<LibraryScreen> {
     final provider = context.watch<LibraryProvider>();
 
     return Scaffold(
+      backgroundColor: theme.colors.background,
       appBar: AppBar(
         title: const Text('Behavior Library'),
         backgroundColor: theme.colors.background,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
         actions: [
           // Clear filters button
           if (provider.selectedMoods.isNotEmpty ||

@@ -29,9 +29,13 @@ class _HotlineScreenState extends State<HotlineScreen> {
     final provider = context.watch<HotlineProvider>();
 
     return Scaffold(
+      backgroundColor: theme.colors.background,
       appBar: AppBar(
         title: const Text('Vet Hotline'),
         backgroundColor: theme.colors.background,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
       ),
       body: provider.error != null
           ? Center(
