@@ -4,7 +4,10 @@ import 'package:forui/forui.dart';
 import 'package:provider/provider.dart';
 import 'providers/library_provider.dart';
 import 'providers/hotline_provider.dart';
+import 'providers/chat_provider.dart';
 import 'services/database_helper.dart';
+import 'services/user_session_service.dart';
+import 'services/connectivity_service.dart';
 
 // Placeholder screens (will be moved to separate files later)
 import 'screens/home_screen.dart';
@@ -26,11 +29,19 @@ void main() async {
   // Initialize Database
   await DatabaseHelper.instance.database;
 
+  // Initialize User Session (Lazy Authentication)
+  await UserSessionService().initialize();
+
+  // Initialize Connectivity Service
+  await ConnectivityService().initialize();
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LibraryProvider()),
         ChangeNotifierProvider(create: (_) => HotlineProvider()),
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
+        ChangeNotifierProvider.value(value: ConnectivityService()),
       ],
       child: const PawSightApp(),
     ),

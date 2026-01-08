@@ -3,6 +3,7 @@ import 'package:forui/forui.dart';
 
 import 'library_screen.dart';
 import 'hotline_screen.dart';
+import 'chat_screen.dart';
 
 /// Main app shell with bottom navigation
 class HomeScreen extends StatefulWidget {
@@ -42,16 +43,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHeader() {
+    final theme = context.theme;
     final titles = ['PawSight', 'Library', 'Vet Hotline'];
-    return FHeader(
-      title: Text(titles[_currentIndex]),
-      suffixes: [
-        if (_currentIndex == 0)
-          FHeaderAction(
-            icon: Icon(FIcons.info),
-            onPress: () => _showAboutDialog(context),
-          ),
-      ],
+    return Container(
+      color: theme.colors.background,
+      child: FHeader(
+        title: Text(titles[_currentIndex]),
+        suffixes: [
+          if (_currentIndex == 0)
+            FHeaderAction(
+              icon: Icon(FIcons.info),
+              onPress: () => _showAboutDialog(context),
+            ),
+        ],
+      ),
     );
   }
 
@@ -98,30 +103,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _openAIChat(BuildContext context) {
-    // TODO: Navigate to AI Chat screen
-    showFDialog(
-      context: context,
-      builder: (context, style, animation) {
-        return FDialog(
-          style: style,
-          animation: animation,
-          direction: Axis.vertical,
-          title: const Text('AI Chat'),
-          body: const Text(
-            'AI Chat feature coming soon!\n\n'
-            'You\'ll be able to:\n'
-            '• Ask questions about your cat\n'
-            '• Upload photos for analysis\n'
-            '• Get personalized advice',
-          ),
-          actions: [
-            FButton(
-              child: const Text('Got it'),
-              onPress: () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ChatScreen()),
     );
   }
 }
