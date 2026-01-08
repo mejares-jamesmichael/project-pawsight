@@ -96,17 +96,17 @@ class DatabaseHelper {
       // Add email column to vet_contacts
       await db.execute('ALTER TABLE vet_contacts ADD COLUMN email TEXT');
       
-      // Update existing contacts with email addresses
-      await db.delete('vet_contacts');
-      await _seedVetContacts(db);
+      // Don't reseed yet - need to add social media columns first
     }
     
     if (oldVersion < 8) {
       // Add social media columns to vet_contacts
       await db.execute('ALTER TABLE vet_contacts ADD COLUMN facebook_url TEXT');
       await db.execute('ALTER TABLE vet_contacts ADD COLUMN instagram_url TEXT');
-      
-      // Update existing contacts with social media URLs
+    }
+    
+    // Reseed vet contacts with all new data after all columns are added
+    if (oldVersion < 8) {
       await db.delete('vet_contacts');
       await _seedVetContacts(db);
     }
