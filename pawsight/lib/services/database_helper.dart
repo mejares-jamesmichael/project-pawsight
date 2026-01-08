@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/behavior.dart';
 import '../models/vet_contact.dart';
+import '../models/chat_message.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -21,7 +22,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 8, // Added social media URLs (Facebook, Instagram)
+      version: 9, // Added chat_messages table for AI conversation history
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -55,6 +56,22 @@ class DatabaseHelper {
       instagram_url TEXT,
       notes TEXT
     )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE chat_messages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id TEXT NOT NULL,
+      content TEXT NOT NULL,
+      is_user INTEGER NOT NULL,
+      timestamp TEXT NOT NULL,
+      is_error INTEGER DEFAULT 0
+    )
+    ''');
+
+    // Create index for faster queries by user_id
+    await db.execute('''
+    CREATE INDEX idx_chat_messages_user_id ON chat_messages(user_id)
     ''');
 
     await _seedDatabase(db);
@@ -109,6 +126,25 @@ class DatabaseHelper {
     if (oldVersion < 8) {
       await db.delete('vet_contacts');
       await _seedVetContacts(db);
+    }
+    
+    if (oldVersion < 9) {
+      // Add chat_messages table for AI conversation history
+      await db.execute('''
+      CREATE TABLE chat_messages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL,
+        content TEXT NOT NULL,
+        is_user INTEGER NOT NULL,
+        timestamp TEXT NOT NULL,
+        is_error INTEGER DEFAULT 0
+      )
+      ''');
+      
+      // Create index for faster queries by user_id
+      await db.execute('''
+      CREATE INDEX idx_chat_messages_user_id ON chat_messages(user_id)
+      ''');
     }
   }
 
@@ -823,6 +859,73 @@ class DatabaseHelper {
   Future<void> close() async {
     final db = await instance.database;
     db.close();
+  }
+
+  // ============================================
+  // CHAT MESSAGES CRUD OPERATIONS
+  // ============================================
+
+  /// Insert a new chat message
+  Future<ChatMessage> insertChatMessage(ChatMessage message) async {
+    final db = await instance.database;
+    final id = await db.insert('chat_messages', message.toMap());
+    return message.copyWith(id: id);
+  }
+
+  /// Get all chat messages for a specific user, ordered by timestamp
+  Future<List<ChatMessage>> getChatMessages(String odId) async {
+    final db = await instance.database;
+    final result = await db.query(
+      'chat_messages',
+      where: 'user_id = ?',
+      whereArgs: [odId],
+      orderBy: 'timestamp ASC',
+    );
+    return result.map((json) => ChatMessage.fromMap(json)).toList();
+  }
+
+  /// Get the last N chat messages for context (to send to n8n)
+  Future<List<ChatMessage>> getLastChatMessages(String odId, {int limit = 10}) async {
+    final db = await instance.database;
+    final result = await db.query(
+      'chat_messages',
+      where: 'user_id = ?',
+      whereArgs: [odId],
+      orderBy: 'timestamp DESC',
+      limit: limit,
+    );
+    // Reverse to get chronological order
+    return result.map((json) => ChatMessage.fromMap(json)).toList().reversed.toList();
+  }
+
+  /// Delete all chat messages for a specific user
+  Future<int> clearChatHistory(String odId) async {
+    final db = await instance.database;
+    return await db.delete(
+      'chat_messages',
+      where: 'user_id = ?',
+      whereArgs: [odId],
+    );
+  }
+
+  /// Delete a specific chat message by ID
+  Future<int> deleteChatMessage(int id) async {
+    final db = await instance.database;
+    return await db.delete(
+      'chat_messages',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  /// Get total message count for a user
+  Future<int> getChatMessageCount(String odId) async {
+    final db = await instance.database;
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM chat_messages WHERE user_id = ?',
+      [odId],
+    );
+    return Sqflite.firstIntValue(result) ?? 0;
   }
 }
 
