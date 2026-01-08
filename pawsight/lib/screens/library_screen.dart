@@ -59,92 +59,95 @@ class _LibraryScreenState extends State<LibraryScreen> {
             ),
         ],
       ),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Search Bar
-            const BehaviorSearchBar(),
-            const SizedBox(height: 16),
+      body: Container(
+        color: theme.colors.background,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Search Bar
+                const BehaviorSearchBar(),
+                const SizedBox(height: 16),
 
-            // Sorting Dropdown
-            const BehaviorSorter(),
-            const SizedBox(height: 16),
+                // Sorting Dropdown
+                const BehaviorSorter(),
+                const SizedBox(height: 16),
 
-            // Mood Filters
-            const MoodFilters(),
-            const SizedBox(height: 16),
+                // Mood Filters
+                const MoodFilters(),
+                const SizedBox(height: 16),
 
-            // Category Filters
-            const CategoryFilters(),
-            const SizedBox(height: 16),
+                // Category Filters
+                const CategoryFilters(),
+                const SizedBox(height: 16),
 
-            // Results Count
-            Text(
-              '${provider.behaviors.length} behavior(s) found',
-              style: theme.typography.xs.copyWith(
-                color: theme.colors.mutedForeground,
-              ),
-            ),
-            const SizedBox(height: 12),
-
-            // Error State
-            if (provider.error != null)
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        FIcons.x,
-                        size: 48,
-                        color: Colors.red,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        provider.error!,
-                        style: theme.typography.base.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.red,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      FButton(
-                        onPress: () {
-                          provider.clearError();
-                          provider.loadBehaviors();
-                        },
-                        child: const Text('Retry'),
-                      ),
-                    ],
+                // Results Count
+                Text(
+                  '${provider.behaviors.length} behavior(s) found',
+                  style: theme.typography.xs.copyWith(
+                    color: theme.colors.mutedForeground,
                   ),
                 ),
-              )
-            // Behavior List
-            else if (provider.isLoading)
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(32),
-                  child: FCircularProgress(),
-                ),
-              )
-            else if (provider.behaviors.isEmpty)
-              const BehaviorEmptyState()
-            else
-              Column(
-                children: provider.behaviors
-                    .map((behavior) => BehaviorCard(behavior: behavior))
-                    .toList(),
-              ),
-          ],
+                const SizedBox(height: 12),
+
+                // Error State
+                if (provider.error != null)
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(32),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FIcons.x,
+                            size: 48,
+                            color: Colors.red,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            provider.error!,
+                            style: theme.typography.base.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.red,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          FButton(
+                            onPress: () {
+                              provider.clearError();
+                              provider.loadBehaviors();
+                            },
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                // Behavior List
+                else if (provider.isLoading)
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(32),
+                      child: FCircularProgress(),
+                    ),
+                  )
+                else if (provider.behaviors.isEmpty)
+                  const BehaviorEmptyState()
+                else
+                  Column(
+                    children: provider.behaviors
+                        .map((behavior) => BehaviorCard(behavior: behavior))
+                        .toList(),
+                  ),
+              ],
+            ),
+          ),
         ),
-      ),
       ),
     );
   }
-  }
+}
