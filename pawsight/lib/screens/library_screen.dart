@@ -127,7 +127,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
               const Center(
                 child: Padding(
                   padding: EdgeInsets.all(32),
-                  child: CircularProgressIndicator(),
+                  child: FCircularProgress(),
                 ),
               )
             else if (provider.behaviors.isEmpty)

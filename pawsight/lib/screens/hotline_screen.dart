@@ -71,7 +71,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
               ),
             )
           : provider.isLoading
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(child: FCircularProgress())
               : provider.contacts.isEmpty
                   ? _EmptyState(theme: theme)
               : SingleChildScrollView(
@@ -241,14 +241,34 @@ class _VetContactCard extends StatelessWidget {
     required this.isEmergency,
   });
 
-  Future<void> _makePhoneCall(String phoneNumber) async {
+  Future<void> _makePhoneCall(BuildContext context, String phoneNumber) async {
     final uri = Uri(scheme: 'tel', path: phoneNumber);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
+      if (context.mounted) {
+        showFToast(
+          context: context,
+          alignment: FToastAlignment.bottomCenter,
+          icon: const Icon(FIcons.phone),
+          title: const Text('Opening dialer...'),
+          duration: const Duration(seconds: 2),
+        );
+      }
+    } else {
+      if (context.mounted) {
+        showFToast(
+          context: context,
+          alignment: FToastAlignment.bottomCenter,
+          icon: const Icon(FIcons.triangleAlert),
+          title: const Text('Unable to open dialer'),
+          description: const Text('Please check your device settings.'),
+          duration: const Duration(seconds: 3),
+        );
+      }
     }
   }
 
-  Future<void> _sendEmail(String email) async {
+  Future<void> _sendEmail(BuildContext context, String email) async {
     final uri = Uri(
       scheme: 'mailto',
       path: email,
@@ -256,21 +276,81 @@ class _VetContactCard extends StatelessWidget {
     );
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
+      if (context.mounted) {
+        showFToast(
+          context: context,
+          alignment: FToastAlignment.bottomCenter,
+          icon: const Icon(FIcons.mail),
+          title: const Text('Opening email app...'),
+          duration: const Duration(seconds: 2),
+        );
+      }
+    } else {
+      if (context.mounted) {
+        showFToast(
+          context: context,
+          alignment: FToastAlignment.bottomCenter,
+          icon: const Icon(FIcons.triangleAlert),
+          title: const Text('Unable to open email'),
+          description: const Text('No email app found on your device.'),
+          duration: const Duration(seconds: 3),
+        );
+      }
     }
   }
 
-  Future<void> _openSocialMedia(String url) async {
+  Future<void> _openSocialMedia(BuildContext context, String url, String platform) async {
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
+      if (context.mounted) {
+        showFToast(
+          context: context,
+          alignment: FToastAlignment.bottomCenter,
+          icon: Icon(platform == 'Facebook' ? FIcons.facebook : FIcons.instagram),
+          title: Text('Opening $platform...'),
+          duration: const Duration(seconds: 2),
+        );
+      }
+    } else {
+      if (context.mounted) {
+        showFToast(
+          context: context,
+          alignment: FToastAlignment.bottomCenter,
+          icon: const Icon(FIcons.triangleAlert),
+          title: Text('Unable to open $platform'),
+          description: const Text('Please check your internet connection.'),
+          duration: const Duration(seconds: 3),
+        );
+      }
     }
   }
 
-  Future<void> _openMaps(String address) async {
+  Future<void> _openMaps(BuildContext context, String address) async {
     final query = Uri.encodeComponent(address);
     final uri = Uri.parse('https://www.google.com/maps/search/?api=1&query=$query');
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
+      if (context.mounted) {
+        showFToast(
+          context: context,
+          alignment: FToastAlignment.bottomCenter,
+          icon: const Icon(FIcons.mapPin),
+          title: const Text('Opening Google Maps...'),
+          duration: const Duration(seconds: 2),
+        );
+      }
+    } else {
+      if (context.mounted) {
+        showFToast(
+          context: context,
+          alignment: FToastAlignment.bottomCenter,
+          icon: const Icon(FIcons.triangleAlert),
+          title: const Text('Unable to open maps'),
+          description: const Text('Please check your internet connection.'),
+          duration: const Duration(seconds: 3),
+        );
+      }
     }
   }
 
@@ -399,34 +479,34 @@ class _VetContactCard extends StatelessWidget {
                           label: 'Call',
                           icon: FIcons.phone,
                           color: accentColor,
-                          onTap: () => _makePhoneCall(contact.phoneNumber),
+                          onTap: () => _makePhoneCall(context, contact.phoneNumber),
                         ),
                         if (contact.email != null && contact.email!.isNotEmpty)
                           _ActionButton(
                             label: 'Email',
                             icon: FIcons.mail,
                             color: Colors.orange,
-                            onTap: () => _sendEmail(contact.email!),
+                            onTap: () => _sendEmail(context, contact.email!),
                           ),
                         _ActionButton(
                           label: 'Location',
                           icon: FIcons.mapPin,
                           color: Colors.green,
-                          onTap: () => _openMaps(contact.address),
+                          onTap: () => _openMaps(context, contact.address),
                         ),
                         if (contact.facebookUrl != null && contact.facebookUrl!.isNotEmpty)
                           _ActionButton(
                             label: 'Facebook',
                             icon: FIcons.facebook,
                             color: const Color(0xFF1877F2), // Facebook blue
-                            onTap: () => _openSocialMedia(contact.facebookUrl!),
+                            onTap: () => _openSocialMedia(context, contact.facebookUrl!, 'Facebook'),
                           ),
                         if (contact.instagramUrl != null && contact.instagramUrl!.isNotEmpty)
                           _ActionButton(
                             label: 'Instagram',
                             icon: FIcons.instagram,
                             color: const Color(0xFFE4405F), // Instagram pink
-                            onTap: () => _openSocialMedia(contact.instagramUrl!),
+                            onTap: () => _openSocialMedia(context, contact.instagramUrl!, 'Instagram'),
                           ),
                       ],
                     ),
