@@ -73,18 +73,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _showAboutDialog(BuildContext context) {
-    showAdaptiveDialog(
+    showFDialog(
       context: context,
-      builder: (context) => AlertDialog.adaptive(
+      builder: (context, style, animation) => FDialog(
+        style: style,
+        animation: animation,
+        direction: Axis.vertical,
         title: const Text('About PawSight'),
-        content: const Text(
+        body: const Text(
           'PawSight helps you understand your cat\'s body language.\n\n'
-          'Version 0.1.0-alpha',
+          'Version 0.1.0-alpha\n\n'
+          '🐱 Built with Flutter & Forui',
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
+          FButton(
             child: const Text('OK'),
+            onPress: () => Navigator.pop(context),
           ),
         ],
       ),
@@ -93,15 +97,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _openAIChat(BuildContext context) {
     // TODO: Navigate to AI Chat screen
-    showAdaptiveDialog(
+    showFDialog(
       context: context,
-      builder: (context) => AlertDialog.adaptive(
+      builder: (context, style, animation) => FDialog(
+        style: style,
+        animation: animation,
+        direction: Axis.vertical,
         title: const Text('AI Chat'),
-        content: const Text('AI Chat feature coming soon!'),
+        body: const Text(
+          'AI Chat feature coming soon!\n\n'
+          'You\'ll be able to:\n'
+          '• Ask questions about your cat\n'
+          '• Upload photos for analysis\n'
+          '• Get personalized advice',
+        ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+          FButton(
+            child: const Text('Got it'),
+            onPress: () => Navigator.pop(context),
           ),
         ],
       ),

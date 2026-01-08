@@ -33,10 +33,10 @@ class PawSightApp extends StatelessWidget {
     return MaterialApp(
       title: 'PawSight',
       debugShowCheckedModeBanner: false,
-      // Forui Dark Theme Setup
+      // Forui Dark Theme Setup with Toast support
       builder: (context, child) => FTheme(
         data: FThemes.zinc.dark, // Dark mode with Zinc theme
-        child: child!,
+        child: FToaster(child: child!), // Add toast notification support
       ),
       theme: ThemeData.dark(useMaterial3: true).copyWith(
         colorScheme: ColorScheme.fromSeed(
