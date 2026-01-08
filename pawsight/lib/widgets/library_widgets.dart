@@ -55,36 +55,39 @@ class BehaviorSorter extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-              color: theme.colors.secondary,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: theme.colors.border),
-            ),
-            child: DropdownButton<String>(
-              value: provider.sortBy,
-              isExpanded: true,
-              underline: const SizedBox(),
-              items: const [
-                DropdownMenuItem(
-                  value: 'name',
-                  child: Text('Name'),
-                ),
-                DropdownMenuItem(
-                  value: 'category',
-                  child: Text('Category'),
-                ),
-                DropdownMenuItem(
-                  value: 'mood',
-                  child: Text('Mood'),
-                ),
-              ],
-              onChanged: (value) {
-                if (value != null) {
-                  provider.setSorting(value);
-                }
-              },
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: theme.colors.secondary,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: theme.colors.border),
+              ),
+              child: DropdownButton<String>(
+                value: provider.sortBy,
+                isExpanded: true,
+                underline: const SizedBox(),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'name',
+                    child: Text('Name'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'category',
+                    child: Text('Category'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'mood',
+                    child: Text('Mood'),
+                  ),
+                ],
+                onChanged: (value) {
+                  if (value != null) {
+                    provider.setSorting(value);
+                  }
+                },
+              ),
             ),
           ),
         ),
