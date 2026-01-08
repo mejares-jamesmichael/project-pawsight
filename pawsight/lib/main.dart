@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:forui/forui.dart';
 import 'package:provider/provider.dart';
 import 'providers/library_provider.dart';
@@ -10,6 +11,17 @@ import 'screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Set system UI colors to match app theme (Zinc-950 dark theme)
+  // This fixes the black panel above keyboard with button navigation
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: Color(0xFF09090B), // Zinc-950
+      systemNavigationBarIconBrightness: Brightness.light,
+    ),
+  );
 
   // Initialize Database
   await DatabaseHelper.instance.database;
