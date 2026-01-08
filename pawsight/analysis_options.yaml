@@ -1,1 +1,7 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Disable implicit_call_tearoffs because Forui's FDialogStyle uses
+    # callable classes which trigger this lint. This is by design in Forui.
+    implicit_call_tearoffs: false
