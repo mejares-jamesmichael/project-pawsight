@@ -35,118 +35,123 @@ class _LibraryScreenState extends State<LibraryScreen> {
     final theme = context.theme;
     final provider = context.watch<LibraryProvider>();
 
-    return Scaffold(
-      backgroundColor: theme.colors.background,
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: const Text('Behavior Library'),
-        backgroundColor: theme.colors.background,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        actions: [
-          // Clear filters button
+    // Note: No Scaffold here - we're already inside FScaffold from HomeScreen
+    // Using nested Scaffolds causes keyboard inset conflicts (black gap above keyboard)
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Column(
+        children: [
+          // Clear filters bar (replaces AppBar actions)
           if (provider.selectedMoods.isNotEmpty ||
               provider.selectedCategories.isNotEmpty ||
               _searchController.text.isNotEmpty)
-            IconButton(
-              icon: const Icon(FIcons.x),
-              onPressed: () {
-                _searchController.clear();
-                provider.clearAllFilters();
-              },
-              tooltip: 'Clear all filters',
-            ),
-        ],
-      ),
-      body: Container(
-        color: theme.colors.background,
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Search Bar
-                const BehaviorSearchBar(),
-                const SizedBox(height: 16),
-
-                // Sorting Dropdown
-                const BehaviorSorter(),
-                const SizedBox(height: 16),
-
-                // Mood Filters
-                const MoodFilters(),
-                const SizedBox(height: 16),
-
-                // Category Filters
-                const CategoryFilters(),
-                const SizedBox(height: 16),
-
-                // Results Count
-                Text(
-                  '${provider.behaviors.length} behavior(s) found',
-                  style: theme.typography.xs.copyWith(
-                    color: theme.colors.mutedForeground,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton.icon(
+                    icon: Icon(FIcons.x, size: 16, color: theme.colors.primary),
+                    label: Text(
+                      'Clear filters',
+                      style: TextStyle(color: theme.colors.primary),
+                    ),
+                    onPressed: () {
+                      _searchController.clear();
+                      provider.clearAllFilters();
+                    },
                   ),
-                ),
-                const SizedBox(height: 12),
+                ],
+              ),
+            ),
 
-                // Error State
-                if (provider.error != null)
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(32),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            FIcons.x,
-                            size: 48,
-                            color: Colors.red,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            provider.error!,
-                            style: theme.typography.base.copyWith(
-                              fontWeight: FontWeight.w600,
+          // Main scrollable content
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Search Bar
+                  const BehaviorSearchBar(),
+                  const SizedBox(height: 16),
+
+                  // Sorting Dropdown
+                  const BehaviorSorter(),
+                  const SizedBox(height: 16),
+
+                  // Mood Filters
+                  const MoodFilters(),
+                  const SizedBox(height: 16),
+
+                  // Category Filters
+                  const CategoryFilters(),
+                  const SizedBox(height: 16),
+
+                  // Results Count
+                  Text(
+                    '${provider.behaviors.length} behavior(s) found',
+                    style: theme.typography.xs.copyWith(
+                      color: theme.colors.mutedForeground,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Error State
+                  if (provider.error != null)
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(32),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              FIcons.x,
+                              size: 48,
                               color: Colors.red,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 16),
-                          FButton(
-                            onPress: () {
-                              provider.clearError();
-                              provider.loadBehaviors();
-                            },
-                            child: const Text('Retry'),
-                          ),
-                        ],
+                            const SizedBox(height: 16),
+                            Text(
+                              provider.error!,
+                              style: theme.typography.base.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.red,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            FButton(
+                              onPress: () {
+                                provider.clearError();
+                                provider.loadBehaviors();
+                              },
+                              child: const Text('Retry'),
+                            ),
+                          ],
+                        ),
                       ),
+                    )
+                  // Behavior List
+                  else if (provider.isLoading)
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(32),
+                        child: FCircularProgress(),
+                      ),
+                    )
+                  else if (provider.behaviors.isEmpty)
+                    const BehaviorEmptyState()
+                  else
+                    Column(
+                      children: provider.behaviors
+                          .map((behavior) => BehaviorCard(behavior: behavior))
+                          .toList(),
                     ),
-                  )
-                // Behavior List
-                else if (provider.isLoading)
-                  const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(32),
-                      child: FCircularProgress(),
-                    ),
-                  )
-                else if (provider.behaviors.isEmpty)
-                  const BehaviorEmptyState()
-                else
-                  Column(
-                    children: provider.behaviors
-                        .map((behavior) => BehaviorCard(behavior: behavior))
-                        .toList(),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

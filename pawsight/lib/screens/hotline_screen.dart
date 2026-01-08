@@ -28,168 +28,166 @@ class _HotlineScreenState extends State<HotlineScreen> {
     final theme = context.theme;
     final provider = context.watch<HotlineProvider>();
 
-    return Scaffold(
-      backgroundColor: theme.colors.background,
-      appBar: AppBar(
-        title: const Text('Vet Hotline'),
-        backgroundColor: theme.colors.background,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-      ),
-      body: provider.error != null
-          ? Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      FIcons.x,
-                      size: 48,
-                      color: Colors.red,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      provider.error!,
-                      style: theme.typography.base.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.red,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    FButton(
-                      onPress: () {
-                        provider.clearError();
-                        provider.loadContacts();
-                      },
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
+    // Note: No Scaffold here - we're already inside FScaffold from HomeScreen
+    // Using nested Scaffolds causes keyboard inset conflicts
+    if (provider.error != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                FIcons.x,
+                size: 48,
+                color: Colors.red,
               ),
-            )
-          : provider.isLoading
-              ? const Center(child: FCircularProgress())
-              : provider.contacts.isEmpty
-                  ? _EmptyState(theme: theme)
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
+              const SizedBox(height: 16),
+              Text(
+                provider.error!,
+                style: theme.typography.base.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.red,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              FButton(
+                onPress: () {
+                  provider.clearError();
+                  provider.loadContacts();
+                },
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (provider.isLoading) {
+      return const Center(child: FCircularProgress());
+    }
+
+    if (provider.contacts.isEmpty) {
+      return _EmptyState(theme: theme);
+    }
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Info Banner
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.red.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.red.withValues(alpha: 0.3),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  FIcons.info,
+                  color: Colors.red,
+                  size: 24,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Info Banner
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.red.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.red.withValues(alpha: 0.3),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              FIcons.info,
-                              color: Colors.red,
-                              size: 24,
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Emergency Assistance',
-                                    style: theme.typography.base.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'For life-threatening situations, call 24/7 emergency clinics immediately.',
-                                    style: theme.typography.sm.copyWith(
-                                      color: theme.colors.foreground,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                      Text(
+                        'Emergency Assistance',
+                        style: theme.typography.base.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red,
                         ),
                       ),
-                      const SizedBox(height: 24),
-
-                      // Emergency Contacts Section
-                      if (provider.emergencyContacts.isNotEmpty) ...[
-                        _SectionHeader(
-                          title: '🚨 Emergency Services (24/7)',
-                          subtitle:
-                              '${provider.emergencyContacts.length} available',
-                          theme: theme,
-                        ),
-                        const SizedBox(height: 12),
-                        ...provider.emergencyContacts.map(
-                          (contact) => _VetContactCard(
-                            contact: contact,
-                            isEmergency: true,
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                      ],
-
-                      // Regular Contacts Section
-                      if (provider.regularContacts.isNotEmpty) ...[
-                        _SectionHeader(
-                          title: '🏥 General Clinics',
-                          subtitle:
-                              '${provider.regularContacts.length} available',
-                          theme: theme,
-                        ),
-                        const SizedBox(height: 12),
-                        ...provider.regularContacts.map(
-                          (contact) => _VetContactCard(
-                            contact: contact,
-                            isEmergency: false,
-                          ),
-                        ),
-                      ],
-
-                      const SizedBox(height: 16),
-
-                      // Info Notice
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: theme.colors.secondary,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: theme.colors.border),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              FIcons.info,
-                              color: theme.colors.mutedForeground,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                'Metro Manila area veterinary clinics. Always call ahead to confirm availability and fees.',
-                                style: theme.typography.sm.copyWith(
-                                  color: theme.colors.mutedForeground,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                            ),
-                          ],
+                      const SizedBox(height: 4),
+                      Text(
+                        'For life-threatening situations, call 24/7 emergency clinics immediately.',
+                        style: theme.typography.sm.copyWith(
+                          color: theme.colors.foreground,
                         ),
                       ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // Emergency Contacts Section
+          if (provider.emergencyContacts.isNotEmpty) ...[
+            _SectionHeader(
+              title: '🚨 Emergency Services (24/7)',
+              subtitle:
+                  '${provider.emergencyContacts.length} available',
+              theme: theme,
+            ),
+            const SizedBox(height: 12),
+            ...provider.emergencyContacts.map(
+              (contact) => _VetContactCard(
+                contact: contact,
+                isEmergency: true,
+              ),
+            ),
+            const SizedBox(height: 24),
           ],
-        ),
+
+          // Regular Contacts Section
+          if (provider.regularContacts.isNotEmpty) ...[
+            _SectionHeader(
+              title: '🏥 General Clinics',
+              subtitle:
+                  '${provider.regularContacts.length} available',
+              theme: theme,
+            ),
+            const SizedBox(height: 12),
+            ...provider.regularContacts.map(
+              (contact) => _VetContactCard(
+                contact: contact,
+                isEmergency: false,
+              ),
+            ),
+          ],
+
+          const SizedBox(height: 16),
+
+          // Info Notice
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: theme.colors.secondary,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: theme.colors.border),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  FIcons.info,
+                  color: theme.colors.mutedForeground,
+                  size: 20,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Metro Manila area veterinary clinics. Always call ahead to confirm availability and fees.',
+                    style: theme.typography.sm.copyWith(
+                      color: theme.colors.mutedForeground,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
