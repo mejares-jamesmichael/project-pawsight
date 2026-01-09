@@ -884,7 +884,7 @@ class DatabaseHelper {
     return result.map((json) => ChatMessage.fromMap(json)).toList();
   }
 
-  /// Get the last N chat messages for context (to send to n8n)
+  /// Get the last N chat messages for conversation context
   Future<List<ChatMessage>> getLastChatMessages(String odId, {int limit = 10}) async {
     final db = await instance.database;
     final result = await db.query(
