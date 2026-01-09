@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:forui/forui.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../models/chat_message.dart';
 import '../providers/chat_provider.dart';
@@ -121,125 +123,211 @@ class MessageBubble extends StatelessWidget {
     this.onRetry,
   });
 
+  void _showContextMenu(BuildContext context, TapDownDetails details) {
+    final theme = context.theme;
+    final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    showMenu<String>(
+      context: context,
+      position: RelativeRect.fromRect(
+        details.globalPosition & const Size(40, 40),
+        Offset.zero & overlay.size,
+      ),
+      color: theme.colors.background,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: theme.colors.border),
+      ),
+      items: [
+        PopupMenuItem<String>(
+          value: 'copy',
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(FIcons.copy, size: 18, color: theme.colors.foreground),
+              const SizedBox(width: 12),
+              Text(
+                'Copy',
+                style: theme.typography.sm.copyWith(
+                  color: theme.colors.foreground,
+                ),
+              ),
+            ],
+          ),
+        ),
+        PopupMenuItem<String>(
+          value: 'share',
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(FIcons.share, size: 18, color: theme.colors.foreground),
+              const SizedBox(width: 12),
+              Text(
+                'Share',
+                style: theme.typography.sm.copyWith(
+                  color: theme.colors.foreground,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ).then((value) {
+      if (value == 'copy') {
+        _copyMessage(scaffoldMessenger);
+      } else if (value == 'share') {
+        _shareMessage();
+      }
+    });
+  }
+
+  void _copyMessage(ScaffoldMessengerState scaffoldMessenger) {
+    Clipboard.setData(ClipboardData(text: message.content));
+    scaffoldMessenger.showSnackBar(
+      SnackBar(
+        content: const Text('Message copied to clipboard'),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 2),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+    );
+  }
+
+  void _shareMessage() {
+    final prefix = message.isUser ? 'My question' : 'PawSight AI';
+    Share.share(
+      '$prefix:\n${message.content}',
+      subject: 'PawSight Chat',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
     final isUser = message.isUser;
     final isError = message.isError;
 
-    return Align(
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.8,
-        ),
-        margin: EdgeInsets.only(
-          left: isUser ? 64 : 16,
-          right: isUser ? 16 : 64,
-          top: 4,
-          bottom: 4,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          color: isError
-              ? theme.colors.destructive.withValues(alpha: 0.1)
-              : isUser
-                  ? theme.colors.primary
-                  : theme.colors.secondary,
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(16),
-            topRight: const Radius.circular(16),
-            bottomLeft: Radius.circular(isUser ? 16 : 4),
-            bottomRight: Radius.circular(isUser ? 4 : 16),
+    return GestureDetector(
+      onSecondaryTapDown: (details) => _showContextMenu(context, details),
+      onLongPressStart: (details) => _showContextMenu(
+        context,
+        TapDownDetails(globalPosition: details.globalPosition),
+      ),
+      child: Align(
+        alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+        child: Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.8,
           ),
-          border: isError
-              ? Border.all(color: theme.colors.destructive)
-              : null,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (isUser)
-              Text(
-                message.content,
-                style: theme.typography.sm.copyWith(
-                  color: theme.colors.primaryForeground,
-                ),
-              )
-            else if (isError)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        FIcons.triangleAlert,
-                        size: 16,
-                        color: theme.colors.destructive,
-                      ),
-                      const SizedBox(width: 8),
-                      Flexible(
+          margin: EdgeInsets.only(
+            left: isUser ? 64 : 16,
+            right: isUser ? 16 : 64,
+            top: 4,
+            bottom: 4,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: isError
+                ? theme.colors.destructive.withValues(alpha: 0.1)
+                : isUser
+                    ? theme.colors.primary
+                    : theme.colors.secondary,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(16),
+              topRight: const Radius.circular(16),
+              bottomLeft: Radius.circular(isUser ? 16 : 4),
+              bottomRight: Radius.circular(isUser ? 4 : 16),
+            ),
+            border: isError
+                ? Border.all(color: theme.colors.destructive)
+                : null,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (isUser)
+                Text(
+                  message.content,
+                  style: theme.typography.sm.copyWith(
+                    color: theme.colors.primaryForeground,
+                  ),
+                )
+              else if (isError)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          FIcons.triangleAlert,
+                          size: 16,
+                          color: theme.colors.destructive,
+                        ),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            message.content,
+                            style: theme.typography.sm.copyWith(
+                              color: theme.colors.destructive,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (onRetry != null) ...[
+                      const SizedBox(height: 8),
+                      GestureDetector(
+                        onTap: onRetry,
                         child: Text(
-                          message.content,
-                          style: theme.typography.sm.copyWith(
-                            color: theme.colors.destructive,
+                          'Tap to retry',
+                          style: theme.typography.xs.copyWith(
+                            color: theme.colors.primary,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
                     ],
-                  ),
-                  if (onRetry != null) ...[
-                    const SizedBox(height: 8),
-                    GestureDetector(
-                      onTap: onRetry,
-                      child: Text(
-                        'Tap to retry',
-                        style: theme.typography.xs.copyWith(
-                          color: theme.colors.primary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
                   ],
-                ],
-              )
-            else
-              MarkdownBody(
-                data: message.content,
-                selectable: true,
-                styleSheet: MarkdownStyleSheet(
-                  p: theme.typography.sm.copyWith(
-                    color: theme.colors.foreground,
-                  ),
-                  strong: theme.typography.sm.copyWith(
-                    color: theme.colors.foreground,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  em: theme.typography.sm.copyWith(
-                    color: theme.colors.foreground,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  listBullet: theme.typography.sm.copyWith(
-                    color: theme.colors.foreground,
-                  ),
-                  code: theme.typography.xs.copyWith(
-                    color: theme.colors.foreground,
-                    backgroundColor: theme.colors.muted,
+                )
+              else
+                MarkdownBody(
+                  data: message.content,
+                  selectable: true,
+                  styleSheet: MarkdownStyleSheet(
+                    p: theme.typography.sm.copyWith(
+                      color: theme.colors.foreground,
+                    ),
+                    strong: theme.typography.sm.copyWith(
+                      color: theme.colors.foreground,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    em: theme.typography.sm.copyWith(
+                      color: theme.colors.foreground,
+                      fontStyle: FontStyle.italic,
+                    ),
+                    listBullet: theme.typography.sm.copyWith(
+                      color: theme.colors.foreground,
+                    ),
+                    code: theme.typography.xs.copyWith(
+                      color: theme.colors.foreground,
+                      backgroundColor: theme.colors.muted,
+                    ),
                   ),
                 ),
+              // Timestamp
+              const SizedBox(height: 4),
+              Text(
+                _formatTime(message.timestamp),
+                style: theme.typography.xs.copyWith(
+                  color: isUser
+                      ? theme.colors.primaryForeground.withValues(alpha: 0.7)
+                      : theme.colors.mutedForeground,
+                ),
               ),
-            // Timestamp
-            const SizedBox(height: 4),
-            Text(
-              _formatTime(message.timestamp),
-              style: theme.typography.xs.copyWith(
-                color: isUser
-                    ? theme.colors.primaryForeground.withValues(alpha: 0.7)
-                    : theme.colors.mutedForeground,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
