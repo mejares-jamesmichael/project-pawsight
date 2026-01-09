@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:forui/forui.dart';
 import 'package:provider/provider.dart';
 import 'providers/library_provider.dart';
@@ -14,6 +15,9 @@ import 'screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables
+  await dotenv.load(fileName: '.env');
 
   // Set system UI colors to match app theme (Zinc-950 dark theme)
   // This fixes the black panel above keyboard with button navigation
