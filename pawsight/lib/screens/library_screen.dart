@@ -3,6 +3,7 @@ import 'package:forui/forui.dart';
 import 'package:provider/provider.dart';
 import '../providers/library_provider.dart';
 import '../widgets/library_widgets.dart';
+import '../widgets/skeleton_widgets.dart';
 
 /// Library screen - displays searchable cat behavior library with filters
 class LibraryScreen extends StatefulWidget {
@@ -133,12 +134,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     )
                   // Behavior List
                   else if (provider.isLoading)
-                    const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(32),
-                        child: FCircularProgress(),
-                      ),
-                    )
+                    const LibrarySkeletonLoader(itemCount: 4)
                   else if (provider.behaviors.isEmpty)
                     const BehaviorEmptyState()
                   else

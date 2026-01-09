@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../providers/chat_provider.dart';
 import '../services/connectivity_service.dart';
 import '../widgets/chat_widgets.dart';
+import '../widgets/skeleton_widgets.dart';
 
 /// Main AI Chat screen
 ///
@@ -124,29 +125,31 @@ class _ChatScreenState extends State<ChatScreen> {
 
           // Messages list
           Expanded(
-            child: chatProvider.messages.isEmpty
-                ? const ChatEmptyState()
-                : ListView.builder(
-                    controller: _scrollController,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    itemCount: chatProvider.messages.length +
-                        (chatProvider.isLoading ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      // Show typing indicator at the end while loading
-                      if (index == chatProvider.messages.length &&
-                          chatProvider.isLoading) {
-                        return const TypingIndicator();
-                      }
+            child: chatProvider.isInitializing
+                ? const ChatHistorySkeleton()
+                : chatProvider.messages.isEmpty
+                    ? const ChatEmptyState()
+                    : ListView.builder(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        itemCount: chatProvider.messages.length +
+                            (chatProvider.isLoading ? 1 : 0),
+                        itemBuilder: (context, index) {
+                          // Show typing indicator at the end while loading
+                          if (index == chatProvider.messages.length &&
+                              chatProvider.isLoading) {
+                            return const TypingIndicator();
+                          }
 
-                      final message = chatProvider.messages[index];
-                      return MessageBubble(
-                        message: message,
-                        onRetry: message.isError
-                            ? () => chatProvider.retryLastMessage()
-                            : null,
-                      );
-                    },
-                  ),
+                          final message = chatProvider.messages[index];
+                          return MessageBubble(
+                            message: message,
+                            onRetry: message.isError
+                                ? () => chatProvider.retryLastMessage()
+                                : null,
+                          );
+                        },
+                      ),
           ),
 
           // Input bar
