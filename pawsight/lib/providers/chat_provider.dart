@@ -30,6 +30,10 @@ class ChatProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  // Initialization state (for loading chat history)
+  bool _isInitializing = true;
+  bool get isInitializing => _isInitializing;
+
   // Error state
   String? _error;
   String? get error => _error;
@@ -70,15 +74,20 @@ class ChatProvider extends ChangeNotifier {
 
   /// Load chat history from SQLite
   Future<void> loadHistory() async {
+    _isInitializing = true;
+    notifyListeners();
+
     try {
       final userId = _userSession.userId;
       final dbMessages = await _database.getChatMessages(userId);
       _messages.clear();
       _messages.addAll(dbMessages);
+      _isInitializing = false;
       notifyListeners();
     } catch (e) {
       debugPrint('Failed to load chat history: $e');
       _error = 'Failed to load chat history';
+      _isInitializing = false;
       notifyListeners();
     }
   }
