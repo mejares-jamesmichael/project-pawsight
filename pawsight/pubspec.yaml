@@ -10,6 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   connectivity_plus: ^6.1.4      # Network status monitoring
+  dart_jsonwebtoken: ^2.14.1     # JWT generation for API auth
+  flutter_dotenv: ^5.2.1         # Environment variables from .env file
   flutter_markdown: ^0.7.7+1
   font_awesome_flutter: ^10.12.0
   forui: ^0.16.0
@@ -40,3 +42,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - .env
