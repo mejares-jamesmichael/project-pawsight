@@ -2,17 +2,30 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/chat_message.dart';
+import 'jwt_auth_service.dart';
 
-/// Service for communicating with the n8n AI chat webhook
+/// Service for communicating with the AI chat backend
 ///
-/// Handles HTTP requests, retry logic with exponential backoff,
-/// and error handling for the AI chat feature.
+/// Handles HTTP requests with JWT authentication, retry logic with
+/// exponential backoff, and error handling for the AI chat feature.
 class ChatApiService {
-  static const String _webhookUrl =
-      'https://automate.kaelvxdev.space/webhook/289fbf89-704a-4b0a-8bf7-9fe027709f7e';
+  final JwtAuthService _jwtAuth = JwtAuthService();
+
+  /// Get the webhook URL from environment variables
+  static String get _webhookUrl {
+    final url = dotenv.env['CHAT_API_URL'];
+    if (url == null || url.isEmpty) {
+      throw ChatApiException(
+        'Chat API URL not configured. Please check your .env file.',
+        isRetryable: false,
+      );
+    }
+    return url;
+  }
 
   static const int _maxRetries = 3;
   static const Duration _timeout = Duration(seconds: 30);
@@ -43,7 +56,7 @@ class ChatApiService {
 
     for (int attempt = 0; attempt < _maxRetries; attempt++) {
       try {
-        final response = await _makeRequest(requestBody);
+        final response = await _makeRequest(requestBody, userId);
         return _parseResponse(response);
       } on ChatApiException catch (e) {
         // Don't retry on client errors (4xx) or rate limits
@@ -106,14 +119,18 @@ class ChatApiService {
     return body;
   }
 
-  /// Make the HTTP POST request
-  Future<http.Response> _makeRequest(Map<String, dynamic> body) async {
+  /// Make the HTTP POST request with JWT authentication
+  Future<http.Response> _makeRequest(Map<String, dynamic> body, String userId) async {
+    // Generate JWT token for this request
+    final authHeader = _jwtAuth.getAuthorizationHeader(userId: userId);
+
     final response = await http
         .post(
           Uri.parse(_webhookUrl),
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'Authorization': authHeader,
           },
           body: jsonEncode(body),
         )
@@ -171,7 +188,7 @@ class ChatApiService {
       }
 
       // Extract the AI response - check common keys used by different AI services
-      // n8n AI Agent uses 'output', others might use 'response', 'message', or 'text'
+      // Supports 'output', 'response', 'message', or 'text' response formats
       if (json.containsKey('output')) {
         final aiResponse = json['output'];
         if (aiResponse is String && aiResponse.isNotEmpty) {
