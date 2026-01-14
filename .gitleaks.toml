@@ -42,6 +42,7 @@ paths = [
 description = "Historical commit with webhook URL - secret has been moved to .env"
 commits = [
   "c8ca0570459325086e9b992b2dec2c218dab6cfe",
+  "105d2ed6570a52d16cf02162340e97c3b708cfdd",
 ]
 
 # Custom rules for Flutter/Dart projects
