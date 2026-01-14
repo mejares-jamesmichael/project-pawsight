@@ -4,9 +4,12 @@ import 'package:forui/forui.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/chat_message.dart';
 import '../providers/chat_provider.dart';
+import '../services/database_helper.dart';
+import '../screens/behavior_detail_screen.dart';
 
 /// Banner showing offline status
 class OfflineBanner extends StatelessWidget {
@@ -202,6 +205,48 @@ class MessageBubble extends StatelessWidget {
     );
   }
 
+  Future<void> _handleLinkTap(
+      BuildContext context, String text, String? href) async {
+    // If it's a behavior:// link, navigate to behavior detail
+    if (href != null && href.startsWith('behavior://')) {
+      final behaviorName = Uri.decodeComponent(href.substring(11));
+      await _navigateToBehavior(context, behaviorName);
+      return;
+    }
+
+    // Otherwise, try to open as external URL
+    if (href != null) {
+      final uri = Uri.tryParse(href);
+      if (uri != null && await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
+    }
+  }
+
+  Future<void> _navigateToBehavior(
+      BuildContext context, String behaviorName) async {
+    final db = DatabaseHelper.instance;
+    final behavior = await db.getBehaviorByName(behaviorName);
+
+    if (behavior != null && context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BehaviorDetailScreen(behavior: behavior),
+        ),
+      );
+    } else if (context.mounted) {
+      // Show snackbar if behavior not found
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Behavior "$behaviorName" not found in library'),
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
@@ -295,6 +340,8 @@ class MessageBubble extends StatelessWidget {
                 MarkdownBody(
                   data: message.content,
                   selectable: true,
+                  onTapLink: (text, href, title) =>
+                      _handleLinkTap(context, text, href),
                   styleSheet: MarkdownStyleSheet(
                     p: theme.typography.sm.copyWith(
                       color: theme.colors.foreground,
@@ -313,6 +360,10 @@ class MessageBubble extends StatelessWidget {
                     code: theme.typography.xs.copyWith(
                       color: theme.colors.foreground,
                       backgroundColor: theme.colors.muted,
+                    ),
+                    a: theme.typography.sm.copyWith(
+                      color: theme.colors.primary,
+                      decoration: TextDecoration.underline,
                     ),
                   ),
                 ),

@@ -850,6 +850,30 @@ class DatabaseHelper {
     return result.map((json) => Behavior.fromMap(json)).toList();
   }
 
+  /// Find a behavior by exact name match (case-insensitive)
+  Future<Behavior?> getBehaviorByName(String name) async {
+    final db = await instance.database;
+    final result = await db.query(
+      'behaviors',
+      where: 'LOWER(name) = ?',
+      whereArgs: [name.toLowerCase()],
+      limit: 1,
+    );
+    if (result.isEmpty) return null;
+    return Behavior.fromMap(result.first);
+  }
+
+  /// Search behaviors by partial name match (for linking)
+  Future<List<Behavior>> searchBehaviorsByName(String query) async {
+    final db = await instance.database;
+    final result = await db.query(
+      'behaviors',
+      where: 'LOWER(name) LIKE ?',
+      whereArgs: ['%${query.toLowerCase()}%'],
+    );
+    return result.map((json) => Behavior.fromMap(json)).toList();
+  }
+
   Future<List<VetContact>> getVetContacts() async {
     final db = await instance.database;
     final result = await db.query('vet_contacts', orderBy: 'is_emergency DESC, clinic_name ASC');
