@@ -3,9 +3,7 @@ import 'package:forui/forui.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/chat_provider.dart';
-import '../services/connectivity_service.dart';
 import '../widgets/chat_widgets.dart';
-import '../widgets/skeleton_widgets.dart';
 
 /// Main AI Chat screen
 ///
@@ -18,6 +16,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -31,6 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    _messageController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -45,144 +45,139 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Future<void> _onRefresh() async {
-    await context.read<ChatProvider>().loadHistory();
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final connectivity = context.watch<ConnectivityService>();
-    final chatProvider = context.watch<ChatProvider>();
+    final provider = context.watch<ChatProvider>();
 
-    // Auto-scroll when messages change
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (chatProvider.messages.isNotEmpty) {
-        _scrollToBottom();
-      }
-    });
+    // Listen for errors and show toast
+    if (provider.error != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Safe toast/snackbar fallback
+        try {
+           ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(
+               content: Text(provider.error!),
+               backgroundColor: Colors.red,
+               behavior: SnackBarBehavior.floating,
+             ),
+           );
+        } catch (_) {
+          // ignore
+        }
+        provider.clearError(); // Clear error after showing toast
+      });
+    }
 
-    return Scaffold(
-      backgroundColor: theme.colors.background,
-      appBar: AppBar(
-        backgroundColor: theme.colors.background,
-        foregroundColor: theme.colors.foreground,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent,
-        leading: IconButton(
-          icon: const Icon(FIcons.arrowLeft),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'PawSight AI',
-              style: theme.typography.base.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            if (chatProvider.isLoading)
-              Text(
-                'Typing...',
-                style: theme.typography.xs.copyWith(
-                  color: theme.colors.primary,
-                ),
-              ),
-          ],
-        ),
-        actions: [
-          if (chatProvider.messages.isNotEmpty)
-            PopupMenuButton<String>(
-              icon: Icon(FIcons.ellipsis, color: theme.colors.foreground),
-              onSelected: (value) {
-                if (value == 'clear') {
-                  _showClearHistoryDialog(context, chatProvider);
-                }
-              },
-              itemBuilder: (context) => [
-                const PopupMenuItem(
-                  value: 'clear',
-                  child: Row(
-                    children: [
-                      Icon(FIcons.trash2, size: 18),
-                      SizedBox(width: 8),
-                      Text('Clear history'),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+    return FScaffold(
+      header: FHeader(
+        title: const Text('AI Assistant'),
+        suffixes: [
+          FHeaderAction(
+            icon: const Icon(FIcons.trash2),
+            onPress: () => _showClearHistoryDialog(context, provider),
+          ),
         ],
       ),
-      body: Column(
+      child: Column(
         children: [
-          // Offline banner
-          if (connectivity.isOffline) const OfflineBanner(),
-
-          // Cooldown indicator
-          if (chatProvider.isOnCooldown)
-            _CooldownBanner(
-              remainingDuration: chatProvider.cooldownRemaining,
+          // Offline Banner
+          if (provider.isOffline)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              color: Colors.orange.shade800,
+              child: Row(
+                children: [
+                  const Icon(FIcons.wifiOff, size: 16, color: Colors.white),
+                  const SizedBox(width: 8),
+                  Text(
+                    'You are offline. AI features are unavailable.',
+                    style: theme.typography.sm.copyWith(color: Colors.white),
+                  ),
+                ],
+              ),
             ),
 
-          // Messages list
+          // Chat Messages
           Expanded(
-            child: chatProvider.isInitializing
-                ? const ChatHistorySkeleton()
-                : chatProvider.messages.isEmpty
-                    ? RefreshIndicator(
-                        onRefresh: _onRefresh,
-                        color: theme.colors.primary,
-                        child: CustomScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          slivers: [
-                            SliverFillRemaining(
-                              hasScrollBody: false,
-                              child: const ChatEmptyState(),
-                            ),
-                          ],
-                        ),
-                      )
-                    : RefreshIndicator(
-                        onRefresh: _onRefresh,
-                        color: theme.colors.primary,
-                        child: ListView.builder(
-                          controller: _scrollController,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          itemCount: chatProvider.messages.length +
-                              (chatProvider.isLoading ? 1 : 0),
-                          itemBuilder: (context, index) {
-                            // Show typing indicator at the end while loading
-                            if (index == chatProvider.messages.length &&
-                                chatProvider.isLoading) {
-                              return const TypingIndicator();
-                            }
-
-                            final message = chatProvider.messages[index];
-                            return MessageBubble(
-                              message: message,
-                              onRetry: message.isError
-                                  ? () => chatProvider.retryLastMessage()
-                                  : null,
-                            );
-                          },
-                        ),
+            child: provider.isInitializing
+                ? const Center(child: CircularProgressIndicator())
+                : provider.messages.isEmpty
+                    ? _buildEmptyState(theme)
+                    : ListView.builder(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.all(16),
+                        itemCount: provider.messages.length + (provider.isLoading ? 1 : 0),
+                        itemBuilder: (context, index) {
+                          if (index == provider.messages.length) {
+                            return const TypingIndicator();
+                          }
+                          return MessageBubble(
+                            message: provider.messages[index],
+                            onRetry: provider.retryLastMessage,
+                          );
+                        },
                       ),
           ),
 
-          // Input bar
-          ChatInputBar(
-            enabled: chatProvider.canSendMessage,
-            isLoading: chatProvider.isLoading,
-            remainingRequests: chatProvider.remainingRequests,
-            onSend: (message) => chatProvider.sendMessage(message),
+          // Input Area
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: theme.colors.background,
+              border: Border(top: BorderSide(color: theme.colors.border)),
+            ),
+            child: Row(
+              children: [
+                // Camera/Image Button (Placeholder for now)
+                FButton.icon(
+                  onPress: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                       const SnackBar(content: Text('Image analysis coming soon!')),
+                     );
+                  },
+                  child: const Icon(FIcons.camera),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: FTextField(
+                    controller: _messageController,
+                    hint: 'Ask about your cat...',
+                    minLines: 1,
+                    maxLines: 4,
+                    enabled: !provider.isLoading && !provider.isOffline,
+                    // No onSubmitted param in basic FTextField
+                  ),
+                ),
+                const SizedBox(width: 8),
+                FButton.icon(
+                  onPress: (provider.isLoading || provider.isOffline) ? null : _sendMessage,
+                  child: provider.isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(FIcons.send),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
+  }
+
+  void _sendMessage() {
+    final text = _messageController.text.trim();
+    if (text.isEmpty) return;
+
+    _messageController.clear();
+    context.read<ChatProvider>().sendMessage(text);
+    
+    // Scroll to bottom after a slight delay to allow the new message to render
+    Future.delayed(const Duration(milliseconds: 100), _scrollToBottom);
   }
 
   void _showClearHistoryDialog(BuildContext context, ChatProvider provider) {
@@ -214,40 +209,62 @@ class _ChatScreenState extends State<ChatScreen> {
       },
     );
   }
-}
 
-/// Banner showing cooldown status
-class _CooldownBanner extends StatelessWidget {
-  final Duration? remainingDuration;
-
-  const _CooldownBanner({this.remainingDuration});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.theme;
-    final seconds = remainingDuration?.inSeconds ?? 0;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      color: Colors.orange.shade700,
-      child: Row(
+  Widget _buildEmptyState(FThemeData theme) {
+    return Center(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
-            FIcons.clock,
-            size: 16,
-            color: Colors.white,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            'Rate limited. Please wait ${seconds}s',
-            style: theme.typography.sm.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: theme.colors.primary.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              FIcons.messageCircle,
+              size: 48,
+              color: theme.colors.primary,
             ),
           ),
+          const SizedBox(height: 24),
+          Text(
+            'Ask PawSight AI',
+            style: theme.typography.xl.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'I can help you understand your cat\'s\nbehavior, mood, and needs.',
+            textAlign: TextAlign.center,
+            style: theme.typography.base.copyWith(
+              color: theme.colors.mutedForeground,
+            ),
+          ),
+          const SizedBox(height: 32),
+          _buildSuggestionChip('Why is my cat tail wagging?'),
+          _buildSuggestionChip('What does a slow blink mean?'),
+          _buildSuggestionChip('Why does my cat knead me?'),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSuggestionChip(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: GestureDetector(
+        onTap: () {
+          _messageController.text = text;
+          _sendMessage();
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            border: Border.all(color: context.theme.colors.border),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(text, style: context.theme.typography.sm),
+        ),
       ),
     );
   }
