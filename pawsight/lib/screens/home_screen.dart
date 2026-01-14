@@ -19,7 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return FScaffold(
-      header: _buildHeader(),
+      // Custom header logic handled inside the body for the home tab
+      header: _currentIndex == 0 ? null : _buildHeader(),
       footer: FBottomNavigationBar(
         index: _currentIndex,
         onChange: (index) => setState(() => _currentIndex = index),
@@ -43,20 +44,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHeader() {
-    final theme = context.theme;
     final titles = ['PawSight', 'Library', 'Vet Hotline'];
-    return Container(
-      color: theme.colors.background,
-      child: FHeader(
-        title: Text(titles[_currentIndex]),
-        suffixes: [
-          if (_currentIndex == 0)
-            FHeaderAction(
-              icon: Icon(FIcons.info),
-              onPress: () => _showAboutDialog(context),
-            ),
-        ],
-      ),
+    return FHeader(
+      title: Text(titles[_currentIndex]),
+      suffixes: [
+        if (_currentIndex == 1) // Library
+           FHeaderAction(
+             icon: const Icon(FIcons.search),
+             onPress: () {}, // TODO: Implement global search
+           ),
+      ],
     );
   }
 
@@ -75,31 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
       default:
         return const SizedBox.shrink();
     }
-  }
-
-  void _showAboutDialog(BuildContext context) {
-    showFDialog(
-      context: context,
-      builder: (context, style, animation) {
-        return FDialog(
-          style: style,
-          animation: animation,
-          direction: Axis.vertical,
-          title: const Text('About PawSight'),
-          body: const Text(
-            'PawSight helps you understand your cat\'s body language.\n\n'
-            'Version 0.1.0-alpha\n\n'
-            '🐱 Built with Flutter & Forui',
-          ),
-          actions: [
-            FButton(
-              child: const Text('OK'),
-              onPress: () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   void _openAIChat(BuildContext context) {
@@ -140,98 +112,204 @@ class _HomeContent extends StatelessWidget {
     return _dailyTips[dayOfYear % _dailyTips.length];
   }
 
+  String get _greeting {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'Good Morning,';
+    if (hour < 17) return 'Good Afternoon,';
+    return 'Good Evening,';
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Daily Tip Card
-          FCard(
-            title: Row(
+          // Custom Home Header
+          Container(
+            padding: const EdgeInsets.fromLTRB(20, 60, 20, 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(FIcons.lightbulb, size: 18, color: theme.colors.primary),
-                const SizedBox(width: 8),
-                const Text('Daily Tip'),
+                Text(
+                  _greeting,
+                  style: theme.typography.xl.copyWith(
+                    fontSize: 32, // Manual 4xl equivalent
+                    fontWeight: FontWeight.bold,
+                    height: 1.1,
+                  ),
+                ),
+                Text(
+                  'Cat Enthusiast',
+                  style: theme.typography.xl.copyWith(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w300,
+                    color: theme.colors.mutedForeground,
+                    height: 1.1,
+                  ),
+                ),
               ],
             ),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                _todaysTip,
-                style: theme.typography.sm.copyWith(
-                  color: theme.colors.mutedForeground,
+          ),
+
+          // Daily Purr-spective (Hero Card)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: FCard(
+              title: Row(
+                children: [
+                   Container(
+                     padding: const EdgeInsets.all(8),
+                     decoration: BoxDecoration(
+                       color: Colors.amber.withValues(alpha: 0.2),
+                       borderRadius: BorderRadius.circular(8),
+                     ),
+                     child: const Icon(FIcons.lightbulb, size: 20, color: Colors.amber),
+                   ),
+                  const SizedBox(width: 12),
+                  const Text('Daily Purr-spective'),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  _todaysTip,
+                  style: theme.typography.base.copyWith(
+                    height: 1.5,
+                  ),
                 ),
               ),
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
 
-          // Section title
-          Text(
-            'Explore',
-            style: theme.typography.lg.copyWith(fontWeight: FontWeight.bold),
+          // Tools Grid
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              'Tools',
+              style: theme.typography.lg.copyWith(fontWeight: FontWeight.bold),
+            ),
           ),
-
-          const SizedBox(height: 12),
-
-          // Navigation Cards - Library & AI Chat row
-          Row(
+          const SizedBox(height: 16),
+          
+          GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
+            childAspectRatio: 1.1,
             children: [
-              Expanded(
-                child: _NavigationCard(
-                  icon: FIcons.libraryBig,
-                  title: 'Library',
-                  description: 'Browse cat body language guide',
-                  onTap: onNavigateToLibrary,
-                ),
+              _ActionCard(
+                icon: FIcons.libraryBig,
+                title: 'Library',
+                subtitle: 'Browse Guide',
+                color: Colors.teal,
+                onTap: onNavigateToLibrary,
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _NavigationCard(
-                  icon: FIcons.messageCircle,
-                  title: 'AI Chat',
-                  description: 'Ask questions about your cat',
-                  onTap: onNavigateToChat,
-                ),
+              _ActionCard(
+                icon: FIcons.messageCircle,
+                title: 'AI Chat',
+                subtitle: 'Ask Assistant',
+                color: Colors.purple,
+                onTap: onNavigateToChat,
               ),
             ],
           ),
 
           const SizedBox(height: 12),
-
-          // Vet Hotline Card - full width
-          _NavigationCard(
-            icon: FIcons.phone,
-            title: 'Vet Hotline',
-            description: 'Emergency contacts & clinics',
-            onTap: onNavigateToHotline,
-            fullWidth: true,
+          
+          // Vet Hotline Full Width
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _ActionCard(
+              icon: FIcons.phone,
+              title: 'Vet Hotline',
+              subtitle: 'Emergency contacts & clinics',
+              color: Colors.red,
+              onTap: onNavigateToHotline,
+              isHorizontal: true,
+            ),
           ),
+
+          const SizedBox(height: 32),
+
+          // Spotlight Section
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Spotlight',
+                  style: theme.typography.lg.copyWith(fontWeight: FontWeight.bold),
+                ),
+                // Using TextButton as a ghost button alternative
+                GestureDetector(
+                    onTap: onNavigateToLibrary,
+                    child: Text(
+                        'View All',
+                        style: theme.typography.sm.copyWith(color: theme.colors.primary),
+                    ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+
+          // Static Spotlight Card
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: GestureDetector(
+              onTap: onNavigateToLibrary,
+              child: FCard(
+                image: Container(
+                  height: 150,
+                  width: double.infinity,
+                  color: theme.colors.secondary,
+                  child: const Center(
+                    child: Icon(FIcons.eye, size: 48, color: Colors.white54),
+                  ),
+                ),
+                title: const Text('Slow Blink'),
+                subtitle: const Text('Affection • Relaxed'),
+                child: const Text(
+                  'A slow blink is a cat\'s way of saying "I trust you". It\'s like a kitty kiss!',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 40),
         ],
       ),
     );
   }
 }
 
-/// Reusable navigation card widget
-class _NavigationCard extends StatelessWidget {
+/// A styled action card for the home screen grid
+class _ActionCard extends StatelessWidget {
   final IconData icon;
   final String title;
-  final String description;
+  final String subtitle;
+  final Color color;
   final VoidCallback onTap;
-  final bool fullWidth;
+  final bool isHorizontal;
 
-  const _NavigationCard({
+  const _ActionCard({
     required this.icon,
     required this.title,
-    required this.description,
+    required this.subtitle,
+    required this.color,
     required this.onTap,
-    this.fullWidth = false,
+    this.isHorizontal = false,
   });
 
   @override
@@ -240,41 +318,64 @@ class _NavigationCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: FCard.raw(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: fullWidth
-                ? CrossAxisAlignment.center
-                : CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: theme.colors.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, size: 24, color: theme.colors.primary),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                title,
-                style: theme.typography.base.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                description,
-                style: theme.typography.xs.copyWith(
-                  color: theme.colors.mutedForeground,
-                ),
-                textAlign: fullWidth ? TextAlign.center : TextAlign.start,
-              ),
-            ],
-          ),
+      child: Container(
+        decoration: BoxDecoration(
+          // Use secondary or similar since 'card' might not exist
+          color: theme.colors.secondary.withValues(alpha: 0.1),
+          border: Border.all(color: theme.colors.border),
+          borderRadius: BorderRadius.circular(16),
         ),
+        padding: const EdgeInsets.all(16),
+        child: isHorizontal
+            ? Row(
+                children: [
+                  _buildIcon(context),
+                  const SizedBox(width: 16),
+                  Expanded(child: _buildText(context)),
+                  Icon(FIcons.chevronRight, color: theme.colors.mutedForeground),
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildIcon(context),
+                  _buildText(context),
+                ],
+              ),
       ),
+    );
+  }
+
+  Widget _buildIcon(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Icon(icon, color: color, size: 24),
+    );
+  }
+
+  Widget _buildText(BuildContext context) {
+    final theme = context.theme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          title,
+          style: theme.typography.lg.copyWith(fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          subtitle,
+          style: theme.typography.xs.copyWith(color: theme.colors.mutedForeground),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 }
