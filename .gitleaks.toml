@@ -37,6 +37,13 @@ paths = [
   '''.*\.(png|jpg|jpeg|gif|ico|svg)$''',
 ]
 
+# Allowlist for historical commits with secrets that have been rotated/removed
+[[allowlists]]
+description = "Historical commit with webhook URL - secret has been moved to .env"
+commits = [
+  "c8ca0570459325086e9b992b2dec2c218dab6cfe",
+]
+
 # Custom rules for Flutter/Dart projects
 [[rules]]
 id = "flutter-env-config"

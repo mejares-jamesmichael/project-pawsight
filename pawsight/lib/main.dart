@@ -16,8 +16,13 @@ import 'screens/home_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load environment variables
-  await dotenv.load(fileName: '.env');
+  // Load environment variables (use .env.example as fallback for CI/testing)
+  try {
+    await dotenv.load(fileName: '.env');
+  } catch (e) {
+    // Fallback to .env.example for CI builds where .env doesn't exist
+    await dotenv.load(fileName: '.env.example');
+  }
 
   // Set system UI colors to match app theme (Zinc-950 dark theme)
   // This fixes the black panel above keyboard with button navigation
