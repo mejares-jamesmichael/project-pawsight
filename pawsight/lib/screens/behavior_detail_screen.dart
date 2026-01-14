@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/behavior.dart';
+import '../providers/chat_provider.dart';
+import 'chat_screen.dart';
 
 /// Detail screen for individual behavior - shows full description and source links
 class BehaviorDetailScreen extends StatelessWidget {
@@ -260,6 +263,11 @@ class BehaviorDetailScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
+            // Ask AI Button
+            _AskAiButton(behavior: behavior),
+
+            const SizedBox(height: 24),
+
             // Tips Section
             Text(
               'Understanding This Behavior',
@@ -400,5 +408,96 @@ class BehaviorDetailScreen extends StatelessWidget {
     }
 
     return buttons;
+  }
+}
+
+/// Button to ask AI about this behavior
+class _AskAiButton extends StatelessWidget {
+  final Behavior behavior;
+
+  const _AskAiButton({required this.behavior});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.theme;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return GestureDetector(
+      onTap: () => _askAiAboutBehavior(context),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(screenWidth < 360 ? 12 : 16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              theme.colors.primary,
+              theme.colors.primary.withValues(alpha: 0.8),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: theme.colors.primary.withValues(alpha: 0.3),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              FIcons.messageCircle,
+              size: 20,
+              color: theme.colors.primaryForeground,
+            ),
+            const SizedBox(width: 12),
+            Flexible(
+              child: Text(
+                'Ask AI about "${behavior.name}"',
+                style: theme.typography.base.copyWith(
+                  color: theme.colors.primaryForeground,
+                  fontWeight: FontWeight.w600,
+                  fontSize: screenWidth < 360 ? 14 : null,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Icon(
+              FIcons.arrowRight,
+              size: 16,
+              color: theme.colors.primaryForeground,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _askAiAboutBehavior(BuildContext context) {
+    final question = 'Tell me more about "${behavior.name}" behavior in cats. '
+        'What does it mean when a cat shows this behavior and how should I respond?';
+
+    // Pre-populate the chat with this question
+    final chatProvider = context.read<ChatProvider>();
+
+    // Navigate to chat screen and send the question
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ChatScreen(),
+      ),
+    ).then((_) {
+      // Screen closed, nothing to do
+    });
+
+    // Send the message after a short delay to let the screen initialize
+    Future.delayed(const Duration(milliseconds: 300), () {
+      chatProvider.sendMessage(question);
+    });
   }
 }
