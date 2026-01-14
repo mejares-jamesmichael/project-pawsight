@@ -45,6 +45,10 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  Future<void> _onRefresh() async {
+    await context.read<ChatProvider>().loadHistory();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
@@ -128,27 +132,44 @@ class _ChatScreenState extends State<ChatScreen> {
             child: chatProvider.isInitializing
                 ? const ChatHistorySkeleton()
                 : chatProvider.messages.isEmpty
-                    ? const ChatEmptyState()
-                    : ListView.builder(
-                        controller: _scrollController,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        itemCount: chatProvider.messages.length +
-                            (chatProvider.isLoading ? 1 : 0),
-                        itemBuilder: (context, index) {
-                          // Show typing indicator at the end while loading
-                          if (index == chatProvider.messages.length &&
-                              chatProvider.isLoading) {
-                            return const TypingIndicator();
-                          }
+                    ? RefreshIndicator(
+                        onRefresh: _onRefresh,
+                        color: theme.colors.primary,
+                        child: CustomScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          slivers: [
+                            SliverFillRemaining(
+                              hasScrollBody: false,
+                              child: const ChatEmptyState(),
+                            ),
+                          ],
+                        ),
+                      )
+                    : RefreshIndicator(
+                        onRefresh: _onRefresh,
+                        color: theme.colors.primary,
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          itemCount: chatProvider.messages.length +
+                              (chatProvider.isLoading ? 1 : 0),
+                          itemBuilder: (context, index) {
+                            // Show typing indicator at the end while loading
+                            if (index == chatProvider.messages.length &&
+                                chatProvider.isLoading) {
+                              return const TypingIndicator();
+                            }
 
-                          final message = chatProvider.messages[index];
-                          return MessageBubble(
-                            message: message,
-                            onRetry: message.isError
-                                ? () => chatProvider.retryLastMessage()
-                                : null,
-                          );
-                        },
+                            final message = chatProvider.messages[index];
+                            return MessageBubble(
+                              message: message,
+                              onRetry: message.isError
+                                  ? () => chatProvider.retryLastMessage()
+                                  : null,
+                            );
+                          },
+                        ),
                       ),
           ),
 
