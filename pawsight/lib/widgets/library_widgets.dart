@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:provider/provider.dart';
+import '../core/app_constants.dart';
 import '../providers/library_provider.dart';
 import '../models/behavior.dart';
 import '../screens/behavior_detail_screen.dart';
@@ -53,11 +54,11 @@ class BehaviorSorter extends StatelessWidget {
             color: theme.colors.mutedForeground,
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Container(
             height: 40,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             decoration: BoxDecoration(
               color: theme.colors.secondary,
               borderRadius: BorderRadius.circular(8),
@@ -109,42 +110,42 @@ class MoodFilters extends StatelessWidget {
             color: theme.colors.mutedForeground,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
               MoodFilterChip(
                 label: 'Happy',
-                color: Colors.green,
+                color: AppColors.moodHappy,
                 isSelected: provider.selectedMoods.contains('Happy'),
                 onTap: () => provider.toggleMoodFilter('Happy'),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               MoodFilterChip(
                 label: 'Relaxed',
-                color: Colors.blue,
+                color: AppColors.moodRelaxed,
                 isSelected: provider.selectedMoods.contains('Relaxed'),
                 onTap: () => provider.toggleMoodFilter('Relaxed'),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               MoodFilterChip(
                 label: 'Fearful',
-                color: Colors.orange,
+                color: AppColors.moodFearful,
                 isSelected: provider.selectedMoods.contains('Fearful'),
                 onTap: () => provider.toggleMoodFilter('Fearful'),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               MoodFilterChip(
                 label: 'Aggressive',
-                color: Colors.red,
+                color: AppColors.moodAggressive,
                 isSelected: provider.selectedMoods.contains('Aggressive'),
                 onTap: () => provider.toggleMoodFilter('Aggressive'),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               MoodFilterChip(
                 label: 'Mixed',
-                color: Colors.purple,
+                color: AppColors.moodMixed,
                 isSelected: provider.selectedMoods.contains('Mixed'),
                 onTap: () => provider.toggleMoodFilter('Mixed'),
               ),
@@ -179,7 +180,8 @@ class MoodFilterChip extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        curve: Curves.easeInOut,
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
         decoration: BoxDecoration(
           color: isSelected ? color.withValues(alpha: 0.2) : theme.colors.secondary,
           borderRadius: BorderRadius.circular(20),
@@ -199,7 +201,7 @@ class MoodFilterChip extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Text(
               label,
               style: theme.typography.sm.copyWith(
@@ -233,7 +235,7 @@ class CategoryFilters extends StatelessWidget {
             color: theme.colors.mutedForeground,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
@@ -244,35 +246,35 @@ class CategoryFilters extends StatelessWidget {
                 isSelected: provider.selectedCategories.contains('Tail'),
                 onTap: () => provider.toggleCategoryFilter('Tail'),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               CategoryFilterChip(
                 label: 'Ears',
                 icon: FIcons.ear,
                 isSelected: provider.selectedCategories.contains('Ears'),
                 onTap: () => provider.toggleCategoryFilter('Ears'),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               CategoryFilterChip(
                 label: 'Eyes',
                 icon: FIcons.eye,
                 isSelected: provider.selectedCategories.contains('Eyes'),
                 onTap: () => provider.toggleCategoryFilter('Eyes'),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               CategoryFilterChip(
                 label: 'Posture',
                 icon: FIcons.accessibility,
                 isSelected: provider.selectedCategories.contains('Posture'),
                 onTap: () => provider.toggleCategoryFilter('Posture'),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               CategoryFilterChip(
                 label: 'Vocal',
                 icon: FIcons.volume2,
                 isSelected: provider.selectedCategories.contains('Vocal'),
                 onTap: () => provider.toggleCategoryFilter('Vocal'),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               CategoryFilterChip(
                 label: 'Whiskers',
                 icon: FIcons.zap,
@@ -310,7 +312,8 @@ class CategoryFilterChip extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        curve: Curves.easeInOut,
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
         decoration: BoxDecoration(
           color: isSelected ? theme.colors.primary : theme.colors.secondary,
           borderRadius: BorderRadius.circular(20),
@@ -329,7 +332,7 @@ class CategoryFilterChip extends StatelessWidget {
                   ? theme.colors.primaryForeground
                   : theme.colors.foreground,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Text(
               label,
               style: theme.typography.sm.copyWith(
@@ -355,15 +358,15 @@ class BehaviorCard extends StatelessWidget {
   Color _getMoodColor() {
     switch (behavior.mood) {
       case 'Happy':
-        return Colors.green;
+        return AppColors.moodHappy;
       case 'Relaxed':
-        return Colors.blue;
+        return AppColors.moodRelaxed;
       case 'Fearful':
-        return Colors.orange;
+        return AppColors.moodFearful;
       case 'Aggressive':
-        return Colors.red;
+        return AppColors.moodAggressive;
       case 'Mixed':
-        return Colors.purple;
+        return AppColors.moodMixed;
       default:
         return Colors.grey;
     }
@@ -394,7 +397,7 @@ class BehaviorCard extends StatelessWidget {
     final moodColor = _getMoodColor();
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: AppSpacing.md),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -425,12 +428,12 @@ class BehaviorCard extends StatelessWidget {
                   Icon(FIcons.chevronRight, size: 16, color: theme.colors.mutedForeground),
                 ],
               ),
-              const SizedBox(height: 12), // Spacing between title and tags
+              const SizedBox(height: AppSpacing.md), // Spacing between title and tags
 
               // Tags
               Wrap(
-                spacing: 8,
-                runSpacing: 8,
+                spacing: AppSpacing.sm,
+                runSpacing: AppSpacing.sm,
                 children: [
                   BehaviorBadge(
                     label: behavior.category,
@@ -443,7 +446,7 @@ class BehaviorCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12), // Spacing between tags and description
+              const SizedBox(height: AppSpacing.md), // Spacing between tags and description
 
               // Description
               Text(
@@ -481,7 +484,7 @@ class BehaviorBadge extends StatelessWidget {
     final theme = context.theme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: AppSpacing.xs),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(8),
@@ -492,7 +495,7 @@ class BehaviorBadge extends StatelessWidget {
         children: [
           if (icon != null) ...[
             Icon(icon, size: 12, color: color),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.xs),
           ],
           Text(
             label,
@@ -517,12 +520,12 @@ class BehaviorEmptyState extends StatelessWidget {
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppSpacing.xxl),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppSpacing.lg),
               decoration: BoxDecoration(
                 color: theme.colors.muted,
                 shape: BoxShape.circle,
@@ -533,14 +536,14 @@ class BehaviorEmptyState extends StatelessWidget {
                 color: theme.colors.mutedForeground,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Text(
               'No behaviors found',
               style: theme.typography.lg.copyWith(
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               'Try adjusting your filters or search query',
               style: theme.typography.sm.copyWith(

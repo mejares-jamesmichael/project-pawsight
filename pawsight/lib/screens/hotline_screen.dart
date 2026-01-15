@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../core/app_constants.dart';
 import '../providers/hotline_provider.dart';
 import '../models/vet_contact.dart';
 
@@ -31,12 +32,12 @@ class _HotlineScreenState extends State<HotlineScreen> {
     if (provider.error != null) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.all(32),
+          padding: const EdgeInsets.all(AppSpacing.xxl),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(FIcons.x, size: 48, color: Colors.red),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Text(
                 provider.error!,
                 style: theme.typography.base.copyWith(
@@ -45,7 +46,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               FButton(
                 onPress: () {
                   provider.clearError();
@@ -68,13 +69,13 @@ class _HotlineScreenState extends State<HotlineScreen> {
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Info Banner
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
               color: Colors.red.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
@@ -83,7 +84,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
             child: Row(
               children: [
                 Icon(FIcons.info, color: Colors.red, size: 24),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +96,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
                           color: Colors.red,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppSpacing.xs),
                       Text(
                         'For life-threatening situations, call 24/7 emergency clinics immediately.',
                         style: theme.typography.sm.copyWith(
@@ -108,7 +109,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
 
           // Emergency Contacts Section
           if (provider.emergencyContacts.isNotEmpty) ...[
@@ -117,14 +118,14 @@ class _HotlineScreenState extends State<HotlineScreen> {
               subtitle: '${provider.emergencyContacts.length} available',
               theme: theme,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             ...provider.emergencyContacts.map(
               (contact) => _VetContactCard(
                 contact: contact,
                 isEmergency: true,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
           ],
 
           // Regular Contacts Section
@@ -134,7 +135,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
               subtitle: '${provider.regularContacts.length} available',
               theme: theme,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             ...provider.regularContacts.map(
               (contact) => _VetContactCard(
                 contact: contact,
@@ -143,11 +144,11 @@ class _HotlineScreenState extends State<HotlineScreen> {
             ),
           ],
 
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
 
           // Info Notice
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
               color: theme.colors.secondary,
               borderRadius: BorderRadius.circular(12),
@@ -156,7 +157,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
             child: Row(
               children: [
                 Icon(FIcons.info, color: theme.colors.mutedForeground, size: 20),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: Text(
                     'Metro Manila area veterinary clinics. Always call ahead to confirm availability and fees.',
@@ -199,7 +200,7 @@ class _SectionHeader extends StatelessWidget {
             height: 1.3,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.xs),
         Text(
           subtitle,
           style: theme.typography.xs.copyWith(
@@ -263,7 +264,7 @@ class _VetContactCard extends StatelessWidget {
     final theme = context.theme;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: AppSpacing.md),
       child: FCard(
         title: Row(
           children: [
@@ -277,7 +278,7 @@ class _VetContactCard extends StatelessWidget {
             ),
             if (isEmergency)
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
                 decoration: BoxDecoration(
                   color: Colors.red.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
@@ -301,14 +302,14 @@ class _VetContactCard extends StatelessWidget {
               text: contact.phoneNumber,
               theme: theme,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             if (contact.email != null && contact.email!.isNotEmpty) ...[
               _InfoRow(
                 icon: FIcons.mail,
                 text: contact.email!,
                 theme: theme,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
             ],
             _InfoRow(
               icon: FIcons.mapPin,
@@ -316,7 +317,7 @@ class _VetContactCard extends StatelessWidget {
               theme: theme,
             ),
             if (contact.notes != null && contact.notes!.isNotEmpty) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               _InfoRow(
                 icon: FIcons.info,
                 text: contact.notes!,
@@ -324,7 +325,7 @@ class _VetContactCard extends StatelessWidget {
                 isNote: true,
               ),
             ],
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             SizedBox(
               width: double.infinity,
               child: FButton(
@@ -333,7 +334,7 @@ class _VetContactCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Icon(FIcons.messageCircle, size: 18),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppSpacing.sm),
                     Text('Contact Clinic'),
                   ],
                 ),
@@ -358,7 +359,7 @@ class _VetContactCard extends StatelessWidget {
       builder: (context) => SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -367,9 +368,10 @@ class _VetContactCard extends StatelessWidget {
                   'Contact ${contact.clinicName}',
                   style: theme.typography.lg.copyWith(fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
                 
-                _ContactOptionTile(
+                _AnimatedOptionTile(
+                  index: 0,
                   icon: FIcons.phone,
                   label: 'Call ${contact.phoneNumber}',
                   color: Colors.green,
@@ -380,7 +382,8 @@ class _VetContactCard extends StatelessWidget {
                 ),
                 
                 if (contact.email != null && contact.email!.isNotEmpty)
-                  _ContactOptionTile(
+                  _AnimatedOptionTile(
+                    index: 1,
                     icon: FIcons.mail,
                     label: 'Send Email',
                     color: Colors.orange,
@@ -390,7 +393,8 @@ class _VetContactCard extends StatelessWidget {
                     },
                   ),
 
-                _ContactOptionTile(
+                _AnimatedOptionTile(
+                  index: 2,
                   icon: FIcons.mapPin,
                   label: 'Get Directions',
                   color: Colors.blue,
@@ -401,10 +405,11 @@ class _VetContactCard extends StatelessWidget {
                 ),
 
                 if (contact.facebookUrl != null && contact.facebookUrl!.isNotEmpty)
-                  _ContactOptionTile(
+                  _AnimatedOptionTile(
+                    index: 3,
                     icon: FIcons.facebook,
                     label: 'Visit Facebook Page',
-                    color: const Color(0xFF1877F2),
+                    color: AppColors.facebook,
                     onTap: () {
                       Navigator.pop(context);
                       _openSocialMedia(context, contact.facebookUrl!, 'Facebook');
@@ -412,17 +417,18 @@ class _VetContactCard extends StatelessWidget {
                   ),
                   
                 if (contact.instagramUrl != null && contact.instagramUrl!.isNotEmpty)
-                  _ContactOptionTile(
+                  _AnimatedOptionTile(
+                    index: 4,
                     icon: FIcons.instagram,
                     label: 'Visit Instagram',
-                    color: const Color(0xFFE4405F),
+                    color: AppColors.instagram,
                     onTap: () {
                       Navigator.pop(context);
                       _openSocialMedia(context, contact.instagramUrl!, 'Instagram');
                     },
                   ),
                   
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 FButton(
                   onPress: () => Navigator.pop(context),
                   child: const Text('Cancel'),
@@ -431,6 +437,46 @@ class _VetContactCard extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _AnimatedOptionTile extends StatelessWidget {
+  final int index;
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _AnimatedOptionTile({
+    required this.index,
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0.0, end: 1.0),
+      duration: Duration(milliseconds: 300 + (index * 100)),
+      curve: Curves.easeOutQuart,
+      builder: (context, value, child) {
+        return Transform.translate(
+          offset: Offset(0, 20 * (1 - value)),
+          child: Opacity(
+            opacity: value,
+            child: child,
+          ),
+        );
+      },
+      child: _ContactOptionTile(
+        icon: icon,
+        label: label,
+        color: color,
+        onTap: onTap,
       ),
     );
   }
@@ -454,11 +500,11 @@ class _ContactOptionTile extends StatelessWidget {
     final theme = context.theme;
     
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: AppSpacing.md),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(
             color: theme.colors.secondary,
             borderRadius: BorderRadius.circular(12),
@@ -467,14 +513,14 @@ class _ContactOptionTile extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppSpacing.sm),
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(icon, size: 20, color: color),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.lg),
               Expanded(
                 child: Text(
                   label,
@@ -509,7 +555,7 @@ class _InfoRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(icon, size: 16, color: theme.colors.mutedForeground),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Text(
             text,
@@ -533,19 +579,19 @@ class _EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppSpacing.xxl),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(FIcons.phoneOff, size: 48, color: theme.colors.mutedForeground),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Text(
               'No vet contacts found',
               style: theme.typography.base.copyWith(
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               'Add your local veterinary clinics to get started',
               style: theme.typography.sm.copyWith(

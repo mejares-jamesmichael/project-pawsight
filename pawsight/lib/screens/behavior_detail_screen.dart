@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../core/app_constants.dart';
 import '../models/behavior.dart';
 import '../providers/chat_provider.dart';
 import 'chat_screen.dart';
@@ -44,7 +45,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
         // FHeader automatically handles the back button
       ),
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -80,7 +81,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(FIcons.imageOff, size: 48, color: theme.colors.mutedForeground),
-                                  const SizedBox(height: 8),
+                                  const SizedBox(height: AppSpacing.sm),
                                   Text(
                                     'Image not available',
                                     style: theme.typography.sm.copyWith(
@@ -97,7 +98,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                     // Page Indicator
                     if (imagePaths.length > 1)
                       Padding(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(AppSpacing.md),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: List.generate(
@@ -120,7 +121,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
 
             // Header Card with Category and Mood
             FCard(
@@ -133,10 +134,10 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 16), // Added spacing between title and tags
+                  const SizedBox(height: AppSpacing.lg), // Added spacing between title and tags
                   Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
+                    spacing: AppSpacing.sm,
+                    runSpacing: AppSpacing.sm,
                     children: [
                       _StatusBadge(
                         label: widget.behavior.category,
@@ -153,18 +154,18 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                 ],
               ),
             ),
-            
-            const SizedBox(height: 24),
+
+            const SizedBox(height: AppSpacing.xl),
 
             // Description Section
             Text(
               'Description',
               style: theme.typography.lg.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppSpacing.lg),
               decoration: BoxDecoration(
                 color: theme.colors.secondary,
                 borderRadius: BorderRadius.circular(12),
@@ -178,7 +179,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
 
             // Source Information
             if (widget.behavior.source != null) ...[
@@ -186,7 +187,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                 'Source Information',
                 style: theme.typography.lg.copyWith(fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               FCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,7 +199,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                       theme: theme,
                     ),
                     if (widget.behavior.verifiedBy != null) ...[
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.sm),
                       _InfoRow(
                         icon: FIcons.check,
                         label: 'Verified by',
@@ -208,7 +209,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                       ),
                     ],
                     if (widget.behavior.lastUpdated != null) ...[
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.sm),
                       _InfoRow(
                         icon: FIcons.calendar,
                         label: 'Last updated',
@@ -217,7 +218,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                       ),
                     ],
                     if (widget.behavior.sourceUrl != null && widget.behavior.sourceUrl!.isNotEmpty) ...[
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.lg),
                       ..._buildSourceButtons(widget.behavior, theme),
                     ],
                   ],
@@ -225,16 +226,16 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
               ),
             ],
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
 
             // Ask AI Button
             _AskAiButton(behavior: widget.behavior),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
 
             // Tips Section
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppSpacing.lg),
               decoration: BoxDecoration(
                 color: Colors.blue.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
@@ -244,7 +245,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Icon(FIcons.lightbulb, size: 20, color: Colors.blue),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,7 +257,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                             color: Colors.blue,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppSpacing.xs),
                         Text(
                           'Cat body language should be interpreted in context with other signals and the situation. Individual cats may vary in their expressions.',
                           style: theme.typography.sm.copyWith(
@@ -270,7 +271,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xxl),
           ],
         ),
       ),
@@ -279,11 +280,11 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
 
   Color _getMoodColor(String mood) {
     switch (mood) {
-      case 'Happy': return Colors.green;
-      case 'Relaxed': return Colors.blue;
-      case 'Fearful': return Colors.orange;
-      case 'Aggressive': return Colors.red;
-      case 'Mixed': return Colors.purple;
+      case 'Happy': return AppColors.moodHappy;
+      case 'Relaxed': return AppColors.moodRelaxed;
+      case 'Fearful': return AppColors.moodFearful;
+      case 'Aggressive': return AppColors.moodAggressive;
+      case 'Mixed': return AppColors.moodMixed;
       default: return Colors.grey;
     }
   }
@@ -318,14 +319,14 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
       if (url.isNotEmpty) {
         buttons.add(
           Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
             child: FButton(
               onPress: () => _launchUrl(url),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(FIcons.externalLink, size: 16),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   Text('View Source ${i + 1}'),
                 ],
               ),
@@ -364,14 +365,14 @@ class _StatusBadge extends StatelessWidget {
         children: [
           if (icon != null) ...[
             Icon(icon, size: 14, color: color),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
           ] else ...[
             Container(
               width: 8,
               height: 8,
               decoration: BoxDecoration(color: color, shape: BoxShape.circle),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
           ],
           Text(
             label,
@@ -407,7 +408,7 @@ class _InfoRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(icon, size: 16, color: iconColor ?? theme.colors.mutedForeground),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.sm),
         Text(
           '$label: ',
           style: theme.typography.sm.copyWith(
@@ -442,7 +443,7 @@ class _AskAiButton extends StatelessWidget {
       onTap: () => _askAiAboutBehavior(context),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -464,12 +465,13 @@ class _AskAiButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              FIcons.messageCircle,
-              size: 20,
+            Image.asset(
+              'assets/images/pawsightLogo.png',
+              width: 20,
+              height: 20,
               color: theme.colors.primaryForeground,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppSpacing.md),
             Flexible(
               child: Text(
                 'Ask AI about "${behavior.name}"',
@@ -481,7 +483,7 @@ class _AskAiButton extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Icon(
               FIcons.arrowRight,
               size: 16,
