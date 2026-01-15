@@ -76,7 +76,8 @@ The **AI Assistant** is a smart chatbot that can answer more complex or specific
 1.  Tap the **AI Chat** card on the Home screen.
 2.  Type your question in the text box at the bottom (e.g., "Why does my cat wake me up at 3 AM?") and tap the **Send** icon.
 3.  You can also tap one of the **Suggestion Chips** (e.g., "What does a slow blink mean?") to ask a common question instantly.
-4.  **Clear History:** To delete your chat history, tap the **Trash Can** icon in the top right corner and confirm your choice.
+4.  **Camera/Image:** You may see a camera icon. Please note this feature is **Coming Soon** and is currently not active.
+5.  **Clear History:** To delete your chat history, tap the **Trash Can** icon in the top right corner and confirm your choice.
 
 **Offline Mode:**
 If you lose internet connection, an orange banner will appear saying "You are offline." You will not be able to send messages until you reconnect.
@@ -130,7 +131,9 @@ A: Your chat history is stored locally on your device for your convenience. You 
 ## 7. Privacy & Disclaimers
 
 **Privacy Policy:**
-PawSight respects your privacy. We do not collect personal data or store your chat history on external servers. All chat history is stored locally on your device.
+PawSight respects your privacy. Your chat history is stored locally on your device.
+*   **AI Processing:** To provide answers, your chat messages are sent to and processed by an external AI service. We do not permanently store these messages on our own servers.
+*   **Data Collection:** We do not collect personal user data (like name or email) for account creation.
 
 **Medical Disclaimer:**
 The content provided in this app (including Library and AI Chat) is for informational purposes only. It is **not** a substitute for professional veterinary advice, diagnosis, or treatment. Always seek the advice of your veterinarian with any questions you may have regarding your pet's medical condition. In case of a medical emergency, use the Vet Hotline to contact a clinic immediately.
