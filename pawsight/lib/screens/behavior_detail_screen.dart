@@ -469,7 +469,6 @@ class _AskAiButton extends StatelessWidget {
               'assets/images/pawsightLogo.png',
               width: 20,
               height: 20,
-              color: theme.colors.primaryForeground,
             ),
             const SizedBox(width: AppSpacing.md),
             Flexible(
