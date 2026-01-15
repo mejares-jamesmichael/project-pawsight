@@ -347,10 +347,15 @@ class _DailyPurrspectiveCardState extends State<_DailyPurrspectiveCard> {
     if (!_hasInitialized) {
       _hasInitialized = true;
       // Load a cat fact when the widget is first shown
-      final provider = context.read<CatApiProvider>();
-      if (provider.currentFact == null && !provider.isLoadingFacts) {
-        provider.refreshFact();
-      }
+      // Defer to next frame to avoid "setState called during build" error
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          final provider = context.read<CatApiProvider>();
+          if (provider.currentFact == null && !provider.isLoadingFacts) {
+            provider.refreshFact();
+          }
+        }
+      });
     }
   }
 
