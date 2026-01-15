@@ -405,43 +405,57 @@ class BehaviorCard extends StatelessWidget {
           );
         },
         child: FCard(
-          title: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Text(
-                  behavior.name,
-                  style: theme.typography.lg.copyWith(
-                    fontWeight: FontWeight.w600,
+              // Title Row
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      behavior.name,
+                      style: theme.typography.lg.copyWith(
+                        fontWeight: FontWeight.w600,
+                        height: 1.2,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  Icon(FIcons.chevronRight, size: 16, color: theme.colors.mutedForeground),
+                ],
+              ),
+              const SizedBox(height: 12), // Spacing between title and tags
+
+              // Tags
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  BehaviorBadge(
+                    label: behavior.category,
+                    color: theme.colors.mutedForeground,
+                    icon: _getCategoryIcon(),
+                  ),
+                  BehaviorBadge(
+                    label: behavior.mood,
+                    color: moodColor,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12), // Spacing between tags and description
+
+              // Description
+              Text(
+                behavior.description,
+                style: theme.typography.sm.copyWith(
+                  color: theme.colors.mutedForeground,
+                  height: 1.4,
                 ),
-              ),
-              Icon(FIcons.chevronRight, size: 16, color: theme.colors.mutedForeground),
-            ],
-          ),
-          subtitle: Wrap(
-            spacing: 8,
-            runSpacing: 4,
-            children: [
-              BehaviorBadge(
-                label: behavior.category,
-                color: theme.colors.mutedForeground,
-                icon: _getCategoryIcon(),
-              ),
-              BehaviorBadge(
-                label: behavior.mood,
-                color: moodColor,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
-          ),
-          child: Text(
-            behavior.description,
-            style: theme.typography.sm.copyWith(
-              color: theme.colors.mutedForeground,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
           ),
         ),
       ),
@@ -467,10 +481,10 @@ class BehaviorBadge extends StatelessWidget {
     final theme = context.theme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
