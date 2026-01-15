@@ -29,7 +29,7 @@ PawSight is a comprehensive mobile application designed to bridge the communicat
 
 PawSight is available for Android.
 
-1.  Go to the [Releases](https://github.com/yourusername/pawsight/releases) page of this repository.
+1.  Go to the [Releases](https://github.com/mejares-jamesmichael/project-pawsight/releases) page of this repository.
 2.  Download the latest `.apk` file (e.g., `pawsight_v1.0.0.apk`) from the "Assets" section.
 3.  Open the file on your Android device to install the application.
     *   *Note: You may need to enable "Install unknown apps" in your device settings.*
