@@ -297,19 +297,20 @@ class _VetContactCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: AppSpacing.md), // Add spacing between title and phone number
             _InfoRow(
               icon: FIcons.phone,
               text: contact.phoneNumber,
               theme: theme,
             ),
-            const SizedBox(height: AppSpacing.sm),
+            const SizedBox(height: AppSpacing.md),
             if (contact.email != null && contact.email!.isNotEmpty) ...[
               _InfoRow(
                 icon: FIcons.mail,
                 text: contact.email!,
                 theme: theme,
               ),
-              const SizedBox(height: AppSpacing.sm),
+              const SizedBox(height: AppSpacing.md),
             ],
             _InfoRow(
               icon: FIcons.mapPin,
@@ -317,7 +318,7 @@ class _VetContactCard extends StatelessWidget {
               theme: theme,
             ),
             if (contact.notes != null && contact.notes!.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.sm),
+              const SizedBox(height: AppSpacing.md),
               _InfoRow(
                 icon: FIcons.info,
                 text: contact.notes!,
@@ -562,6 +563,7 @@ class _InfoRow extends StatelessWidget {
             style: theme.typography.sm.copyWith(
               color: isNote ? theme.colors.mutedForeground : theme.colors.foreground,
               fontStyle: isNote ? FontStyle.italic : FontStyle.normal,
+              height: 1.5, // Improve line spacing for better readability
             ),
           ),
         ),
