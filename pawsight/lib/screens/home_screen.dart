@@ -10,7 +10,6 @@ import 'hotline_screen.dart';
 import 'chat_screen.dart';
 import 'discover_screen.dart';
 import 'behavior_detail_screen.dart';
-import 'env_debug_screen.dart';
 
 /// Main app shell with bottom navigation
 class HomeScreen extends StatefulWidget {

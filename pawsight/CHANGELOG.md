@@ -1,8 +1,9 @@
-## 1.2.1 (2026-01-15) - HOTFIX RELEASE 🔧
+## 1.2.2 (2026-01-15) - BUILD FIX 🚑
 
-### 🐛 Critical Fixes
-*   **Release Build Config**: Fixed issue where environment variables (Chat API, Cat API) were missing in release builds
-*   **Startup Validation**: App now validates configuration on startup and provides helpful error messages in logs
+### 🐛 Fixes
+*   **CI Build**: Fixed "unused import" analysis error that caused CI pipeline to fail
+*   **Release Build Config**: Fixed issue where environment variables were missing in release builds
+*   **Startup Validation**: App now validates configuration on startup
 
 ---
 
