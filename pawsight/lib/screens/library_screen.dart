@@ -40,34 +40,10 @@ class _LibraryScreenState extends State<LibraryScreen> {
     // Using nested Scaffolds causes keyboard inset conflicts (black gap above keyboard)
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Column(
+      child: Stack(
         children: [
-          // Clear filters bar (replaces AppBar actions)
-          if (provider.selectedMoods.isNotEmpty ||
-              provider.selectedCategories.isNotEmpty ||
-              _searchController.text.isNotEmpty)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton.icon(
-                    icon: Icon(FIcons.x, size: 16, color: theme.colors.primary),
-                    label: Text(
-                      'Clear filters',
-                      style: TextStyle(color: theme.colors.primary),
-                    ),
-                    onPressed: () {
-                      _searchController.clear();
-                      provider.clearAllFilters();
-                    },
-                  ),
-                ],
-              ),
-            ),
-
           // Main scrollable content
-          Expanded(
+          Positioned.fill(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -139,14 +115,55 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     const BehaviorEmptyState()
                   else
                     Column(
-                      children: provider.behaviors
-                          .map((behavior) => BehaviorCard(behavior: behavior))
-                          .toList(),
+                      children: [
+                        ...provider.behaviors
+                            .map((behavior) => BehaviorCard(behavior: behavior)),
+                        // Add extra padding at bottom for the floating button
+                        const SizedBox(height: 80),
+                      ],
                     ),
                 ],
               ),
             ),
           ),
+
+          // Floating Clear Filters Button
+          if (provider.selectedMoods.isNotEmpty ||
+              provider.selectedCategories.isNotEmpty ||
+              _searchController.text.isNotEmpty)
+            Positioned(
+              bottom: 24,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: FButton(
+                    onPress: () {
+                      _searchController.clear();
+                      provider.clearAllFilters();
+                    },
+                    // style: FButtonStyle.secondary, // Removed to fix type error, default style is fine
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(FIcons.x, size: 16),
+                        SizedBox(width: 8),
+                        Text('Clear filters'),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
