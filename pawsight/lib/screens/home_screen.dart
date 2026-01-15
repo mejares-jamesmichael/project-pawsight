@@ -54,14 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final titles = ['PawSight', 'Library', 'Vet Hotline'];
     return FHeader(
       title: Text(titles[_currentIndex]),
-      suffixes: [
-        // Debug menu - only show in debug mode
-        if (_currentIndex == 0)
-          FHeaderAction(
-            icon: const Icon(FIcons.settings),
-            onPress: () => _openEnvDebug(context),
-          ),
-      ],
+      suffixes: const [],
     );
   }
 
@@ -102,13 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => BehaviorDetailScreen(behavior: behavior)),
-    );
-  }
-
-  void _openEnvDebug(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const EnvDebugScreen()),
     );
   }
 }

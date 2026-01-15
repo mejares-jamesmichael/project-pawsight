@@ -1,3 +1,11 @@
+## 1.2.1 (2026-01-15) - HOTFIX RELEASE 🔧
+
+### 🐛 Critical Fixes
+*   **Release Build Config**: Fixed issue where environment variables (Chat API, Cat API) were missing in release builds
+*   **Startup Validation**: App now validates configuration on startup and provides helpful error messages in logs
+
+---
+
 ## 1.2.0 (2026-01-15) - FINAL CAT RELEASE 🐱✨
 
 ### 🎉 Major Improvements
