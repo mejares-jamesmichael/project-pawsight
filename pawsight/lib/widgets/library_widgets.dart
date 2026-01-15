@@ -55,38 +55,32 @@ class BehaviorSorter extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Expanded(
-          child: Material(
-            color: Colors.transparent,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: theme.colors.secondary,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: theme.colors.border),
-              ),
-              child: DropdownButton<String>(
-                value: provider.sortBy,
-                isExpanded: true,
-                underline: const SizedBox(),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'name',
-                    child: Text('Name'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'category',
-                    child: Text('Category'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'mood',
-                    child: Text('Mood'),
-                  ),
-                ],
-                onChanged: (value) {
-                  if (value != null) {
-                    provider.setSorting(value);
-                  }
-                },
+          child: Container(
+            height: 40,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              color: theme.colors.secondary,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: theme.colors.border),
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: provider.sortBy,
+                  isExpanded: true,
+                  icon: Icon(FIcons.chevronDown, size: 16, color: theme.colors.mutedForeground),
+                  style: theme.typography.sm.copyWith(color: theme.colors.foreground),
+                  dropdownColor: theme.colors.secondary,
+                  items: const [
+                    DropdownMenuItem(value: 'name', child: Text('Name')),
+                    DropdownMenuItem(value: 'category', child: Text('Category')),
+                    DropdownMenuItem(value: 'mood', child: Text('Mood')),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) provider.setSorting(value);
+                  },
+                ),
               ),
             ),
           ),
@@ -96,7 +90,7 @@ class BehaviorSorter extends StatelessWidget {
   }
 }
 
-/// Mood filter chips widget
+/// Mood filter chips widget (Horizontal Scroll)
 class MoodFilters extends StatelessWidget {
   const MoodFilters({super.key});
 
@@ -109,48 +103,53 @@ class MoodFilters extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Filter by Mood (${provider.selectedMoods.length} selected)',
+          'Mood',
           style: theme.typography.sm.copyWith(
             fontWeight: FontWeight.w600,
             color: theme.colors.mutedForeground,
           ),
         ),
         const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            MoodFilterChip(
-              label: 'Happy',
-              color: Colors.green,
-              isSelected: provider.selectedMoods.contains('Happy'),
-              onTap: () => provider.toggleMoodFilter('Happy'),
-            ),
-            MoodFilterChip(
-              label: 'Relaxed',
-              color: Colors.blue,
-              isSelected: provider.selectedMoods.contains('Relaxed'),
-              onTap: () => provider.toggleMoodFilter('Relaxed'),
-            ),
-            MoodFilterChip(
-              label: 'Fearful',
-              color: Colors.orange,
-              isSelected: provider.selectedMoods.contains('Fearful'),
-              onTap: () => provider.toggleMoodFilter('Fearful'),
-            ),
-            MoodFilterChip(
-              label: 'Aggressive',
-              color: Colors.red,
-              isSelected: provider.selectedMoods.contains('Aggressive'),
-              onTap: () => provider.toggleMoodFilter('Aggressive'),
-            ),
-            MoodFilterChip(
-              label: 'Mixed',
-              color: Colors.purple,
-              isSelected: provider.selectedMoods.contains('Mixed'),
-              onTap: () => provider.toggleMoodFilter('Mixed'),
-            ),
-          ],
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              MoodFilterChip(
+                label: 'Happy',
+                color: Colors.green,
+                isSelected: provider.selectedMoods.contains('Happy'),
+                onTap: () => provider.toggleMoodFilter('Happy'),
+              ),
+              const SizedBox(width: 8),
+              MoodFilterChip(
+                label: 'Relaxed',
+                color: Colors.blue,
+                isSelected: provider.selectedMoods.contains('Relaxed'),
+                onTap: () => provider.toggleMoodFilter('Relaxed'),
+              ),
+              const SizedBox(width: 8),
+              MoodFilterChip(
+                label: 'Fearful',
+                color: Colors.orange,
+                isSelected: provider.selectedMoods.contains('Fearful'),
+                onTap: () => provider.toggleMoodFilter('Fearful'),
+              ),
+              const SizedBox(width: 8),
+              MoodFilterChip(
+                label: 'Aggressive',
+                color: Colors.red,
+                isSelected: provider.selectedMoods.contains('Aggressive'),
+                onTap: () => provider.toggleMoodFilter('Aggressive'),
+              ),
+              const SizedBox(width: 8),
+              MoodFilterChip(
+                label: 'Mixed',
+                color: Colors.purple,
+                isSelected: provider.selectedMoods.contains('Mixed'),
+                onTap: () => provider.toggleMoodFilter('Mixed'),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -178,15 +177,16 @@ class MoodFilterChip extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? color.withValues(alpha: 0.2) : theme.colors.secondary,
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected ? color : theme.colors.border,
-            width: isSelected ? 2 : 1,
+            width: 1,
           ),
-          borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -199,10 +199,10 @@ class MoodFilterChip extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
             ),
-            const SizedBox(width: 6),
+            const SizedBox(width: 8),
             Text(
               label,
-              style: theme.typography.xs.copyWith(
+              style: theme.typography.sm.copyWith(
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 color: isSelected ? color : theme.colors.foreground,
               ),
@@ -214,7 +214,7 @@ class MoodFilterChip extends StatelessWidget {
   }
 }
 
-/// Category filter chips widget
+/// Category filter chips widget (Horizontal Scroll)
 class CategoryFilters extends StatelessWidget {
   const CategoryFilters({super.key});
 
@@ -227,54 +227,60 @@ class CategoryFilters extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Filter by Category (${provider.selectedCategories.length} selected)',
+          'Category',
           style: theme.typography.sm.copyWith(
             fontWeight: FontWeight.w600,
             color: theme.colors.mutedForeground,
           ),
         ),
         const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            CategoryFilterChip(
-              label: 'Tail',
-              icon: FIcons.sparkles,
-              isSelected: provider.selectedCategories.contains('Tail'),
-              onTap: () => provider.toggleCategoryFilter('Tail'),
-            ),
-            CategoryFilterChip(
-              label: 'Ears',
-              icon: FIcons.ear,
-              isSelected: provider.selectedCategories.contains('Ears'),
-              onTap: () => provider.toggleCategoryFilter('Ears'),
-            ),
-            CategoryFilterChip(
-              label: 'Eyes',
-              icon: FIcons.eye,
-              isSelected: provider.selectedCategories.contains('Eyes'),
-              onTap: () => provider.toggleCategoryFilter('Eyes'),
-            ),
-            CategoryFilterChip(
-              label: 'Posture',
-              icon: FIcons.accessibility,
-              isSelected: provider.selectedCategories.contains('Posture'),
-              onTap: () => provider.toggleCategoryFilter('Posture'),
-            ),
-            CategoryFilterChip(
-              label: 'Vocal',
-              icon: FIcons.volume2,
-              isSelected: provider.selectedCategories.contains('Vocal'),
-              onTap: () => provider.toggleCategoryFilter('Vocal'),
-            ),
-            CategoryFilterChip(
-              label: 'Whiskers',
-              icon: FIcons.zap,
-              isSelected: provider.selectedCategories.contains('Whiskers'),
-              onTap: () => provider.toggleCategoryFilter('Whiskers'),
-            ),
-          ],
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              CategoryFilterChip(
+                label: 'Tail',
+                icon: FIcons.sparkles,
+                isSelected: provider.selectedCategories.contains('Tail'),
+                onTap: () => provider.toggleCategoryFilter('Tail'),
+              ),
+              const SizedBox(width: 8),
+              CategoryFilterChip(
+                label: 'Ears',
+                icon: FIcons.ear,
+                isSelected: provider.selectedCategories.contains('Ears'),
+                onTap: () => provider.toggleCategoryFilter('Ears'),
+              ),
+              const SizedBox(width: 8),
+              CategoryFilterChip(
+                label: 'Eyes',
+                icon: FIcons.eye,
+                isSelected: provider.selectedCategories.contains('Eyes'),
+                onTap: () => provider.toggleCategoryFilter('Eyes'),
+              ),
+              const SizedBox(width: 8),
+              CategoryFilterChip(
+                label: 'Posture',
+                icon: FIcons.accessibility,
+                isSelected: provider.selectedCategories.contains('Posture'),
+                onTap: () => provider.toggleCategoryFilter('Posture'),
+              ),
+              const SizedBox(width: 8),
+              CategoryFilterChip(
+                label: 'Vocal',
+                icon: FIcons.volume2,
+                isSelected: provider.selectedCategories.contains('Vocal'),
+                onTap: () => provider.toggleCategoryFilter('Vocal'),
+              ),
+              const SizedBox(width: 8),
+              CategoryFilterChip(
+                label: 'Whiskers',
+                icon: FIcons.zap,
+                isSelected: provider.selectedCategories.contains('Whiskers'),
+                onTap: () => provider.toggleCategoryFilter('Whiskers'),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -302,30 +308,31 @@ class CategoryFilterChip extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? theme.colors.primary : theme.colors.secondary,
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected ? theme.colors.primary : theme.colors.border,
-            width: isSelected ? 2 : 1,
+            width: 1,
           ),
-          borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               icon,
-              size: 14,
+              size: 16,
               color: isSelected
                   ? theme.colors.primaryForeground
                   : theme.colors.foreground,
             ),
-            const SizedBox(width: 6),
+            const SizedBox(width: 8),
             Text(
               label,
-              style: theme.typography.xs.copyWith(
+              style: theme.typography.sm.copyWith(
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 color: isSelected
                     ? theme.colors.primaryForeground
@@ -339,7 +346,7 @@ class CategoryFilterChip extends StatelessWidget {
   }
 }
 
-/// Individual behavior card widget
+/// Individual behavior card widget (Refactored to FCard)
 class BehaviorCard extends StatelessWidget {
   final Behavior behavior;
 
@@ -386,139 +393,56 @@ class BehaviorCard extends StatelessWidget {
     final theme = context.theme;
     final moodColor = _getMoodColor();
 
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BehaviorDetailScreen(behavior: behavior),
-          ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        decoration: BoxDecoration(
-          color: theme.colors.secondary,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: theme.colors.border),
-        ),
-        child: IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BehaviorDetailScreen(behavior: behavior),
+            ),
+          );
+        },
+        child: FCard(
+          title: Row(
             children: [
-              // Mood Color Indicator
-              Container(
-                width: 4,
-                decoration: BoxDecoration(
-                  color: moodColor,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    bottomLeft: Radius.circular(12),
+              Expanded(
+                child: Text(
+                  behavior.name,
+                  style: theme.typography.lg.copyWith(
+                    fontWeight: FontWeight.w600,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-
-              // Card Content
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Header: Icon + Name + Arrow
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: theme.colors.background,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Icon(
-                              _getCategoryIcon(),
-                              size: 20,
-                              color: theme.colors.foreground,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              behavior.name,
-                              style: theme.typography.base.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          Icon(
-                            FIcons.chevronRight,
-                            size: 16,
-                            color: theme.colors.mutedForeground,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Badges: Category + Mood
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 4,
-                        children: [
-                          BehaviorBadge(
-                            label: behavior.category,
-                            color: theme.colors.mutedForeground,
-                          ),
-                          BehaviorBadge(
-                            label: behavior.mood,
-                            color: moodColor,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Description
-                      Text(
-                        behavior.description,
-                        style: theme.typography.sm.copyWith(
-                          color: theme.colors.mutedForeground,
-                          height: 1.4,
-                        ),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-
-                      // Source attribution (if available)
-                      if (behavior.source != null &&
-                          behavior.source != 'Placeholder - To be replaced')
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Row(
-                            children: [
-                              Icon(
-                                FIcons.info,
-                                size: 12,
-                                color: theme.colors.mutedForeground,
-                              ),
-                              const SizedBox(width: 4),
-                              Expanded(
-                                child: Text(
-                                  'Source: ${behavior.source}',
-                                  style: theme.typography.xs.copyWith(
-                                    color: theme.colors.mutedForeground,
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
+              Icon(FIcons.chevronRight, size: 16, color: theme.colors.mutedForeground),
+            ],
+          ),
+          subtitle: Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            children: [
+              BehaviorBadge(
+                label: behavior.category,
+                color: theme.colors.mutedForeground,
+                icon: _getCategoryIcon(),
+              ),
+              BehaviorBadge(
+                label: behavior.mood,
+                color: moodColor,
+              ),
+            ],
+          ),
+          child: Text(
+            behavior.description,
+            style: theme.typography.sm.copyWith(
+              color: theme.colors.mutedForeground,
             ),
-          ],
-         ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ),
     );
@@ -529,11 +453,13 @@ class BehaviorCard extends StatelessWidget {
 class BehaviorBadge extends StatelessWidget {
   final String label;
   final Color color;
+  final IconData? icon;
 
   const BehaviorBadge({
     super.key,
     required this.label,
     required this.color,
+    this.icon,
   });
 
   @override
@@ -544,15 +470,24 @@ class BehaviorBadge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(6),
         border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
-      child: Text(
-        label,
-        style: theme.typography.xs.copyWith(
-          color: color,
-          fontWeight: FontWeight.w500,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 12, color: color),
+            const SizedBox(width: 4),
+          ],
+          Text(
+            label,
+            style: theme.typography.xs.copyWith(
+              color: color,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -572,15 +507,22 @@ class BehaviorEmptyState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              FIcons.searchX,
-              size: 48,
-              color: theme.colors.mutedForeground,
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: theme.colors.muted,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                FIcons.searchX,
+                size: 32,
+                color: theme.colors.mutedForeground,
+              ),
             ),
             const SizedBox(height: 16),
             Text(
               'No behaviors found',
-              style: theme.typography.base.copyWith(
+              style: theme.typography.lg.copyWith(
                 fontWeight: FontWeight.w600,
               ),
             ),
