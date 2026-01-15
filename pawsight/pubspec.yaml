@@ -30,6 +30,7 @@ dev_dependencies:
     sdk: flutter
   flutter_launcher_icons: ^0.14.2
   flutter_lints: ^5.0.0
+  flutter_native_splash: ^2.3.10
   sqflite_common_ffi: ^2.3.6
 
 flutter_launcher_icons:
@@ -38,6 +39,15 @@ flutter_launcher_icons:
   image_path: "assets/images/pawsightLogo.png"
   min_sdk_android: 21
   remove_alpha_ios: true
+
+flutter_native_splash:
+  color: "#09090B"
+  image: assets/images/pawsightLogo.png
+  android_12:
+    image: assets/images/pawsightLogo.png
+    color: "#09090B"
+  ios: true
+  android: true
 
 flutter:
   uses-material-design: true
