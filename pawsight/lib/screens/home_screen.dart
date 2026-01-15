@@ -10,6 +10,7 @@ import 'hotline_screen.dart';
 import 'chat_screen.dart';
 import 'discover_screen.dart';
 import 'behavior_detail_screen.dart';
+import 'env_debug_screen.dart';
 
 /// Main app shell with bottom navigation
 class HomeScreen extends StatefulWidget {
@@ -53,7 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
     final titles = ['PawSight', 'Library', 'Vet Hotline'];
     return FHeader(
       title: Text(titles[_currentIndex]),
-      suffixes: const [],
+      suffixes: [
+        // Debug menu - only show in debug mode
+        if (_currentIndex == 0)
+          FHeaderAction(
+            icon: const Icon(FIcons.settings),
+            onPress: () => _openEnvDebug(context),
+          ),
+      ],
     );
   }
 
@@ -94,6 +102,13 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => BehaviorDetailScreen(behavior: behavior)),
+    );
+  }
+
+  void _openEnvDebug(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const EnvDebugScreen()),
     );
   }
 }

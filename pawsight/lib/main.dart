@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:forui/forui.dart';
 import 'package:provider/provider.dart';
+import 'core/env_validator.dart';
 import 'providers/library_provider.dart';
 import 'providers/hotline_provider.dart';
 import 'providers/chat_provider.dart';
@@ -21,12 +22,21 @@ void main() async {
   // Priority: .env (production) -> .env.example (CI/testing fallback)
   try {
     await dotenv.load(fileName: '.env');
+    debugPrint('✅ Loaded .env file');
   } catch (e) {
     // Fallback to .env.example for CI builds where .env doesn't exist
     // Note: .env.example contains placeholder values - AI chat won't work
-    debugPrint('Warning: .env not found, falling back to .env.example');
-    await dotenv.load(fileName: '.env.example');
+    debugPrint('⚠️  Warning: .env not found, falling back to .env.example');
+    try {
+      await dotenv.load(fileName: '.env.example');
+      debugPrint('✅ Loaded .env.example file');
+    } catch (e2) {
+      debugPrint('❌ ERROR: Could not load .env or .env.example: $e2');
+    }
   }
+
+  // Validate environment configuration and provide helpful diagnostics
+  EnvValidator.validate();
 
   // Set system UI colors to match app theme (Zinc-950 dark theme)
   // This fixes the black panel above keyboard with button navigation
