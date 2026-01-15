@@ -25,33 +25,14 @@ PawSight is a comprehensive mobile application designed to bridge the communicat
 *   **UI Components:** [Forui](https://pub.dev/packages/forui)
 *   **Icons:** [Font Awesome](https://pub.dev/packages/font_awesome_flutter)
 
-## 🚀 Getting Started
+## 📲 Installation
 
-To get a local copy up and running, follow these simple steps.
+PawSight is available for Android.
 
-### Prerequisites
-
-*   Flutter SDK
-*   Dart SDK
-
-### Installation
-
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/yourusername/pawsight.git
-    ```
-2.  Navigate to the project directory:
-    ```bash
-    cd pawsight
-    ```
-3.  Install dependencies:
-    ```bash
-    flutter pub get
-    ```
-4.  Run the app:
-    ```bash
-    flutter run
-    ```
+1.  Go to the [Releases](https://github.com/yourusername/pawsight/releases) page of this repository.
+2.  Download the latest `.apk` file (e.g., `pawsight_v1.0.0.apk`) from the "Assets" section.
+3.  Open the file on your Android device to install the application.
+    *   *Note: You may need to enable "Install unknown apps" in your device settings.*
 
 ## 📖 Documentation
 
