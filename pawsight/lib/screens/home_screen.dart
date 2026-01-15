@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../models/behavior.dart';
 import '../providers/library_provider.dart';
+import '../providers/cat_api_provider.dart';
 import 'library_screen.dart';
 import 'hotline_screen.dart';
 import 'chat_screen.dart';
@@ -113,24 +114,6 @@ class _HomeContent extends StatelessWidget {
     required this.onNavigateToBehavior,
   });
 
-  // Daily tips about cat behavior
-  static const _dailyTips = [
-    'A slow blink from your cat is a sign of trust and affection - try slow blinking back!',
-    'Cats knead when they feel content and safe, a behavior from kittenhood.',
-    'A cat\'s tail held high usually means they\'re feeling confident and happy.',
-    'When your cat shows their belly, it\'s a sign of trust, not always an invitation to pet.',
-    'Purring doesn\'t always mean happiness - cats also purr when stressed or unwell.',
-    'Ears pointed forward indicate curiosity, while flattened ears signal fear or aggression.',
-    'A twitching tail tip often means your cat is focused or mildly irritated.',
-  ];
-
-  String get _todaysTip {
-    final dayOfYear = DateTime.now()
-        .difference(DateTime(DateTime.now().year))
-        .inDays;
-    return _dailyTips[dayOfYear % _dailyTips.length];
-  }
-
   String get _greeting {
     final hour = DateTime.now().hour;
     if (hour < 12) return 'Good Morning,';
@@ -173,34 +156,9 @@ class _HomeContent extends StatelessWidget {
             ),
           ),
 
-          // Daily Purr-spective (Hero Card)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: FCard(
-              title: Row(
-                children: [
-                   Container(
-                     padding: const EdgeInsets.all(8),
-                     decoration: BoxDecoration(
-                       color: Colors.amber.withValues(alpha: 0.2),
-                       borderRadius: BorderRadius.circular(8),
-                     ),
-                     child: const Icon(FIcons.lightbulb, size: 20, color: Colors.amber),
-                   ),
-                  const SizedBox(width: 12),
-                  const Text('Daily Purr-spective'),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  _todaysTip,
-                  style: theme.typography.base.copyWith(
-                    height: 1.5,
-                  ),
-                ),
-              ),
-            ),
+          // Daily Purr-spective (Hero Card) - Cat Facts from API
+          _DailyPurrspectiveCard(
+            onNavigateToDiscover: onNavigateToDiscover,
           ),
 
           const SizedBox(height: 32),
@@ -368,6 +326,160 @@ class _ActionCard extends StatelessWidget {
   }
 }
 
+/// Daily Purr-spective card that displays cat facts from API
+class _DailyPurrspectiveCard extends StatefulWidget {
+  final VoidCallback onNavigateToDiscover;
+
+  const _DailyPurrspectiveCard({
+    required this.onNavigateToDiscover,
+  });
+
+  @override
+  State<_DailyPurrspectiveCard> createState() => _DailyPurrspectiveCardState();
+}
+
+class _DailyPurrspectiveCardState extends State<_DailyPurrspectiveCard> {
+  bool _hasInitialized = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_hasInitialized) {
+      _hasInitialized = true;
+      // Load a cat fact when the widget is first shown
+      final provider = context.read<CatApiProvider>();
+      if (provider.currentFact == null && !provider.isLoadingFacts) {
+        provider.refreshFact();
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.theme;
+
+    return Consumer<CatApiProvider>(
+      builder: (context, catApiProvider, child) {
+        final fact = catApiProvider.currentFact;
+        final isLoading = catApiProvider.isLoadingFacts;
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: FCard(
+            title: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.amber.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(FIcons.lightbulb, size: 20, color: Colors.amber),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Daily Purr-spective'),
+                      Text(
+                        'Cat Fact',
+                        style: theme.typography.xs.copyWith(
+                          color: theme.colors.mutedForeground,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Refresh button
+                GestureDetector(
+                  onTap: isLoading ? null : () => catApiProvider.refreshFact(),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: theme.colors.secondary.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: isLoading
+                        ? SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: theme.colors.primary,
+                            ),
+                          )
+                        : Icon(
+                            FIcons.refreshCw,
+                            size: 16,
+                            color: theme.colors.primary,
+                          ),
+                  ),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (isLoading && fact == null)
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: CircularProgressIndicator(
+                          color: theme.colors.primary,
+                        ),
+                      ),
+                    )
+                  else if (fact != null)
+                    Text(
+                      fact.text,
+                      style: theme.typography.base.copyWith(
+                        height: 1.5,
+                      ),
+                    )
+                  else
+                    Text(
+                      'Tap refresh to load a cat fact!',
+                      style: theme.typography.base.copyWith(
+                        height: 1.5,
+                        color: theme.colors.mutedForeground,
+                      ),
+                    ),
+                  const SizedBox(height: 12),
+                  // Link to Discover for more facts
+                  GestureDetector(
+                    onTap: widget.onNavigateToDiscover,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'More cat facts',
+                          style: theme.typography.sm.copyWith(
+                            color: theme.colors.primary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
+                          FIcons.arrowRight,
+                          size: 14,
+                          color: theme.colors.primary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
 /// Spotlight card that displays a behavior from the library
 class _SpotlightCard extends StatelessWidget {
   final void Function(Behavior behavior) onNavigateToBehavior;
@@ -462,6 +574,8 @@ class _SpotlightCard extends StatelessWidget {
         // Display the spotlight behavior
         final moodColor = _getMoodColor(behavior.mood);
         final categoryIcon = _getCategoryIcon(behavior.category);
+        // Get the first image path (behaviors can have multiple comma-separated images)
+        final imagePath = behavior.imagePath.split(',').first.trim();
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -469,8 +583,9 @@ class _SpotlightCard extends StatelessWidget {
             onTap: () => onNavigateToBehavior(behavior),
             child: FCard(
               image: Container(
-                height: 150,
+                height: 180,
                 width: double.infinity,
+                clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   color: moodColor.withValues(alpha: 0.15),
                   borderRadius: const BorderRadius.only(
@@ -479,13 +594,36 @@ class _SpotlightCard extends StatelessWidget {
                   ),
                 ),
                 child: Stack(
+                  fit: StackFit.expand,
                   children: [
-                    // Category icon in center
-                    Center(
-                      child: Icon(
-                        categoryIcon,
-                        size: 64,
-                        color: moodColor.withValues(alpha: 0.4),
+                    // Actual behavior image
+                    Image.asset(
+                      imagePath,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        // Fallback to icon if image fails to load
+                        return Center(
+                          child: Icon(
+                            categoryIcon,
+                            size: 64,
+                            color: moodColor.withValues(alpha: 0.4),
+                          ),
+                        );
+                      },
+                    ),
+                    // Gradient overlay for better text readability on badges
+                    Positioned.fill(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.center,
+                            colors: [
+                              Colors.black.withValues(alpha: 0.3),
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     // Category badge
