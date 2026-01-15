@@ -55,7 +55,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   color: theme.colors.secondary,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
                   border: Border.all(color: theme.colors.border),
                 ),
                 clipBehavior: Clip.antiAlias,
@@ -104,9 +104,9 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
                           children: List.generate(
                             imagePaths.length,
                             (index) => Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 4),
-                              width: 8,
-                              height: 8,
+                              margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+                              width: AppSpacing.sm,
+                              height: AppSpacing.sm,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: _currentImageIndex == index
@@ -168,7 +168,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
               padding: const EdgeInsets.all(AppSpacing.lg),
               decoration: BoxDecoration(
                 color: theme.colors.secondary,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppRadius.md),
                 border: Border.all(color: theme.colors.border),
               ),
               child: Text(
@@ -238,7 +238,7 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
               padding: const EdgeInsets.all(AppSpacing.lg),
               decoration: BoxDecoration(
                 color: Colors.blue.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppRadius.md),
                 border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
               ),
               child: Row(
@@ -354,10 +354,10 @@ class _StatusBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.theme;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 6),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppRadius.xl),
         border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
@@ -453,11 +453,11 @@ class _AskAiButton extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppRadius.md),
           boxShadow: [
             BoxShadow(
               color: theme.colors.primary.withValues(alpha: 0.3),
-              blurRadius: 8,
+              blurRadius: AppSpacing.sm,
               offset: const Offset(0, 4),
             ),
           ],
