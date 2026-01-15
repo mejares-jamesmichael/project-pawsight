@@ -215,6 +215,7 @@ class _SectionHeader extends StatelessWidget {
           title,
           style: theme.typography.lg.copyWith(
             fontWeight: FontWeight.w600,
+            height: 1.3,
           ),
         ),
         const SizedBox(height: 4),
@@ -357,160 +358,124 @@ class _VetContactCard extends StatelessWidget {
     final theme = context.theme;
     final accentColor = isEmergency ? Colors.red : Colors.blue;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: theme.colors.secondary,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: isEmergency
-              ? Colors.red.withValues(alpha: 0.3)
-              : theme.colors.border,
-          width: isEmergency ? 2 : 1,
-        ),
-      ),
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: FCard(
+        title: Row(
           children: [
-            // Accent Color Bar
-            Container(
-              width: 4,
-              decoration: BoxDecoration(
-                color: accentColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  bottomLeft: Radius.circular(12),
+            Expanded(
+              child: Text(
+                contact.clinicName,
+                style: theme.typography.base.copyWith(
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-
-            // Card Content
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Clinic Name + Badge
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            contact.clinicName,
-                            style: theme.typography.base.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        if (isEmergency)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.red.withValues(alpha: 0.15),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Colors.red.withValues(alpha: 0.3),
-                              ),
-                            ),
-                            child: Text(
-                              '24/7',
-                              style: theme.typography.xs.copyWith(
-                                color: Colors.red,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Phone Number
-                    _InfoRow(
-                      icon: FIcons.phone,
-                      text: contact.phoneNumber,
-                      theme: theme,
-                    ),
-                    const SizedBox(height: 8),
-
-                    // Email (if available)
-                    if (contact.email != null &&
-                        contact.email!.isNotEmpty) ...[
-                      _InfoRow(
-                        icon: FIcons.mail,
-                        text: contact.email!,
-                        theme: theme,
-                      ),
-                      const SizedBox(height: 8),
-                    ],
-
-                    // Address
-                    _InfoRow(
-                      icon: FIcons.mapPin,
-                      text: contact.address,
-                      theme: theme,
-                    ),
-
-                    // Notes (if available)
-                    if (contact.notes != null &&
-                        contact.notes!.isNotEmpty) ...[
-                      const SizedBox(height: 8),
-                      _InfoRow(
-                        icon: FIcons.info,
-                        text: contact.notes!,
-                        theme: theme,
-                        isNote: true,
-                      ),
-                    ],
-
-                    const SizedBox(height: 16),
-
-                    // Action Buttons
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        _ActionButton(
-                          label: 'Call',
-                          icon: FIcons.phone,
-                          color: accentColor,
-                          onTap: () => _makePhoneCall(context, contact.phoneNumber),
-                        ),
-                        if (contact.email != null && contact.email!.isNotEmpty)
-                          _ActionButton(
-                            label: 'Email',
-                            icon: FIcons.mail,
-                            color: Colors.orange,
-                            onTap: () => _sendEmail(context, contact.email!),
-                          ),
-                        _ActionButton(
-                          label: 'Location',
-                          icon: FIcons.mapPin,
-                          color: Colors.green,
-                          onTap: () => _openMaps(context, contact.address),
-                        ),
-                        if (contact.facebookUrl != null && contact.facebookUrl!.isNotEmpty)
-                          _ActionButton(
-                            label: 'Facebook',
-                            icon: FIcons.facebook,
-                            color: const Color(0xFF1877F2), // Facebook blue
-                            onTap: () => _openSocialMedia(context, contact.facebookUrl!, 'Facebook'),
-                          ),
-                        if (contact.instagramUrl != null && contact.instagramUrl!.isNotEmpty)
-                          _ActionButton(
-                            label: 'Instagram',
-                            icon: FIcons.instagram,
-                            color: const Color(0xFFE4405F), // Instagram pink
-                            onTap: () => _openSocialMedia(context, contact.instagramUrl!, 'Instagram'),
-                          ),
-                      ],
-                    ),
-                  ],
+            if (isEmergency)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.red.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: Colors.red.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Text(
+                  '24/7',
+                  style: theme.typography.xs.copyWith(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Phone Number
+            _InfoRow(
+              icon: FIcons.phone,
+              text: contact.phoneNumber,
+              theme: theme,
+            ),
+            const SizedBox(height: 8),
+
+            // Email (if available)
+            if (contact.email != null &&
+                contact.email!.isNotEmpty) ...[
+              _InfoRow(
+                icon: FIcons.mail,
+                text: contact.email!,
+                theme: theme,
+              ),
+              const SizedBox(height: 8),
+            ],
+
+            // Address
+            _InfoRow(
+              icon: FIcons.mapPin,
+              text: contact.address,
+              theme: theme,
+            ),
+
+            // Notes (if available)
+            if (contact.notes != null &&
+                contact.notes!.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              _InfoRow(
+                icon: FIcons.info,
+                text: contact.notes!,
+                theme: theme,
+                isNote: true,
+              ),
+            ],
+
+            const SizedBox(height: 20), // Increased spacing
+
+            // Action Buttons
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                _ActionButton(
+                  label: 'Call',
+                  icon: FIcons.phone,
+                  color: accentColor,
+                  onTap: () => _makePhoneCall(context, contact.phoneNumber),
+                ),
+                if (contact.email != null && contact.email!.isNotEmpty)
+                  _ActionButton(
+                    label: 'Email',
+                    icon: FIcons.mail,
+                    color: Colors.orange,
+                    onTap: () => _sendEmail(context, contact.email!),
+                  ),
+                _ActionButton(
+                  label: 'Location',
+                  icon: FIcons.mapPin,
+                  color: Colors.green,
+                  onTap: () => _openMaps(context, contact.address),
+                ),
+                if (contact.facebookUrl != null && contact.facebookUrl!.isNotEmpty)
+                  _ActionButton(
+                    label: 'Facebook',
+                    icon: FIcons.facebook,
+                    color: const Color(0xFF1877F2), // Facebook blue
+                    onTap: () => _openSocialMedia(context, contact.facebookUrl!, 'Facebook'),
+                  ),
+                if (contact.instagramUrl != null && contact.instagramUrl!.isNotEmpty)
+                  _ActionButton(
+                    label: 'Instagram',
+                    icon: FIcons.instagram,
+                    color: const Color(0xFFE4405F), // Instagram pink
+                    onTap: () => _openSocialMedia(context, contact.instagramUrl!, 'Instagram'),
+                  ),
+              ],
             ),
           ],
         ),
@@ -581,9 +546,9 @@ class _ActionButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.15),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
@@ -591,7 +556,7 @@ class _ActionButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 16, color: color),
+            Icon(icon, size: 14, color: color),
             const SizedBox(width: 6),
             Text(
               label,
