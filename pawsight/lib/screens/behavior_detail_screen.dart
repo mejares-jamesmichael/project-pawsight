@@ -46,107 +46,112 @@ class _BehaviorDetailScreenState extends State<BehaviorDetailScreen> {
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Image Carousel or Single Image
-            Container(
-              height: 250,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: theme.colors.secondary,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: theme.colors.border),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  PageView.builder(
-                    itemCount: imagePaths.length,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentImageIndex = index;
-                      });
-                    },
-                    itemBuilder: (context, index) {
-                      final path = imagePaths[index].trim();
-                      return Image.asset(
-                        path,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          debugPrint('Failed to load image: $path. Error: $error');
-                          return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(FIcons.imageOff, size: 48, color: theme.colors.mutedForeground),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'Image not available',
-                                  style: theme.typography.sm.copyWith(
-                                    color: theme.colors.mutedForeground,
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: theme.colors.secondary,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: theme.colors.border),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    PageView.builder(
+                      itemCount: imagePaths.length,
+                      onPageChanged: (index) {
+                        setState(() {
+                          _currentImageIndex = index;
+                        });
+                      },
+                      itemBuilder: (context, index) {
+                        final path = imagePaths[index].trim();
+                        return Image.asset(
+                          path,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            debugPrint('Failed to load image: $path. Error: $error');
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(FIcons.imageOff, size: 48, color: theme.colors.mutedForeground),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Image not available',
+                                    style: theme.typography.sm.copyWith(
+                                      color: theme.colors.mutedForeground,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  // Page Indicator
-                  if (imagePaths.length > 1)
-                    Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          imagePaths.length,
-                          (index) => Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 4),
-                            width: 8,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: _currentImageIndex == index
-                                  ? theme.colors.primary
-                                  : theme.colors.background.withValues(alpha: 0.5),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    // Page Indicator
+                    if (imagePaths.length > 1)
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            imagePaths.length,
+                            (index) => Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _currentImageIndex == index
+                                    ? theme.colors.primary
+                                    : theme.colors.background.withValues(alpha: 0.5),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 24),
 
             // Header Card with Category and Mood
             FCard(
-              title: Text(
-                widget.behavior.name,
-                style: theme.typography.xl.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22, // Explicitly constrain size for mobile
-                ),
-              ),
-              subtitle: Wrap(
-                spacing: 8,
-                runSpacing: 8,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _StatusBadge(
-                    label: widget.behavior.category,
-                    icon: _getCategoryIcon(widget.behavior.category),
-                    color: theme.colors.primary,
+                  Text(
+                    widget.behavior.name,
+                    style: theme.typography.xl.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  _StatusBadge(
-                    label: widget.behavior.mood,
-                    icon: null, // Mood color handles visual
-                    color: _getMoodColor(widget.behavior.mood),
+                  const SizedBox(height: 16), // Added spacing between title and tags
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      _StatusBadge(
+                        label: widget.behavior.category,
+                        icon: _getCategoryIcon(widget.behavior.category),
+                        color: theme.colors.primary,
+                      ),
+                      _StatusBadge(
+                        label: widget.behavior.mood,
+                        icon: null, // Mood color handles visual
+                        color: _getMoodColor(widget.behavior.mood),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              child: const SizedBox.shrink(), // No body content needed here
             ),
             
             const SizedBox(height: 24),
@@ -348,7 +353,7 @@ class _StatusBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.theme;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(20),
@@ -359,14 +364,14 @@ class _StatusBadge extends StatelessWidget {
         children: [
           if (icon != null) ...[
             Icon(icon, size: 14, color: color),
-            const SizedBox(width: 6),
+            const SizedBox(width: 8),
           ] else ...[
             Container(
               width: 8,
               height: 8,
               decoration: BoxDecoration(color: color, shape: BoxShape.circle),
             ),
-            const SizedBox(width: 6),
+            const SizedBox(width: 8),
           ],
           Text(
             label,
