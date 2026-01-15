@@ -46,5 +46,8 @@ flutter:
     - assets/images/tail/
     - assets/images/ear/
     - assets/images/eye/
+    - assets/images/posture/
+    - assets/images/vocal/
+    - assets/images/whisker/
     - .env
     - .env.example

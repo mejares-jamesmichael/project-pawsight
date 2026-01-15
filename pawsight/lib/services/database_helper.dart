@@ -434,7 +434,7 @@ class DatabaseHelper {
         mood: 'Relaxed',
         description:
             'When a cat rolls onto their back exposing their vulnerable belly, it\'s a significant display of trust and relaxation. However, this is NOT necessarily an invitation for belly rubs—many cats will react defensively if you touch their stomach. The exposure itself is the trust signal.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/posture/posture-belly.jpg',
         source: 'PetsCare, Agria Pet, Catit, International Cat Care',
         sourceUrl: 'https://www.petscare.com/news/faq/what-does-it-mean-if-a-cat-lets-you-rub-its-belly,https://www.agriapet.co.uk/guides-and-advice/cat-rolling-on-its-back/,https://www.catit.com/spotlight/why-do-cats-show-their-belly/,https://icatcare.org/articles/handling-and-interactions',
         verifiedBy: 'Veterinarian-reviewed',
@@ -447,7 +447,7 @@ class DatabaseHelper {
         mood: 'Fearful',
         description:
             'The classic "Halloween cat" pose—arched back, fur standing on end, often with a puffed tail and sideways stance—is a defensive posture indicating fear or feeling threatened. The cat is attempting to appear larger to ward off perceived threats.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/posture/posture-arched.jpg',
         source: 'International Cat Care',
         sourceUrl: 'https://icatcare.org/articles/cat-communication',
         verifiedBy: 'Veterinarian-reviewed',
@@ -460,7 +460,7 @@ class DatabaseHelper {
         mood: 'Happy',
         description:
             'When a cat arches their back upward to meet your hand during petting (without raised fur or other defensive signals), they are expressing enjoyment and asking for continued physical contact.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/posture/posture-archedpet.jpg',
         source: 'Napo Pet',
         sourceUrl: 'https://www.napo.pet/blog/dr-sarah-ellis-on-why-do-cats-arch-their-backs',
         verifiedBy: 'Veterinarian-reviewed',
@@ -473,7 +473,7 @@ class DatabaseHelper {
         mood: 'Relaxed',
         description:
             'When a cat tucks all four paws beneath their body, resembling a loaf of bread, they typically feel safe, comfortable, and relaxed. This position conserves warmth and protects vulnerable paws while allowing the cat to remain semi-alert.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/posture/posture-catloaf-1.jpg,assets/images/posture/posture-catloaf-2.jpg',
         source: 'PetMD',
         sourceUrl: 'https://www.petmd.com/cat/behavior/why-do-cats-loaf',
         verifiedBy: 'Veterinarian-reviewed',
@@ -486,7 +486,7 @@ class DatabaseHelper {
         mood: 'Happy',
         description:
             'Rhythmic pushing and pulling with the front paws (often alternating) is a behavior from kittenhood when kittens knead their mother to stimulate milk flow. Adult cats continue kneading when feeling content, relaxed, and affectionate.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/posture/posture-knead-1.jpg,assets/images/posture/posture-knead-2.jpg',
         source: 'PetMD',
         sourceUrl: 'https://www.petmd.com/cat/behavior/why-do-cats-knead',
         verifiedBy: 'Veterinarian-reviewed',
@@ -499,7 +499,7 @@ class DatabaseHelper {
         mood: 'Mixed',
         description:
             'A low crouch with body close to the ground can indicate fear and readiness to flee, or alternatively, stalking/hunting behavior preparing to pounce. Body tension and other signals differentiate fear from play.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/posture/posture-crouch.jpg',
         source: 'PetMD',
         sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
         verifiedBy: 'Veterinarian-reviewed',
@@ -512,7 +512,7 @@ class DatabaseHelper {
         mood: 'Relaxed',
         description:
             'Full-body stretches, especially after waking, are normal comfort behaviors indicating the cat feels relaxed and secure in their environment.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/posture/posture-stretch.jpg',
         source: 'Cats Protection',
         sourceUrl: 'https://www.cats.org.uk/cats-blog/why-do-cats-arch-their-back',
         verifiedBy: 'Expert-reviewed',
@@ -525,7 +525,7 @@ class DatabaseHelper {
         mood: 'Happy',
         description:
             'When a cat bumps their head or rubs their cheeks against you, they are depositing pheromones from scent glands to mark you as part of their social group. This is a sign of trust, affection, and bonding.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/posture/posture-headbunt.jpg',
         source: 'PetMD',
         sourceUrl: 'https://www.petmd.com/cat/behavior/why-does-my-cat-headbutt-me',
         verifiedBy: 'Veterinarian-reviewed',
@@ -538,7 +538,7 @@ class DatabaseHelper {
         mood: 'Happy',
         description:
             'Rubbing the body, flanks, and tail against people, other cats, or objects is scent-marking behavior that also serves social bonding functions. Part of normal feline social interaction.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/posture/posture-bodyrub.jpg',
         source: 'International Cat Care',
         sourceUrl: 'https://icatcare.org/articles/cat-communication',
         verifiedBy: 'Veterinarian-reviewed',
@@ -553,7 +553,7 @@ class DatabaseHelper {
         mood: 'Mixed',
         description:
             'While purring most commonly indicates contentment, happiness, and relaxation, cats also purr when stressed, anxious, in pain, or ill as a self-soothing mechanism. The vibrations (25-150 Hz) may have healing properties that promote tissue repair and pain relief. Context and body language are essential to interpret meaning.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/vocal/vocal-purr.jpg',
         source: 'Companion Animals NZ, PetsCare, AAHA, PetMD',
         sourceUrl: 'https://www.companionanimals.nz/articles/is-purring-always-a-sign-of-happiness-in-cats,https://www.petscare.com/news/post/do-cats-purr-when-stressed,https://www.aaha.org/resources/the-secret-feline-language-5-reasons-why-your-cat-purrs/,https://www.petmd.com/cat/behavior/why-do-cats-purr',
         verifiedBy: 'Veterinarian-reviewed',
@@ -566,7 +566,7 @@ class DatabaseHelper {
         mood: 'Mixed',
         description:
             'Adult cats primarily meow to communicate with humans (not with other cats). Meowing serves to request attention, food, access to spaces, or express needs. The intensity and tone convey urgency.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/vocal/vocal-meow.jpg',
         source: 'ASPCA',
         sourceUrl: 'https://www.aspca.org/pet-care/cat-care/common-cat-behavior-issues/meowing-and-yowling',
         verifiedBy: 'Veterinarian-reviewed',
@@ -579,7 +579,7 @@ class DatabaseHelper {
         mood: 'Fearful',
         description:
             'Hissing is a defensive warning vocalization, not aggression. It\'s an involuntary reflex indicating the cat feels threatened, scared, or needs space. Often accompanied by flattened ears, arched back, and defensive posturing.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/vocal/vocal-hiss.jpg',
         source: 'PetMD',
         sourceUrl: 'https://www.petmd.com/cat/behavior/cat-hissing-what-you-need-know',
         verifiedBy: 'Veterinarian-reviewed',
@@ -592,7 +592,7 @@ class DatabaseHelper {
         mood: 'Aggressive',
         description:
             'A low, rumbling sound used as a warning to back off. Growling indicates the cat feels angry, threatened, territorial, or is in pain. This is a serious warning that should be respected.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/vocal/vocal-growl.jpg',
         source: 'Sheba UK',
         sourceUrl: 'https://www.uk.sheba.com/blog/health/cat-growling',
         verifiedBy: 'Veterinarian-reviewed',
@@ -605,7 +605,7 @@ class DatabaseHelper {
         mood: 'Happy',
         description:
             'A high-pitched, rolling "brrrp" or chirrup sound made with the mouth closed. Mother cats use trills to communicate with kittens, and adult cats use this friendly vocalization to greet humans, seek attention, or express happiness.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/vocal/vocal-chirp.jpg',
         source: 'PetsCare',
         sourceUrl: 'https://www.petscare.com/news/post/understanding-cat-trilling-guide',
         verifiedBy: 'Veterinarian-reviewed',
@@ -618,7 +618,7 @@ class DatabaseHelper {
         mood: 'Happy',
         description:
             'Rapid teeth-chattering sounds, usually made while watching birds or prey through a window. Theories suggest this represents hunting excitement, frustration at unreachable prey, or practicing the "kill bite" motion.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/vocal/vocal-chatter.jpg',
         source: 'Cats Protection',
         sourceUrl: 'https://www.cats.org.uk/cats-blog/why-do-cats-chatter-and-chirp-at-birds',
         verifiedBy: 'Veterinarian-reviewed',
@@ -631,7 +631,7 @@ class DatabaseHelper {
         mood: 'Mixed',
         description:
             'A loud, drawn-out vocalization indicating distress, pain, illness, or mating behavior (especially in unspayed/unneutered cats). Can also signal territorial concerns or separation anxiety.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/vocal/vocal-yowl.jpg',
         source: 'ASPCA',
         sourceUrl: 'https://www.aspca.org/pet-care/cat-care/common-cat-behavior-issues/meowing-and-yowling',
         verifiedBy: 'Veterinarian-reviewed',
@@ -644,7 +644,7 @@ class DatabaseHelper {
         mood: 'Fearful',
         description:
             'A sudden, explosive burst of sound accompanied by a lunge or swat. This is an involuntary defensive reaction indicating extreme fear or imminent self-defense. Represents escalation beyond hissing.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/vocal/vocal-spitting.jpg',
         source: 'PetMD',
         sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
         verifiedBy: 'Veterinarian-reviewed',
@@ -657,7 +657,7 @@ class DatabaseHelper {
         mood: 'Mixed',
         description:
             'A loud vocalization that sounds like a cross between a yowl, howl, and whine. Most commonly produced by unspayed females in heat to attract mates, but can also indicate distress.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/vocal/vocal-caterwauling.png',
         source: 'Zoetis Petcare',
         sourceUrl: 'https://www.zoetispetcare.com/blog/article/cat-sounds-explained',
         verifiedBy: 'Veterinarian-reviewed',
@@ -670,7 +670,7 @@ class DatabaseHelper {
         mood: 'Mixed',
         description:
             'Soft, high-pitched vocalizations used by kittens to communicate with their mother, signaling hunger, cold, or need for attention.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/vocal/vocal-mewing.jpg',
         source: 'Cats Around The Globe',
         sourceUrl: 'https://catsaroundtheglobe.com/10-key-cat-vocalizations-and-their-meanings/',
         verifiedBy: 'Expert-reviewed',
@@ -683,7 +683,7 @@ class DatabaseHelper {
         mood: 'Aggressive',
         description:
             'Loud, alarming vocalizations during cat fights, mating, or extreme pain. Indicates serious distress.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/vocal/vocal-scream.jpg',
         source: 'International Cat Care',
         sourceUrl: 'https://icatcare.org/articles/cat-communication',
         verifiedBy: 'Expert-reviewed',
@@ -698,7 +698,7 @@ class DatabaseHelper {
         mood: 'Relaxed',
         description:
             'Whiskers in their natural position, slightly curved and spread to the sides, indicate a relaxed, comfortable cat feeling safe in their environment.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/whisker/whisker-relax.png',
         source: 'International Cat Care',
         sourceUrl: 'https://icatcare.org/articles/cat-communication',
         verifiedBy: 'Veterinarian-reviewed',
@@ -711,7 +711,7 @@ class DatabaseHelper {
         mood: 'Happy',
         description:
             'Whiskers pushed forward indicate curiosity, excitement, focused attention, or hunting behavior. Helps cats gather more sensory information about objects of interest.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/whisker/whisker-forward.jpg',
         source: 'ASPCA',
         sourceUrl: 'https://www.aspca.org/pet-care/cat-care/common-cat-behavior-issues/aggression-cats',
         verifiedBy: 'Veterinarian-reviewed',
@@ -724,7 +724,7 @@ class DatabaseHelper {
         mood: 'Fearful',
         description:
             'Whiskers pulled tightly back against the face signal fear, stress, defensive aggression, or discomfort. The cat feels threatened and may need space.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/whisker/whisker-pulledback.jpg',
         source: 'ASPCA',
         sourceUrl: 'https://www.aspca.org/pet-care/cat-care/common-cat-behavior-issues/aggression-cats',
         verifiedBy: 'Veterinarian-reviewed',
@@ -737,7 +737,7 @@ class DatabaseHelper {
         mood: 'Happy',
         description:
             'Rapid whisker movements indicate heightened excitement or intense focus, often seen during play or when tracking potential prey.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/whisker/whisker-twitch.jpg',
         source: 'PetsCare',
         sourceUrl: 'https://www.petscare.com/news/post/cat-whiskers-position-meaning',
         verifiedBy: 'Expert-reviewed',
