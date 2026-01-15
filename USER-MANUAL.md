@@ -33,7 +33,10 @@ Welcome to **PawSight**, your pocket companion for understanding and caring for 
 ## 2. Getting Started
 
 ### Installation
-PawSight is available for Android and iOS devices. Simply download and install the app from your respective app store.
+PawSight is currently available for Android devices. You can download the latest version of the app directly from our GitHub [Releases](https://github.com/yourusername/pawsight/releases) page.
+
+1.  Download the `.apk` file.
+2.  Open the file on your device to install.
 
 ### First Launch
 Upon opening the app for the first time, you will land on the **Home Screen**. No account creation or login is required to access the core features of the app.
