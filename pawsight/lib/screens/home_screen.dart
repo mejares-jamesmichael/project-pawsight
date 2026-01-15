@@ -47,13 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final titles = ['PawSight', 'Library', 'Vet Hotline'];
     return FHeader(
       title: Text(titles[_currentIndex]),
-      suffixes: [
-        if (_currentIndex == 1) // Library
-           FHeaderAction(
-             icon: const Icon(FIcons.search),
-             onPress: () {}, // TODO: Implement global search
-           ),
-      ],
+      suffixes: const [],
     );
   }
 
