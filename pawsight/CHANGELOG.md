@@ -1,3 +1,38 @@
+## 1.2.0 (2026-01-15) - FINAL CAT RELEASE 🐱✨
+
+### 🎉 Major Improvements
+*   **UI Consistency**: Standardized spacing and border radii across entire app using `AppSpacing` and `AppRadius` constants
+*   **Chat Experience**: Major bug fixes and improvements to AI chat interface
+
+### 🐛 Critical Bug Fixes
+*   **Chat Input Crash**: Fixed "No Material widget found" error that caused app crash when using chat input
+*   **Keyboard Overflow**: Fixed "BOTTOM OVERFLOWED BY 22 PIXELS" error when opening keyboard in empty chat
+*   **Daily Purr-spective**: Resolved setState during build crash on home screen
+
+### ✨ New Features
+*   Added semantic mood color system (`AppColors.moodHappy`, `moodRelaxed`, `moodFearful`, `moodAggressive`, `moodMixed`)
+*   Implemented standardized spacing constants (xs=4, sm=8, md=12, lg=16, xl=24, xxl=32)
+*   Implemented standardized radius constants (xs=4, sm=8, md=12, lg=16, xl=20, full=100)
+
+### 💅 UI/UX Enhancements
+*   Converted Library "Clear Filters" from pushing header bar to floating pill button for better UX
+*   Improved Daily Purr-spective font size consistency
+*   Enhanced Vet Hotline card spacing and text line height
+*   Simplified ChatScreen by removing duplicate input bar implementation
+*   Made ChatEmptyState scrollable to prevent overflow
+
+### 📝 Documentation
+*   Reorganized markdown files into `/docs` folder
+*   Updated README with comprehensive project information
+
+### 🔧 Technical Improvements
+*   Refactored `chat_widgets.dart` with consistent spacing
+*   Refactored `discover_screen.dart` with consistent spacing
+*   Refactored `behavior_detail_screen.dart` with consistent spacing
+*   All files pass `flutter analyze` with no issues
+
+---
+
 ## 1.0.0 (2026-01-15) - THE CAT UPDATE
 
 ### New Features
