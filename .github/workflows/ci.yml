@@ -25,8 +25,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create .env from template
-        run: cp .env.example .env
+      - name: Create .env from secrets
+        run: |
+          echo "CHAT_API_URL=${{ secrets.CHAT_API_URL }}" > .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -50,8 +52,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create .env from template
-        run: cp .env.example .env
+      - name: Create .env from secrets
+        run: |
+          echo "CHAT_API_URL=${{ secrets.CHAT_API_URL }}" > .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -84,8 +88,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create .env from template
-        run: cp .env.example .env
+      - name: Create .env from secrets
+        run: |
+          echo "CHAT_API_URL=${{ secrets.CHAT_API_URL }}" > .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
       - name: Set up Java
         uses: actions/setup-java@v4
