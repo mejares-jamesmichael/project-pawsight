@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../models/behavior.dart';
 import '../services/database_helper.dart';
@@ -8,10 +9,15 @@ class LibraryProvider with ChangeNotifier {
   List<Behavior> _filteredBehaviors = [];
   bool _isLoading = true;
   String? _error;
+  
+  // Spotlight behavior - changes daily
+  Behavior? _spotlightBehavior;
 
   List<Behavior> get behaviors => _filteredBehaviors;
+  List<Behavior> get allBehaviors => _allBehaviors;
   bool get isLoading => _isLoading;
   String? get error => _error;
+  Behavior? get spotlightBehavior => _spotlightBehavior;
 
   // Filters
   String _searchQuery = '';
@@ -39,15 +45,40 @@ class LibraryProvider with ChangeNotifier {
     try {
       _allBehaviors = await DatabaseHelper.instance.getBehaviors();
       _applyFilters();
+      _selectSpotlightBehavior();
     } catch (e) {
       _error = 'Failed to load behaviors. Please try again.';
       debugPrint('Error loading behaviors: $e');
       _allBehaviors = [];
       _filteredBehaviors = [];
+      _spotlightBehavior = null;
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  /// Selects a spotlight behavior based on the day of year
+  /// This ensures the same behavior is shown all day, but changes daily
+  void _selectSpotlightBehavior() {
+    if (_allBehaviors.isEmpty) {
+      _spotlightBehavior = null;
+      return;
+    }
+    
+    // Use day of year as seed for consistent daily selection
+    final now = DateTime.now();
+    final dayOfYear = now.difference(DateTime(now.year)).inDays;
+    final random = Random(dayOfYear);
+    
+    _spotlightBehavior = _allBehaviors[random.nextInt(_allBehaviors.length)];
+  }
+
+  /// Get a random behavior for spotlight (can be called to refresh)
+  Behavior? getRandomBehavior() {
+    if (_allBehaviors.isEmpty) return null;
+    final random = Random();
+    return _allBehaviors[random.nextInt(_allBehaviors.length)];
   }
 
   void search(String query) {

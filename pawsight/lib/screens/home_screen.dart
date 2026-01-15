@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:provider/provider.dart';
 
+import '../models/behavior.dart';
+import '../providers/library_provider.dart';
 import 'library_screen.dart';
 import 'hotline_screen.dart';
 import 'chat_screen.dart';
 import 'discover_screen.dart';
+import 'behavior_detail_screen.dart';
 
 /// Main app shell with bottom navigation
 class HomeScreen extends StatefulWidget {
@@ -60,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onNavigateToChat: () => _openAIChat(context),
           onNavigateToHotline: () => setState(() => _currentIndex = 2),
           onNavigateToDiscover: () => _openDiscover(context),
+          onNavigateToBehavior: (behavior) => _openBehaviorDetail(context, behavior),
         );
       case 1:
         return const LibraryScreen();
@@ -83,6 +88,13 @@ class _HomeScreenState extends State<HomeScreen> {
       MaterialPageRoute(builder: (context) => const DiscoverScreen()),
     );
   }
+
+  void _openBehaviorDetail(BuildContext context, Behavior behavior) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => BehaviorDetailScreen(behavior: behavior)),
+    );
+  }
 }
 
 /// Home tab content with daily tip and navigation cards
@@ -91,12 +103,14 @@ class _HomeContent extends StatelessWidget {
   final VoidCallback onNavigateToChat;
   final VoidCallback onNavigateToHotline;
   final VoidCallback onNavigateToDiscover;
+  final void Function(Behavior behavior) onNavigateToBehavior;
 
   const _HomeContent({
     required this.onNavigateToLibrary,
     required this.onNavigateToChat,
     required this.onNavigateToHotline,
     required this.onNavigateToDiscover,
+    required this.onNavigateToBehavior,
   });
 
   // Daily tips about cat behavior
@@ -266,29 +280,10 @@ class _HomeContent extends StatelessWidget {
           ),
           const SizedBox(height: 8),
 
-          // Static Spotlight Card
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: GestureDetector(
-              onTap: onNavigateToLibrary,
-              child: FCard(
-                image: Container(
-                  height: 150,
-                  width: double.infinity,
-                  color: theme.colors.secondary,
-                  child: const Center(
-                    child: Icon(FIcons.eye, size: 48, color: Colors.white54),
-                  ),
-                ),
-                title: const Text('Slow Blink'),
-                subtitle: const Text('Affection • Relaxed'),
-                child: const Text(
-                  'A slow blink is a cat\'s way of saying "I trust you". It\'s like a kitty kiss!',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
+          // Dynamic Spotlight Card from Library
+          _SpotlightCard(
+            onNavigateToBehavior: onNavigateToBehavior,
+            onNavigateToLibrary: onNavigateToLibrary,
           ),
 
           const SizedBox(height: 40),
@@ -369,6 +364,197 @@ class _ActionCard extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
       ],
+    );
+  }
+}
+
+/// Spotlight card that displays a behavior from the library
+class _SpotlightCard extends StatelessWidget {
+  final void Function(Behavior behavior) onNavigateToBehavior;
+  final VoidCallback onNavigateToLibrary;
+
+  const _SpotlightCard({
+    required this.onNavigateToBehavior,
+    required this.onNavigateToLibrary,
+  });
+
+  /// Get icon for behavior category
+  IconData _getCategoryIcon(String category) {
+    switch (category.toLowerCase()) {
+      case 'tail':
+        return FIcons.arrowRight;
+      case 'ears':
+        return FIcons.headphones;
+      case 'eyes':
+        return FIcons.eye;
+      case 'posture':
+        return FIcons.user;
+      case 'vocal':
+        return FIcons.volume2;
+      default:
+        return FIcons.cat;
+    }
+  }
+
+  /// Get color for mood
+  Color _getMoodColor(String mood) {
+    switch (mood.toLowerCase()) {
+      case 'happy':
+        return Colors.green;
+      case 'relaxed':
+        return Colors.blue;
+      case 'fearful':
+        return Colors.orange;
+      case 'aggressive':
+        return Colors.red;
+      case 'mixed':
+        return Colors.purple;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.theme;
+
+    return Consumer<LibraryProvider>(
+      builder: (context, libraryProvider, child) {
+        // Show loading state
+        if (libraryProvider.isLoading) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: FCard(
+              child: SizedBox(
+                height: 120,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: theme.colors.primary,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+
+        // Get the spotlight behavior
+        final behavior = libraryProvider.spotlightBehavior;
+
+        // Fallback if no behaviors available
+        if (behavior == null) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: GestureDetector(
+              onTap: onNavigateToLibrary,
+              child: FCard(
+                title: const Text('Explore the Library'),
+                subtitle: const Text('Discover cat behaviors'),
+                child: const Text(
+                  'Tap to browse our collection of cat body language guides.',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          );
+        }
+
+        // Display the spotlight behavior
+        final moodColor = _getMoodColor(behavior.mood);
+        final categoryIcon = _getCategoryIcon(behavior.category);
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: GestureDetector(
+            onTap: () => onNavigateToBehavior(behavior),
+            child: FCard(
+              image: Container(
+                height: 150,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: moodColor.withValues(alpha: 0.15),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                ),
+                child: Stack(
+                  children: [
+                    // Category icon in center
+                    Center(
+                      child: Icon(
+                        categoryIcon,
+                        size: 64,
+                        color: moodColor.withValues(alpha: 0.4),
+                      ),
+                    ),
+                    // Category badge
+                    Positioned(
+                      top: 12,
+                      left: 12,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: theme.colors.background.withValues(alpha: 0.9),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(categoryIcon, size: 14, color: moodColor),
+                            const SizedBox(width: 4),
+                            Text(
+                              behavior.category,
+                              style: theme.typography.xs.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // Mood badge
+                    Positioned(
+                      top: 12,
+                      right: 12,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: moodColor.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: moodColor.withValues(alpha: 0.5),
+                          ),
+                        ),
+                        child: Text(
+                          behavior.mood,
+                          style: theme.typography.xs.copyWith(
+                            color: moodColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              title: Text(behavior.name),
+              subtitle: Text('${behavior.category} • ${behavior.mood}'),
+              child: Text(
+                behavior.description,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
