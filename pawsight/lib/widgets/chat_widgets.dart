@@ -259,38 +259,53 @@ class MessageBubble extends StatelessWidget {
         context,
         TapDownDetails(globalPosition: details.globalPosition),
       ),
-      child: Align(
-        alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.8,
-          ),
-          margin: EdgeInsets.only(
-            left: isUser ? 64 : 16,
-            right: isUser ? 16 : 64,
-            top: 4,
-            bottom: 4,
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            color: isError
-                ? theme.colors.destructive.withValues(alpha: 0.1)
-                : isUser
-                    ? theme.colors.primary
-                    : theme.colors.secondary,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(16),
-              topRight: const Radius.circular(16),
-              bottomLeft: Radius.circular(isUser ? 16 : 4),
-              bottomRight: Radius.circular(isUser ? 4 : 16),
-            ),
-            border: isError
-                ? Border.all(color: theme.colors.destructive)
-                : null,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        child: Row(
+          mainAxisAlignment:
+              isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (!isUser) ...[
+              Container(
+                width: 32,
+                height: 32,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/pawsightLogo.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+            ],
+            Flexible(
+              child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.75,
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  color: isError
+                      ? theme.colors.destructive.withValues(alpha: 0.1)
+                      : isUser
+                          ? theme.colors.primary
+                          : theme.colors.secondary,
+                  borderRadius: BorderRadius.only(
+                    topLeft: const Radius.circular(16),
+                    topRight: const Radius.circular(16),
+                    bottomLeft: Radius.circular(isUser ? 16 : 4),
+                    bottomRight: Radius.circular(isUser ? 4 : 16),
+                  ),
+                  border: isError
+                      ? Border.all(color: theme.colors.destructive)
+                      : null,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
               if (isUser)
                 Text(
                   message.content,
@@ -381,6 +396,9 @@ class MessageBubble extends StatelessWidget {
           ),
         ),
       ),
+    ],
+  ),
+),
     );
   }
 
