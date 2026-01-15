@@ -7,15 +7,7 @@
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
 ![Provider](https://img.shields.io/badge/Provider-State%20Management-blueviolet?style=for-the-badge)
 
-PawSight is a comprehensive mobile application designed to bridge the communication gap between cats and their owners. By leveraging an extensive offline library of behavioral cues and an advanced AI assistant, PawSight empowers users to interpret their pet's mood, needs, and health signals with confidence.
-
-## 📖 About
-
-### 🎯 Problem Statement
-Cat owners often struggle to understand their feline companions' body language and behaviors, leading to miscommunication and potential health issues. Without proper interpretation, owners may miss important signals indicating stress, illness, or discomfort in their pets.
-
-### ✨ Our Solution
-PawSight provides cat owners with an intuitive mobile application that combines an extensive offline behavior library with AI-powered assistance. The app helps users decode their cat's body language, offers quick access to veterinary resources, and delivers daily insights to strengthen the human-cat bond.
+PawSight is a smart mobile application designed to bridge the communication gap between cats and their owners. By leveraging an extensive offline library of behavioral cues and an advanced AI assistant, PawSight empowers users to interpret their pet's mood, needs, and health signals with confidence.
 
 ## 🚀 Key Features
 
@@ -43,12 +35,14 @@ PawSight provides cat owners with an intuitive mobile application that combines 
 *   **Testing:** Flutter test framework
 *   **Platform Support:** Android (iOS coming soon)
 
-## 🌐 Live Demo
+## 📲 Installation
 
-PawSight is currently available for Android. You can download the latest version from our [Releases](https://github.com/mejares-jamesmichael/project-pawsight/releases) page.
+PawSight is currently available for Android. You can download the latest version from [Releases](https://github.com/mejares-jamesmichael/project-pawsight/releases) page.
 
-### Test Accounts
-No account creation is required. The app works immediately upon installation with all features accessible without registration.
+1. Go to the Releases page of this repository.
+2. Download the latest .apk file (e.g., pawsight_v1.0.0.apk) from the "Assets" section.
+3. Open the file on your Android device to install the application.
+Note: You may need to enable "Install unknown apps" in your device settings.
 
 ## 📦 Project Structure
 
@@ -63,26 +57,6 @@ pawsight/
 ├── docs/                # Documentation and user manual
 └── assets/              # Images and other resources
 ```
-
-## 📚 Documentation
-
-### Core Documentation
-*   [User Manual](docs/USER-MANUAL.md) - Complete guide to using PawSight
-*   [Agent Guidelines](AGENTS.md) - Development guidelines and architecture overview
-
-### AI & Chatbot Documentation
-*   [GEMINI.md](GEMINI.md) - AI integration details and capabilities
-
-### Testing & Quality
-*   Run all tests: `cd pawsight && flutter test`
-*   Run single test: `flutter test test/database_test.dart`
-*   Lint code: `flutter analyze`
-
-### Development & Operations
-*   Run app: `cd pawsight && flutter run`
-*   Build Android: `flutter build apk`
-*   Build iOS: `flutter build ios`
-*   Format code: `dart format .`
 
 ## 🤖 AI-Powered Features
 
@@ -101,27 +75,6 @@ The AI Assistant provides personalized insights and answers to your specific que
 *   "What should I do if my cat is suddenly hiding all the time?"
 *   "Is it normal for my cat to sleep so much?"
 *   "How can I help my cat adjust to a new home?"
-
-#### Technical Architecture
-*   External AI microservice integration
-*   Secure API communication
-*   Local chat history storage
-*   Offline detection and user notifications
-
-## 📊 CI/CD Pipeline
-
-### Quality Gates
-* Automated testing on every commit
-* Code linting and formatting checks
-* Performance benchmarking
-* Security vulnerability scanning
-
-## 📝 Project Management
-
-*   Agile development methodology
-*   Regular sprint planning and retrospectives
-*   Comprehensive documentation
-* Version control with Git
 
 ## 📜 License
 
