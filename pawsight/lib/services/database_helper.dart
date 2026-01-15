@@ -168,7 +168,7 @@ class DatabaseHelper {
         mood: 'Happy',
         description:
             'When a cat holds their tail straight up like a flagpole, often with a slight curve at the tip, they are expressing confidence, contentment, and friendliness. This is a greeting behavior cats use with trusted companions and indicates they feel safe and want to interact positively.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/tail/tail-high.jpeg',
         source: 'International Cat Care, Hill\'s Pet Nutrition, PetMD',
         sourceUrl: 'https://icatcare.org/articles/cat-communication,https://www.hillspet.com/cat-care/behavior-appearance/cat-tail-language,https://www.petmd.com/cat/behavior/cat-body-language',
         verifiedBy: 'Veterinarian-reviewed',
@@ -181,7 +181,7 @@ class DatabaseHelper {
         mood: 'Happy',
         description:
             'The tail stands upright but curves at the tip like a question mark or shepherd\'s crook. This position signals a playful, friendly mood and often serves as an invitation for interaction or play. It indicates curiosity combined with positive emotions.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/tail/question-mark-1.jpg,assets/images/tail/question-mark-2.jpg',
         source: 'Hill\'s Pet Nutrition, Lady N Pet',
         sourceUrl: 'https://www.hillspet.com/cat-care/behavior-appearance/cat-tail-language,https://ladynpet.com/us/blog/cat-tail-meaning/',
         verifiedBy: 'Veterinarian-reviewed',
@@ -194,7 +194,7 @@ class DatabaseHelper {
         mood: 'Fearful',
         description:
             'A tail held low to the ground or tucked tightly between the back legs indicates fear, insecurity, anxiety, or submission. The cat feels threatened or uncomfortable in their current situation and may be preparing to flee.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/tail/tail-tucked-1.jpg,assets/images/tail/tail-tucked-2.jpg',
         source: 'International Cat Care',
         sourceUrl: 'https://icatcare.org/articles/cat-communication',
         verifiedBy: 'Veterinarian-reviewed',
@@ -207,7 +207,7 @@ class DatabaseHelper {
         mood: 'Fearful',
         description:
             'When the tail fur stands on end, creating a "bottle brush" or "Halloween cat" appearance, the cat is experiencing intense fear or feeling threatened. This is piloerection—an involuntary response designed to make the cat appear larger and more intimidating to potential threats.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/tail/puffed-tail.jpg',
         source: 'International Cat Care',
         sourceUrl: 'https://icatcare.org/articles/cat-communication',
         verifiedBy: 'Veterinarian-reviewed',
@@ -220,7 +220,7 @@ class DatabaseHelper {
         mood: 'Aggressive',
         description:
             'Rapid, forceful back-and-forth tail movement, often thumping against the floor, indicates agitation, annoyance, or anger. The faster and more intense the thrashing, the more upset the cat is. This is a clear warning to back off.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/tail/tail-lashing.jpg',
         source: 'PetMD',
         sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
         verifiedBy: 'Veterinarian-reviewed',
@@ -233,7 +233,7 @@ class DatabaseHelper {
         mood: 'Mixed',
         description:
             'Small, quick flicks or twitches at the tip of the tail can indicate focused concentration (especially during hunting or play) or mild irritation. Context is important—during play it signals engagement; during petting it may signal overstimulation.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/tail/tail-twitch.png',
         source: 'Ontario SPCA',
         sourceUrl: 'https://ontariospca.ca/blog/cat-body-language-what-is-your-cat-saying/',
         verifiedBy: 'Expert-reviewed',
@@ -246,7 +246,7 @@ class DatabaseHelper {
         mood: 'Happy',
         description:
             'A rapid, small vibration or quiver of the tail, usually held upright, typically indicates high excitement—most commonly seen when anticipating food or during greeting behavior.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/tail/tail-quiver.jpg',
         source: 'International Cat Care',
         sourceUrl: 'https://icatcare.org/articles/cat-communication',
         verifiedBy: 'Veterinarian-reviewed',
@@ -259,7 +259,7 @@ class DatabaseHelper {
         mood: 'Mixed',
         description:
             'When a cat wraps their tail around you, another cat, or themselves, the meaning depends on context. Around people or other cats: affection and social bonding. Around their own body while sitting: may indicate feeling cold, uncertain, or defensive.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/tail/tail-wrap-1.jpg,assets/images/tail/tail-wrap-2.jpg,assets/images/tail/tail-wrap-3.jpg',
         source: 'Cats Protection',
         sourceUrl: 'https://www.cats.org.uk/cats-blog/why-do-cats-have-tails',
         verifiedBy: 'Expert-reviewed',
@@ -274,7 +274,7 @@ class DatabaseHelper {
         mood: 'Relaxed',
         description:
             'Ears facing forward in their natural position indicate a content, comfortable cat feeling safe in their environment. This is the baseline "neutral" position for a relaxed feline.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/ear/ear-forward.jpg',
         source: 'Hill\'s Pet Nutrition',
         sourceUrl: 'https://www.hillspet.com/cat-care/behavior-appearance/cat-ear-language',
         verifiedBy: 'Veterinarian-reviewed',
@@ -287,7 +287,7 @@ class DatabaseHelper {
         mood: 'Happy',
         description:
             'Ears pointed straight up and facing forward show heightened alertness and curiosity. The cat is paying close attention to something interesting in their environment. Often seen during hunting behavior or when investigating novel stimuli.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/ear/ear-straightup.jpg',
         source: 'Hill\'s Pet Nutrition',
         sourceUrl: 'https://www.hillspet.com/cat-care/behavior-appearance/cat-ear-language',
         verifiedBy: 'Veterinarian-reviewed',
@@ -300,7 +300,7 @@ class DatabaseHelper {
         mood: 'Fearful',
         description:
             'Ears pinned flat against the head indicate extreme fear, defensiveness, or aggressive intent. The flatter the ears, the more terrified or aggressive the cat. This is often accompanied by hissing, dilated pupils, and a defensive posture.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/ear/ear-flatback.jpg',
         source: 'ASPCA',
         sourceUrl: 'https://www.aspca.org/pet-care/cat-care/common-cat-behavior-issues/aggression-cats',
         verifiedBy: 'Veterinarian-reviewed',
@@ -313,7 +313,7 @@ class DatabaseHelper {
         mood: 'Mixed',
         description:
             'Ears rotated to the sides, parallel to the ground (resembling airplane wings), signal nervousness, irritation, uncertainty, or mild stress. The cat is uncomfortable but not yet in full defensive mode.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/ear/ear-airplane.png',
         source: 'PetMD',
         sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
         verifiedBy: 'Veterinarian-reviewed',
@@ -326,7 +326,7 @@ class DatabaseHelper {
         mood: 'Relaxed',
         description:
             'Rapid ear movements in different directions show the cat is actively listening and gathering auditory information from their environment. Cats can rotate their ears nearly 180 degrees to pinpoint sounds.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/ear/ear-twitch.jpg',
         source: 'Hill\'s Pet Nutrition',
         sourceUrl: 'https://www.hillspet.com/cat-care/behavior-appearance/cat-ear-language',
         verifiedBy: 'Veterinarian-reviewed',
@@ -339,7 +339,7 @@ class DatabaseHelper {
         mood: 'Aggressive',
         description:
             'Ears angled backward (but not completely flattened) indicate irritation, annoyance, or mild defensiveness. This is an intermediate position between neutral and fully defensive.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/ear/ear-backward.jpg',
         source: 'International Cat Care',
         sourceUrl: 'https://icatcare.org/articles/cat-communication',
         verifiedBy: 'Veterinarian-reviewed',
@@ -354,7 +354,7 @@ class DatabaseHelper {
         mood: 'Relaxed',
         description:
             'A slow, deliberate closing and opening of the eyes is often called the "cat kiss" and represents trust, affection, and contentment. By closing their eyes in your presence, cats demonstrate they feel safe and comfortable. Research from University of Sussex confirmed cats are more likely to slow blink at humans who slow blink at them, supporting this as genuine positive communication.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/eye/eye-slowblink.jpg',
         source: 'Kinship, Tractive, VHA Vets, International Cat Care',
         sourceUrl: 'https://www.kinship.com/cat-behavior/cat-slow-blinking,https://tractive.com/blog/en/good-to-know/cat-slow-blink,https://vhavets.com/blog/cat-slow-blinking/,https://icatcare.org/articles/handling-and-interactions',
         verifiedBy: 'Research-backed, Veterinarian-reviewed',
@@ -367,7 +367,7 @@ class DatabaseHelper {
         mood: 'Mixed',
         description:
             'Pupils that expand to large black circles indicate high emotional arousal. In playful contexts with relaxed body language, this signals excitement. Combined with tense posture or defensive body language, it indicates fear or the fight-or-flight response.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/eye/eye-dilated.jpg',
         source: 'ASPCA',
         sourceUrl: 'https://www.aspca.org/pet-care/cat-care/common-cat-behavior-issues/aggression-cats',
         verifiedBy: 'Veterinarian-reviewed',
@@ -380,7 +380,7 @@ class DatabaseHelper {
         mood: 'Mixed',
         description:
             'Narrow, vertical slit pupils typically indicate contentment and relaxation in normal lighting. However, in confrontational contexts, constricted pupils can signal offensive aggression—the cat is focused intently on a target with aggressive intent.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/eye/eye-constrict.jpg',
         source: 'ASPCA',
         sourceUrl: 'https://www.aspca.org/pet-care/cat-care/common-cat-behavior-issues/aggression-cats',
         verifiedBy: 'Veterinarian-reviewed',
@@ -393,7 +393,7 @@ class DatabaseHelper {
         mood: 'Aggressive',
         description:
             'Direct, unblinking stares with wide eyes are aggressive signals used to intimidate or challenge. In cat-to-cat interactions, prolonged staring is confrontational. Between cats and humans, intense staring can indicate anxiety or warning.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/eye/eye-stare.jpg',
         source: 'PetMD',
         sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
         verifiedBy: 'Veterinarian-reviewed',
@@ -406,7 +406,7 @@ class DatabaseHelper {
         mood: 'Relaxed',
         description:
             'Partially closed, relaxed eyes typically indicate a comfortable, content cat. However, if accompanied by lethargy, hiding, or changes in behavior, squinting can indicate pain, illness, or discomfort requiring veterinary attention.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/eye/eye-close.jpg',
         source: 'PetMD',
         sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
         verifiedBy: 'Veterinarian-reviewed',
@@ -419,7 +419,7 @@ class DatabaseHelper {
         mood: 'Mixed',
         description:
             'When the pink tissue in the corner of the eye (nictitating membrane/third eyelid) is visible, it often indicates illness, pain, or medical distress. This warrants immediate veterinary evaluation.',
-        imagePath: 'assets/images/placeholder.png',
+        imagePath: 'assets/images/eye/eye-thirdeyelid.jpg',
         source: 'PetMD',
         sourceUrl: 'https://www.petmd.com/cat/behavior/cat-body-language',
         verifiedBy: 'Veterinarian-reviewed',
