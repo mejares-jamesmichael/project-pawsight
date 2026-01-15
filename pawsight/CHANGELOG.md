@@ -1,3 +1,12 @@
+## 1.2.3 (2026-01-15) - PERMISSIONS FIX 🔓
+
+### 🐛 Critical Fixes
+*   **Android Permissions**: Added `INTERNET` and `ACCESS_NETWORK_STATE` permissions to AndroidManifest.xml
+    *   *Note*: This fixes network failures in Release builds (Debug builds worked because permissions were auto-added)
+*   **CI/CD**: Verified full pipeline configuration
+
+---
+
 ## 1.2.2 (2026-01-15) - BUILD FIX 🚑
 
 ### 🐛 Fixes

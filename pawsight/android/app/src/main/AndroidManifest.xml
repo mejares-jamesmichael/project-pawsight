@@ -1,4 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Required for API communication -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Required for ConnectivityPlus to check network status -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:label="pawsight"
         android:name="${applicationName}"
