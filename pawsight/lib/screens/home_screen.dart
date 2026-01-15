@@ -381,7 +381,10 @@ class _DailyPurrspectiveCardState extends State<_DailyPurrspectiveCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Daily Purr-spective'),
+                      Text(
+                        'Daily Purr-spective',
+                        style: theme.typography.lg.copyWith(fontWeight: FontWeight.w600),
+                      ),
                       Text(
                         'Cat Fact',
                         style: theme.typography.xs.copyWith(
