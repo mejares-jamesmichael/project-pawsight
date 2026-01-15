@@ -23,6 +23,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Create .env from secrets
+        run: |
+          printf 'CHAT_API_URL=%s\nJWT_SECRET=%s\n' "${{ secrets.CHAT_API_URL }}" "${{ secrets.JWT_SECRET }}" > .env
+          echo "✅ .env file created successfully"
+          ls -la .env
+
       - name: Extract version from tag
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
