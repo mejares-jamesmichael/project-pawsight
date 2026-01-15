@@ -28,8 +28,6 @@ class _HotlineScreenState extends State<HotlineScreen> {
     final theme = context.theme;
     final provider = context.watch<HotlineProvider>();
 
-    // Note: No Scaffold here - we're already inside FScaffold from HomeScreen
-    // Using nested Scaffolds causes keyboard inset conflicts
     if (provider.error != null) {
       return Center(
         child: Padding(
@@ -37,11 +35,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                FIcons.x,
-                size: 48,
-                color: Colors.red,
-              ),
+              Icon(FIcons.x, size: 48, color: Colors.red),
               const SizedBox(height: 16),
               Text(
                 provider.error!,
@@ -84,17 +78,11 @@ class _HotlineScreenState extends State<HotlineScreen> {
             decoration: BoxDecoration(
               color: Colors.red.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: Colors.red.withValues(alpha: 0.3),
-              ),
+              border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
             ),
             child: Row(
               children: [
-                Icon(
-                  FIcons.info,
-                  color: Colors.red,
-                  size: 24,
-                ),
+                Icon(FIcons.info, color: Colors.red, size: 24),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -126,8 +114,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
           if (provider.emergencyContacts.isNotEmpty) ...[
             _SectionHeader(
               title: '🚨 Emergency Services (24/7)',
-              subtitle:
-                  '${provider.emergencyContacts.length} available',
+              subtitle: '${provider.emergencyContacts.length} available',
               theme: theme,
             ),
             const SizedBox(height: 12),
@@ -144,8 +131,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
           if (provider.regularContacts.isNotEmpty) ...[
             _SectionHeader(
               title: '🏥 General Clinics',
-              subtitle:
-                  '${provider.regularContacts.length} available',
+              subtitle: '${provider.regularContacts.length} available',
               theme: theme,
             ),
             const SizedBox(height: 12),
@@ -169,11 +155,7 @@ class _HotlineScreenState extends State<HotlineScreen> {
             ),
             child: Row(
               children: [
-                Icon(
-                  FIcons.info,
-                  color: theme.colors.mutedForeground,
-                  size: 20,
-                ),
+                Icon(FIcons.info, color: theme.colors.mutedForeground, size: 20),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
@@ -192,7 +174,6 @@ class _HotlineScreenState extends State<HotlineScreen> {
     );
   }
 }
-
 
 /// Section header widget
 class _SectionHeader extends StatelessWidget {
@@ -244,25 +225,9 @@ class _VetContactCard extends StatelessWidget {
     final uri = Uri(scheme: 'tel', path: phoneNumber);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
-      if (context.mounted) {
-        showFToast(
-          context: context,
-          alignment: FToastAlignment.bottomCenter,
-          icon: const Icon(FIcons.phone),
-          title: const Text('Opening dialer...'),
-          duration: const Duration(seconds: 2),
-        );
-      }
     } else {
       if (context.mounted) {
-        showFToast(
-          context: context,
-          alignment: FToastAlignment.bottomCenter,
-          icon: const Icon(FIcons.triangleAlert),
-          title: const Text('Unable to open dialer'),
-          description: const Text('Please check your device settings.'),
-          duration: const Duration(seconds: 3),
-        );
+        // Fallback or Toast
       }
     }
   }
@@ -275,26 +240,6 @@ class _VetContactCard extends StatelessWidget {
     );
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
-      if (context.mounted) {
-        showFToast(
-          context: context,
-          alignment: FToastAlignment.bottomCenter,
-          icon: const Icon(FIcons.mail),
-          title: const Text('Opening email app...'),
-          duration: const Duration(seconds: 2),
-        );
-      }
-    } else {
-      if (context.mounted) {
-        showFToast(
-          context: context,
-          alignment: FToastAlignment.bottomCenter,
-          icon: const Icon(FIcons.triangleAlert),
-          title: const Text('Unable to open email'),
-          description: const Text('No email app found on your device.'),
-          duration: const Duration(seconds: 3),
-        );
-      }
     }
   }
 
@@ -302,26 +247,6 @@ class _VetContactCard extends StatelessWidget {
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
-      if (context.mounted) {
-        showFToast(
-          context: context,
-          alignment: FToastAlignment.bottomCenter,
-          icon: Icon(platform == 'Facebook' ? FIcons.facebook : FIcons.instagram),
-          title: Text('Opening $platform...'),
-          duration: const Duration(seconds: 2),
-        );
-      }
-    } else {
-      if (context.mounted) {
-        showFToast(
-          context: context,
-          alignment: FToastAlignment.bottomCenter,
-          icon: const Icon(FIcons.triangleAlert),
-          title: Text('Unable to open $platform'),
-          description: const Text('Please check your internet connection.'),
-          duration: const Duration(seconds: 3),
-        );
-      }
     }
   }
 
@@ -330,33 +255,12 @@ class _VetContactCard extends StatelessWidget {
     final uri = Uri.parse('https://www.google.com/maps/search/?api=1&query=$query');
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
-      if (context.mounted) {
-        showFToast(
-          context: context,
-          alignment: FToastAlignment.bottomCenter,
-          icon: const Icon(FIcons.mapPin),
-          title: const Text('Opening Google Maps...'),
-          duration: const Duration(seconds: 2),
-        );
-      }
-    } else {
-      if (context.mounted) {
-        showFToast(
-          context: context,
-          alignment: FToastAlignment.bottomCenter,
-          icon: const Icon(FIcons.triangleAlert),
-          title: const Text('Unable to open maps'),
-          description: const Text('Please check your internet connection.'),
-          duration: const Duration(seconds: 3),
-        );
-      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final accentColor = isEmergency ? Colors.red : Colors.blue;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -373,16 +277,11 @@ class _VetContactCard extends StatelessWidget {
             ),
             if (isEmergency)
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: Colors.red.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: Colors.red.withValues(alpha: 0.3),
-                  ),
+                  border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
                 ),
                 child: Text(
                   '24/7',
@@ -397,17 +296,13 @@ class _VetContactCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Phone Number
             _InfoRow(
               icon: FIcons.phone,
               text: contact.phoneNumber,
               theme: theme,
             ),
             const SizedBox(height: 8),
-
-            // Email (if available)
-            if (contact.email != null &&
-                contact.email!.isNotEmpty) ...[
+            if (contact.email != null && contact.email!.isNotEmpty) ...[
               _InfoRow(
                 icon: FIcons.mail,
                 text: contact.email!,
@@ -415,17 +310,12 @@ class _VetContactCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
             ],
-
-            // Address
             _InfoRow(
               icon: FIcons.mapPin,
               text: contact.address,
               theme: theme,
             ),
-
-            // Notes (if available)
-            if (contact.notes != null &&
-                contact.notes!.isNotEmpty) ...[
+            if (contact.notes != null && contact.notes!.isNotEmpty) ...[
               const SizedBox(height: 8),
               _InfoRow(
                 icon: FIcons.info,
@@ -434,57 +324,172 @@ class _VetContactCard extends StatelessWidget {
                 isNote: true,
               ),
             ],
-
-            const SizedBox(height: 20), // Increased spacing
-
-            // Action Buttons
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: [
-                _ActionButton(
-                  label: 'Call',
-                  icon: FIcons.phone,
-                  color: accentColor,
-                  onTap: () => _makePhoneCall(context, contact.phoneNumber),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: FButton(
+                onPress: () => _showContactOptions(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(FIcons.messageCircle, size: 18),
+                    SizedBox(width: 8),
+                    Text('Contact Clinic'),
+                  ],
                 ),
-                if (contact.email != null && contact.email!.isNotEmpty)
-                  _ActionButton(
-                    label: 'Email',
-                    icon: FIcons.mail,
-                    color: Colors.orange,
-                    onTap: () => _sendEmail(context, contact.email!),
-                  ),
-                _ActionButton(
-                  label: 'Location',
-                  icon: FIcons.mapPin,
-                  color: Colors.green,
-                  onTap: () => _openMaps(context, contact.address),
-                ),
-                if (contact.facebookUrl != null && contact.facebookUrl!.isNotEmpty)
-                  _ActionButton(
-                    label: 'Facebook',
-                    icon: FIcons.facebook,
-                    color: const Color(0xFF1877F2), // Facebook blue
-                    onTap: () => _openSocialMedia(context, contact.facebookUrl!, 'Facebook'),
-                  ),
-                if (contact.instagramUrl != null && contact.instagramUrl!.isNotEmpty)
-                  _ActionButton(
-                    label: 'Instagram',
-                    icon: FIcons.instagram,
-                    color: const Color(0xFFE4405F), // Instagram pink
-                    onTap: () => _openSocialMedia(context, contact.instagramUrl!, 'Instagram'),
-                  ),
-              ],
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
+  void _showContactOptions(BuildContext context) {
+    final theme = context.theme;
+    
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // Allow the sheet to expand to fit content
+      backgroundColor: theme.colors.background,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Contact ${contact.clinicName}',
+                  style: theme.typography.lg.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 24),
+                
+                _ContactOptionTile(
+                  icon: FIcons.phone,
+                  label: 'Call ${contact.phoneNumber}',
+                  color: Colors.green,
+                  onTap: () {
+                    Navigator.pop(context);
+                    _makePhoneCall(context, contact.phoneNumber);
+                  },
+                ),
+                
+                if (contact.email != null && contact.email!.isNotEmpty)
+                  _ContactOptionTile(
+                    icon: FIcons.mail,
+                    label: 'Send Email',
+                    color: Colors.orange,
+                    onTap: () {
+                      Navigator.pop(context);
+                      _sendEmail(context, contact.email!);
+                    },
+                  ),
+
+                _ContactOptionTile(
+                  icon: FIcons.mapPin,
+                  label: 'Get Directions',
+                  color: Colors.blue,
+                  onTap: () {
+                    Navigator.pop(context);
+                    _openMaps(context, contact.address);
+                  },
+                ),
+
+                if (contact.facebookUrl != null && contact.facebookUrl!.isNotEmpty)
+                  _ContactOptionTile(
+                    icon: FIcons.facebook,
+                    label: 'Visit Facebook Page',
+                    color: const Color(0xFF1877F2),
+                    onTap: () {
+                      Navigator.pop(context);
+                      _openSocialMedia(context, contact.facebookUrl!, 'Facebook');
+                    },
+                  ),
+                  
+                if (contact.instagramUrl != null && contact.instagramUrl!.isNotEmpty)
+                  _ContactOptionTile(
+                    icon: FIcons.instagram,
+                    label: 'Visit Instagram',
+                    color: const Color(0xFFE4405F),
+                    onTap: () {
+                      Navigator.pop(context);
+                      _openSocialMedia(context, contact.instagramUrl!, 'Instagram');
+                    },
+                  ),
+                  
+                const SizedBox(height: 16),
+                FButton(
+                  onPress: () => Navigator.pop(context),
+                  child: const Text('Cancel'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-/// Info row with icon and text
+class _ContactOptionTile extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _ContactOptionTile({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.theme;
+    
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: theme.colors.secondary,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: theme.colors.border),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(icon, size: 20, color: color),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  label,
+                  style: theme.typography.base.copyWith(fontWeight: FontWeight.w500),
+                ),
+              ),
+              Icon(FIcons.chevronRight, size: 16, color: theme.colors.mutedForeground),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _InfoRow extends StatelessWidget {
   final IconData icon;
   final String text;
@@ -503,19 +508,13 @@ class _InfoRow extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          icon,
-          size: 16,
-          color: theme.colors.mutedForeground,
-        ),
+        Icon(icon, size: 16, color: theme.colors.mutedForeground),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             text,
             style: theme.typography.sm.copyWith(
-              color: isNote
-                  ? theme.colors.mutedForeground
-                  : theme.colors.foreground,
+              color: isNote ? theme.colors.mutedForeground : theme.colors.foreground,
               fontStyle: isNote ? FontStyle.italic : FontStyle.normal,
             ),
           ),
@@ -525,54 +524,6 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
-/// Action button widget
-class _ActionButton extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _ActionButton({
-    required this.label,
-    required this.icon,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.theme;
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: color.withValues(alpha: 0.3)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 14, color: color),
-            const SizedBox(width: 6),
-            Text(
-              label,
-              style: theme.typography.sm.copyWith(
-                color: color,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Empty state when no contacts are available
 class _EmptyState extends StatelessWidget {
   final FThemeData theme;
 
@@ -586,11 +537,7 @@ class _EmptyState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              FIcons.phoneOff,
-              size: 48,
-              color: theme.colors.mutedForeground,
-            ),
+            Icon(FIcons.phoneOff, size: 48, color: theme.colors.mutedForeground),
             const SizedBox(height: 16),
             Text(
               'No vet contacts found',
