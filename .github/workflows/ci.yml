@@ -29,6 +29,7 @@ jobs:
         run: |
           echo "CHAT_API_URL=${{ secrets.CHAT_API_URL }}" > .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "THE_CAT_API_KEY=${{ secrets.THE_CAT_API_KEY }}" >> .env
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -56,6 +57,7 @@ jobs:
         run: |
           echo "CHAT_API_URL=${{ secrets.CHAT_API_URL }}" > .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "THE_CAT_API_KEY=${{ secrets.THE_CAT_API_KEY }}" >> .env
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -92,6 +94,7 @@ jobs:
         run: |
           echo "CHAT_API_URL=${{ secrets.CHAT_API_URL }}" > .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "THE_CAT_API_KEY=${{ secrets.THE_CAT_API_KEY }}" >> .env
 
       - name: Set up Java
         uses: actions/setup-java@v4

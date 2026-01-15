@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'providers/library_provider.dart';
 import 'providers/hotline_provider.dart';
 import 'providers/chat_provider.dart';
+import 'providers/cat_api_provider.dart';
 import 'services/database_helper.dart';
 import 'services/user_session_service.dart';
 import 'services/connectivity_service.dart';
@@ -53,6 +54,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => LibraryProvider()),
         ChangeNotifierProvider(create: (_) => HotlineProvider()),
         ChangeNotifierProvider(create: (_) => ChatProvider()),
+        ChangeNotifierProvider(create: (_) => CatApiProvider()),
         ChangeNotifierProvider.value(value: ConnectivityService()),
       ],
       child: const PawSightApp(),
