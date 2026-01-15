@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:provider/provider.dart';
 
+import '../core/app_constants.dart';
 import '../models/cat_breed.dart';
 import '../models/http_cat_image.dart';
 import '../providers/cat_api_provider.dart';
@@ -95,7 +96,7 @@ class _FactsTab extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () => provider.loadRandomFacts(amount: 5),
       child: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         children: [
           // Current Fact Card
           if (provider.currentFact != null) ...[
@@ -103,7 +104,7 @@ class _FactsTab extends StatelessWidget {
               fact: provider.currentFact!.text,
               isHighlighted: true,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Center(
               child: FButton(
                 onPress: provider.isLoadingFacts ? null : () => provider.refreshFact(),
@@ -112,19 +113,19 @@ class _FactsTab extends StatelessWidget {
                   children: [
                     if (provider.isLoadingFacts)
                       const SizedBox(
-                        width: 16,
-                        height: 16,
+                        width: AppSpacing.lg,
+                        height: AppSpacing.lg,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     else
-                      const Icon(FIcons.shuffle, size: 16),
-                    const SizedBox(width: 8),
+                      const Icon(FIcons.shuffle, size: AppSpacing.lg),
+                    const SizedBox(width: AppSpacing.sm),
                     const Text('New Fact'),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xxl),
           ],
 
           // More Facts
@@ -132,24 +133,24 @@ class _FactsTab extends StatelessWidget {
             'More Cat Facts',
             style: theme.typography.lg.copyWith(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           ...provider.facts.skip(1).map((fact) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.only(bottom: AppSpacing.md),
                 child: _FactCard(fact: fact.text),
               )),
 
           // HTTP Cat Fun Section
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
           Text(
             'HTTP Cats',
             style: theme.typography.lg.copyWith(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             'Fun cat images for HTTP status codes!',
             style: theme.typography.sm.copyWith(color: theme.colors.mutedForeground),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           SizedBox(
             height: 140,
             child: ListView.builder(
@@ -200,7 +201,7 @@ class _BreedsTabState extends State<_BreedsTab> {
       children: [
         // Search Bar
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: FTextField(
             hint: 'Search breeds...',
             onChange: (value) => setState(() => _searchQuery = value),
@@ -219,7 +220,7 @@ class _BreedsTabState extends State<_BreedsTab> {
                   ),
                 )
               : ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   itemCount: filteredBreeds.length,
                   itemBuilder: (context, index) {
                     final breed = filteredBreeds[index];
@@ -252,7 +253,7 @@ class _GalleryTab extends StatelessWidget {
           // CATAAS Fun Section
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -260,9 +261,9 @@ class _GalleryTab extends StatelessWidget {
                     'Cat Says...',
                     style: theme.typography.lg.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.md),
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
                     child: Image.network(
                       provider.getCatSaysUrl('PawSight!', fontColor: 'white'),
                       height: 200,
@@ -283,7 +284,7 @@ class _GalleryTab extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   Center(
                     child: FButton(
                       onPress: () {
@@ -293,8 +294,8 @@ class _GalleryTab extends StatelessWidget {
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(FIcons.rotateCw, size: 16),
-                          SizedBox(width: 8),
+                          Icon(FIcons.rotateCw, size: AppSpacing.lg),
+                          SizedBox(width: AppSpacing.sm),
                           Text('New Cat'),
                         ],
                       ),
@@ -308,7 +309,7 @@ class _GalleryTab extends StatelessWidget {
           // TheCatAPI Gallery
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -323,8 +324,8 @@ class _GalleryTab extends StatelessWidget {
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(FIcons.rotateCw, size: 16),
-                        SizedBox(width: 8),
+                        Icon(FIcons.rotateCw, size: AppSpacing.lg),
+                        SizedBox(width: AppSpacing.sm),
                         Text('Refresh'),
                       ],
                     ),
@@ -336,12 +337,12 @@ class _GalleryTab extends StatelessWidget {
 
           // Image Grid
           SliverPadding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             sliver: SliverGrid(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
+                crossAxisSpacing: AppSpacing.md,
+                mainAxisSpacing: AppSpacing.md,
               ),
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -360,7 +361,7 @@ class _GalleryTab extends StatelessWidget {
           // GIF Cat Section
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -368,9 +369,9 @@ class _GalleryTab extends StatelessWidget {
                     'Random GIF Cat',
                     style: theme.typography.lg.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.md),
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
                     child: Image.network(
                       provider.getRandomGifUrl(),
                       height: 200,
@@ -421,7 +422,7 @@ class _FactCard extends StatelessWidget {
     final theme = context.theme;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: isHighlighted
             ? theme.colors.primary.withValues(alpha: 0.1)
@@ -429,7 +430,7 @@ class _FactCard extends StatelessWidget {
         border: Border.all(
           color: isHighlighted ? theme.colors.primary : theme.colors.border,
         ),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -439,7 +440,7 @@ class _FactCard extends StatelessWidget {
             size: 20,
             color: isHighlighted ? theme.colors.primary : theme.colors.mutedForeground,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Text(
               fact,
@@ -466,10 +467,10 @@ class _HttpCatCard extends StatelessWidget {
 
     return Container(
       width: 120,
-      margin: const EdgeInsets.only(right: 12),
+      margin: const EdgeInsets.only(right: AppSpacing.md),
       decoration: BoxDecoration(
         border: Border.all(color: theme.colors.border),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -495,7 +496,7 @@ class _HttpCatCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppSpacing.sm),
             child: Column(
               children: [
                 Text(
@@ -527,14 +528,14 @@ class _BreedCard extends StatelessWidget {
     final theme = context.theme;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: AppSpacing.md),
       decoration: BoxDecoration(
         border: Border.all(color: theme.colors.border),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: ExpansionTile(
-        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        tilePadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xs),
+        childrenPadding: const EdgeInsets.fromLTRB(AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.lg),
         title: Text(
           breed.name,
           style: theme.typography.base.copyWith(fontWeight: FontWeight.w600),
@@ -551,7 +552,7 @@ class _BreedCard extends StatelessWidget {
               breed.description!,
               style: theme.typography.sm.copyWith(height: 1.5),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
           ],
           if (breed.temperament != null) ...[
             Wrap(
@@ -560,10 +561,10 @@ class _BreedCard extends StatelessWidget {
               children: breed.temperamentList
                   .take(5)
                   .map((trait) => Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
                         decoration: BoxDecoration(
                           color: theme.colors.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppRadius.md),
                         ),
                         child: Text(
                           trait,
@@ -572,7 +573,7 @@ class _BreedCard extends StatelessWidget {
                       ))
                   .toList(),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
           ],
           // Stats Row
           Row(
@@ -632,7 +633,7 @@ class _GalleryImageCard extends StatelessWidget {
     final theme = context.theme;
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(AppRadius.md),
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -657,7 +658,7 @@ class _GalleryImageCard extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppSpacing.sm),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,

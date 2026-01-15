@@ -21,6 +21,27 @@ class AppSpacing {
   static const double xxl = 32.0;
 }
 
+/// App-wide constants for border radii
+class AppRadius {
+  /// 4.0
+  static const double xs = 4.0;
+  
+  /// 8.0
+  static const double sm = 8.0;
+  
+  /// 12.0 - Standard card radius
+  static const double md = 12.0;
+  
+  /// 16.0 - Large card/container radius
+  static const double lg = 16.0;
+  
+  /// 20.0
+  static const double xl = 20.0;
+  
+  /// 100.0 - Full rounded/pill
+  static const double full = 100.0;
+}
+
 /// App-wide constants for specific brand/social colors
 class AppColors {
   static const Color facebook = Color(0xFF1877F2);
