@@ -136,7 +136,7 @@ class _HomeContent extends StatelessWidget {
                 Text(
                   _greeting,
                   style: theme.typography.xl.copyWith(
-                    fontSize: 32, // Manual 4xl equivalent
+                    fontSize: 28, // Reduced from 32 for better fit
                     fontWeight: FontWeight.bold,
                     height: 1.1,
                   ),
@@ -144,7 +144,7 @@ class _HomeContent extends StatelessWidget {
                 Text(
                   'Cat Enthusiast',
                   style: theme.typography.xl.copyWith(
-                    fontSize: 32,
+                    fontSize: 28, // Reduced from 32
                     fontWeight: FontWeight.w300,
                     color: theme.colors.mutedForeground,
                     height: 1.1,
