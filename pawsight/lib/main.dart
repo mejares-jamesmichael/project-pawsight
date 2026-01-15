@@ -16,11 +16,14 @@ import 'screens/home_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load environment variables (use .env.example as fallback for CI/testing)
+  // Load environment variables
+  // Priority: .env (production) -> .env.example (CI/testing fallback)
   try {
     await dotenv.load(fileName: '.env');
   } catch (e) {
     // Fallback to .env.example for CI builds where .env doesn't exist
+    // Note: .env.example contains placeholder values - AI chat won't work
+    debugPrint('Warning: .env not found, falling back to .env.example');
     await dotenv.load(fileName: '.env.example');
   }
 
