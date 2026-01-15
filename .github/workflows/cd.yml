@@ -25,7 +25,7 @@ jobs:
 
       - name: Create .env from secrets
         run: |
-          printf 'CHAT_API_URL=%s\nJWT_SECRET=%s\n' "${{ secrets.CHAT_API_URL }}" "${{ secrets.JWT_SECRET }}" > .env
+          printf 'CHAT_API_URL=%s\nJWT_SECRET=%s\nTHE_CAT_API_KEY=%s\n' "${{ secrets.CHAT_API_URL }}" "${{ secrets.JWT_SECRET }}" "${{ secrets.THE_CAT_API_KEY }}" > .env
           echo "✅ .env file created successfully"
           ls -la .env
 

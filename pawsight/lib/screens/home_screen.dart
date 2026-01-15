@@ -4,6 +4,7 @@ import 'package:forui/forui.dart';
 import 'library_screen.dart';
 import 'hotline_screen.dart';
 import 'chat_screen.dart';
+import 'discover_screen.dart';
 
 /// Main app shell with bottom navigation
 class HomeScreen extends StatefulWidget {
@@ -58,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onNavigateToLibrary: () => setState(() => _currentIndex = 1),
           onNavigateToChat: () => _openAIChat(context),
           onNavigateToHotline: () => setState(() => _currentIndex = 2),
+          onNavigateToDiscover: () => _openDiscover(context),
         );
       case 1:
         return const LibraryScreen();
@@ -74,6 +76,13 @@ class _HomeScreenState extends State<HomeScreen> {
       MaterialPageRoute(builder: (context) => const ChatScreen()),
     );
   }
+
+  void _openDiscover(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const DiscoverScreen()),
+    );
+  }
 }
 
 /// Home tab content with daily tip and navigation cards
@@ -81,11 +90,13 @@ class _HomeContent extends StatelessWidget {
   final VoidCallback onNavigateToLibrary;
   final VoidCallback onNavigateToChat;
   final VoidCallback onNavigateToHotline;
+  final VoidCallback onNavigateToDiscover;
 
   const _HomeContent({
     required this.onNavigateToLibrary,
     required this.onNavigateToChat,
     required this.onNavigateToHotline,
+    required this.onNavigateToDiscover,
   });
 
   // Daily tips about cat behavior
@@ -213,22 +224,21 @@ class _HomeContent extends StatelessWidget {
                 color: Colors.purple,
                 onTap: onNavigateToChat,
               ),
+              _ActionCard(
+                icon: FIcons.compass,
+                title: 'Discover',
+                subtitle: 'Facts & Breeds',
+                color: Colors.orange,
+                onTap: onNavigateToDiscover,
+              ),
+              _ActionCard(
+                icon: FIcons.phone,
+                title: 'Vet Hotline',
+                subtitle: 'Emergency',
+                color: Colors.red,
+                onTap: onNavigateToHotline,
+              ),
             ],
-          ),
-
-          const SizedBox(height: 12),
-          
-          // Vet Hotline Full Width
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: _ActionCard(
-              icon: FIcons.phone,
-              title: 'Vet Hotline',
-              subtitle: 'Emergency contacts & clinics',
-              color: Colors.red,
-              onTap: onNavigateToHotline,
-              isHorizontal: true,
-            ),
           ),
 
           const SizedBox(height: 32),
@@ -295,7 +305,6 @@ class _ActionCard extends StatelessWidget {
   final String subtitle;
   final Color color;
   final VoidCallback onTap;
-  final bool isHorizontal;
 
   const _ActionCard({
     required this.icon,
@@ -303,7 +312,6 @@ class _ActionCard extends StatelessWidget {
     required this.subtitle,
     required this.color,
     required this.onTap,
-    this.isHorizontal = false,
   });
 
   @override
@@ -320,23 +328,14 @@ class _ActionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         padding: const EdgeInsets.all(16),
-        child: isHorizontal
-            ? Row(
-                children: [
-                  _buildIcon(context),
-                  const SizedBox(width: 16),
-                  Expanded(child: _buildText(context)),
-                  Icon(FIcons.chevronRight, color: theme.colors.mutedForeground),
-                ],
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildIcon(context),
-                  _buildText(context),
-                ],
-              ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildIcon(context),
+            _buildText(context),
+          ],
+        ),
       ),
     );
   }
